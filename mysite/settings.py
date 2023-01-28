@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'academy',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -123,3 +124,11 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# 
+# Para quitar error de dos grupos de auth.user
+AUTH_USER_MODEL = 'academy.User'
+
+#
+# Para eliminar error de CSRF no permitido
+CSRF_TRUSTED_ORIGINS = ['https://8000-mcamachog1-aresolver*.gitpod.io','https://*.gitpod.io']

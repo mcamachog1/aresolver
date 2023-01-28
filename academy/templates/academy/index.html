@@ -1,0 +1,12 @@
+{% extends "academy/layout.html" %}
+{% load static %}
+
+{% block body %}
+    {% if user.is_authenticated %}
+        <ul>
+        {% for alumno in alumnos %}
+            <li>{{ alumno.nombre }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}
