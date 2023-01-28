@@ -4,8 +4,9 @@
 {% block body %}
     {% if user.is_authenticated %}
         <ul>
-        {% for alumno in alumnos %}
-            <li>{{ alumno.nombre }}</li>
+        {% for asistencia in asistencias %}
+            
+            <li>{{ asistencia.alumno.nombre }} {{ asistencia.fecha.fecha_asistencia }}</li>
         {% endfor %}
         </ul>
     {% endif %}

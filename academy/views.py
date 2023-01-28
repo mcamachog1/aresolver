@@ -4,13 +4,28 @@ from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.urls import reverse
 
-from .models import User, Alumno
+from .models import User, Alumno, Asistencia
 
  # Create your views here.
 
 def index(request):
+    # Listar los alumnos por orden de asistencia mas reciente
+
+    # Crear estructura
+    alumnos_fecha_mas_reciente = []
+    # Seleccionar los alummnos
+    alumnos = Alumno.objects.all()
+    for alumno in alumnos:
+        #print(alumno)
+        fecha = Asistencia.objects.filter(alumno=alumno).order_by("-fecha_asistencia").first()
+        # # Crear registro con alumno y fecha para guardar en lista de alumnos con fecha mas reciente
+        registro = {"alumno": alumno, "fecha": fecha}
+        #print(registro)
+        alumnos_fecha_mas_reciente.append(registro)
+    print (alumnos_fecha_mas_reciente[0])
+
     return render(request, "academy/index.html",{
-        "alumnos": Alumno.objects.all()
+        "asistencias": alumnos_fecha_mas_reciente
     })
 
 
