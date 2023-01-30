@@ -14,7 +14,7 @@ class Alumno(models.Model):
     fecha_cambio = models.DateTimeField(auto_now=True)
 
 class Asistencia(models.Model):
-    fecha_asistencia = models.DateField()
+    fecha = models.DateField(null=True)
     alumno = models.ForeignKey(Alumno, on_delete=models.CASCADE, related_name="asistencias", null=False) 
 
     def __str__(self):
