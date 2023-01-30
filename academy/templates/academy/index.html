@@ -6,7 +6,7 @@
         <ul>
         {% for asistencia in asistencias %}
             
-            <li>{{ asistencia.alumno.nombre }} {{ asistencia.fecha.fecha_asistencia }}</li>
+            <li>{{ asistencia.alumno.nombre }} {{ asistencia.fecha }}</li>
         {% endfor %}
         </ul>
     {% endif %}
