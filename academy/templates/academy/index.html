@@ -3,11 +3,17 @@
 
 {% block body %}
     {% if user.is_authenticated %}
+			<form action="{% url 'index' %}" method="post">
+					{% csrf_token %}
+					<input name="nombre" type="text" placeholder="Nombre">
+					<input name="apellido" type="text" placeholder="Apellido">
+					<input type="submit">
+        </form>
         <ul>
-        {% for asistencia in asistencias %}
-            
-            <li>{{ asistencia.alumno.nombre }} {{ asistencia.fecha }}</li>
-        {% endfor %}
+          {% for asistencia in asistencias %}
+              
+          	<li>{{ asistencia.alumno.nombre }} {{ asistencia.fecha }}</li>
+          {% endfor %}
         </ul>
     {% endif %}
 {% endblock %}

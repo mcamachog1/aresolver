@@ -9,18 +9,28 @@ from .models import User, Alumno, Asistencia
  # Create your views here.
 
 def index(request):
+    if request.method == 'POST':
+        nombre = request.POST["nombre"]
+        apellido = request.POST["apellido"]
+        nuevo = Alumno(nombre = nombre, apellido = apellido)
+        nuevo.save()
+        return HttpResponse(f"{nombre} {apellido}")
     # Listar los alumnos por orden de asistencia mas reciente
     # Crear estructura
     alumnos_fecha_mas_reciente = []
     # Seleccionar los alummnos
     alumnos = Alumno.objects.all()
     # Recorrer los alumnos y crear registro con alumno y fecha mas reciente de asistencia
+
     for alumno in alumnos:
-        fecha = Asistencia.objects.filter(alumno=alumno).order_by("-fecha_asistencia").first()
-        fecha_str = fecha.fecha_asistencia.strftime("%a %d-%m-%Y")
+        asistencia = Asistencia.objects.filter(alumno=alumno).order_by("-fecha").first()
+        if True:
+            fecha_str = "___ __-__-____"
+        else:
+            fecha_str = asistencia.fecha.strftime("%a %d-%m-%Y")
         registro = {"alumno": alumno, "fecha": fecha_str}
         alumnos_fecha_mas_reciente.append(registro)
-    # print (alumnos_fecha_mas_reciente[0])
+
 
     return render(request, "academy/index.html",{
         "asistencias": alumnos_fecha_mas_reciente
