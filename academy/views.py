@@ -10,19 +10,16 @@ from .models import User, Alumno, Asistencia
 
 def index(request):
     # Listar los alumnos por orden de asistencia mas reciente
-
     # Crear estructura
     alumnos_fecha_mas_reciente = []
     # Seleccionar los alummnos
     alumnos = Alumno.objects.all()
+    # Recorrer los alumnos y crear registro con alumno y fecha mas reciente de asistencia
     for alumno in alumnos:
-        #print(alumno)
         fecha = Asistencia.objects.filter(alumno=alumno).order_by("-fecha_asistencia").first()
-        # # Crear registro con alumno y fecha para guardar en lista de alumnos con fecha mas reciente
-        registro = {"alumno": alumno, "fecha": fecha}
-        #print(registro)
+        fecha_str = fecha.fecha_asistencia.strftime("%a %d-%m-%Y")
+        registro = {"alumno": alumno, "fecha": fecha_str}
         alumnos_fecha_mas_reciente.append(registro)
-    print (alumnos_fecha_mas_reciente[0])
 
     return render(request, "academy/index.html",{
         "asistencias": alumnos_fecha_mas_reciente
