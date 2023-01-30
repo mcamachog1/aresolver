@@ -22,7 +22,7 @@ def index(request):
         registro = {"alumno": alumno, "fecha": fecha}
         #print(registro)
         alumnos_fecha_mas_reciente.append(registro)
-    print (alumnos_fecha_mas_reciente[0])
+    # print (alumnos_fecha_mas_reciente[0])
 
     return render(request, "academy/index.html",{
         "asistencias": alumnos_fecha_mas_reciente
