@@ -10,9 +10,9 @@
 					<input type="submit">
         </form>
         <ul>
-          {% for asistencia in asistencias %}
-              
-          	<li>{{ asistencia.alumno.nombre }} {{ asistencia.fecha }}</li>
+          {% for alumno in alumnos %}
+
+          	<li>{{ alumno.nombre }} {{ alumno.fecha }} {{ alumno.status }}</li>
           {% endfor %}
         </ul>
     {% endif %}

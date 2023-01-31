@@ -3,38 +3,44 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.urls import reverse
+# from datetime import datetime
+
+from django.http import JsonResponse
 
 from .models import User, Alumno, Asistencia
 
  # Create your views here.
 
-def index(request):
-    if request.method == 'POST':
-        nombre = request.POST["nombre"]
-        apellido = request.POST["apellido"]
-        nuevo = Alumno(nombre = nombre, apellido = apellido)
-        nuevo.save()
-        return HttpResponse(f"{nombre} {apellido}")
-    # Listar los alumnos por orden de asistencia mas reciente
+def crear_alumno(nombre, apellido):
+    nuevo = Alumno(nombre = nombre, apellido = apellido)
+    nuevo.save()
+
+# Listar los alumnos por orden de asistencia mas reciente
+def listar_alumnos_por_fecha_de_asistencia():
     # Crear estructura
     alumnos_fecha_mas_reciente = []
     # Seleccionar los alummnos
     alumnos = Alumno.objects.all()
     # Recorrer los alumnos y crear registro con alumno y fecha mas reciente de asistencia
-
     for alumno in alumnos:
         asistencia = Asistencia.objects.filter(alumno=alumno).order_by("-fecha").first()
-        if True:
-            fecha_str = "___ __-__-____"
-        else:
+        if asistencia is not None:
             fecha_str = asistencia.fecha.strftime("%a %d-%m-%Y")
-        registro = {"alumno": alumno, "fecha": fecha_str}
+        else:
+            fecha_str = alumno.fecha_creacion.strftime("%a %d-%m-%Y")
+        registro = {"nombre": f"{alumno.nombre} {alumno.apellido}", "fecha": fecha_str, "status": alumno.get_status_display()}
         alumnos_fecha_mas_reciente.append(registro)
+    return (alumnos_fecha_mas_reciente)
 
 
-    return render(request, "academy/index.html",{
-        "asistencias": alumnos_fecha_mas_reciente
-    })
+def index(request):
+    if request.method == 'POST':
+        crear_alumno(request.POST["nombre"],request.POST["apellido"])
+        return HttpResponseRedirect(reverse("index"))
+    else:
+        return render(request, "academy/index.html",{
+            "alumnos": listar_alumnos_por_fecha_de_asistencia(),
+            })
 
 
 def login_view(request):
