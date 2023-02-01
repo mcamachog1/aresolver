@@ -10,6 +10,10 @@ from django.http import JsonResponse
 from .models import User, Alumno, Asistencia
 
  # Create your views here.
+def crear_asistencia(request):
+    return render(request, "academy/asistencia.html",{
+        "alumnos": listar_alumnos_por_fecha_de_asistencia(),
+        })
 
 def crear_alumno(nombre, apellido):
     nuevo = Alumno(nombre = nombre, apellido = apellido)
