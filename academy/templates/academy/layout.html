@@ -8,11 +8,20 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
         <!-- <link href="{% static 'auctions/css/styles2.css' %}" rel="stylesheet"> -->
-</head>
+    {% block script %}
+    {% endblock %}
+    </head>
 
 <body>
     <ul class="nav">
         {% if user.is_authenticated %}
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'index' %}">Inicio</a>
+            </li>            
+
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'asistencia' %}">Asistencias</a>
+            </li>            
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
             </li>
