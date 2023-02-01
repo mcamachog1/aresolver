@@ -9,6 +9,15 @@ from django.http import JsonResponse
 
 from .models import User, Alumno, Asistencia
 
+
+def api_asistencias(request, alumno_id):
+  if request.method == 'GET':
+    alumno = Alumno.objects.get(id=alumno_id)
+    asistencias = Asistencia.objects.filter(alumno=alumno)
+    return JsonResponse({
+        "asistencias": asistencias
+        }, status=201)
+
  # Create your views here.
 def crear_asistencia(request):
     return render(request, "academy/asistencia.html",{
@@ -32,7 +41,7 @@ def listar_alumnos_por_fecha_de_asistencia():
             fecha_str = asistencia.fecha.strftime("%a %d-%m-%Y")
         else:
             fecha_str = alumno.fecha_creacion.strftime("%a %d-%m-%Y")
-        registro = {"nombre": f"{alumno.nombre} {alumno.apellido}", "fecha": fecha_str, "status": alumno.get_status_display()}
+        registro = {"id":alumno.id,"nombre": f"{alumno.nombre} {alumno.apellido}", "fecha": fecha_str, "status": alumno.get_status_display()}
         alumnos_fecha_mas_reciente.append(registro)
     return (alumnos_fecha_mas_reciente)
 

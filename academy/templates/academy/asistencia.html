@@ -2,32 +2,53 @@
 {% load static %}
 
 {% block script %}
-	<script>
-		document.addEventListener('DOMContentLoaded', function () {
-			alert('Ya cargo')
-		})
-	</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const alumnos = document.querySelector('#alumnos');
+    alumnos.addEventListener('change', (event) => asistencias_alumno(event.target.value))
+    
+    function asistencias_alumno(id) {
+      const asistencias = document.querySelector('#asistencias');
+      asistencias.innerHTML = ""
+      fetch(`/profile/photo/${user_id}`)
+      .then(response => response.json())
+      .then(object => {
+        for (let i = 0; i < image_url_list.length; i++) {
+          if (image_url_list[i] === object['url_photo']) {
+             index = i
+            break
+          }
+        }
+        foto_count = index + 1
+        foto_index = foto_count % 4
+        div_photo = document.querySelector('.contenedor-foto')
+        div_photo.setAttribute("style", `background-image: url(${object['url_photo']});`);
+      });
+    }
+  })
+</script>
 {% endblock %}
 
 {% block body %}
-    {% if user.is_authenticated %}
-			<form action="{% url 'index' %}" method="post">
-					{% csrf_token %}
-					<input name="nombre" type="text" placeholder="Nombre">
-					<input name="apellido" type="text" placeholder="Apellido">
-          <select name="alumno" id="alumnos">
-            {% for alumno in alumnos%}
-              <option value="{{ alumno.id }}">{{ alumno.nombre }} {{ alumno.apellido }}</option>
-            {% endfor %}
-          </select>
-          <input name="fecha" type="date">
-					<input type="submit">
-        </form>
-        <ul>
-          {% for alumno in alumnos %}
+{% if user.is_authenticated %}
+<div class="result"></div>
+<form action="{% url 'index' %}" method="post">
+  {% csrf_token %}
+  <input name="nombre" type="text" placeholder="Nombre">
+  <input name="apellido" type="text" placeholder="Apellido">
+  <select name="alumno" id="alumnos">
+    {% for alumno in alumnos%}
+    <option value="{{ alumno.id }}">{{ alumno.nombre }} {{ alumno.apellido }}</option>
+    {% endfor %}
+  </select>
+  <input name="fecha" type="date">
+  <input type="submit">
+</form>
+<ul id="asistencias">
+  {% for alumno in alumnos %}
 
-          	<li>{{ alumno.nombre }} {{ alumno.fecha }} {{ alumno.status }}</li>
-          {% endfor %}
-        </ul>
-    {% endif %}
+  <li>{{ alumno.nombre }} {{ alumno.fecha }} {{ alumno.status }}</li>
+  {% endfor %}
+</ul>
+{% endif %}
 {% endblock %}
