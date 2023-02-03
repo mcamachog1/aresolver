@@ -21,14 +21,14 @@
 
 {% block body %}
     {% if user.is_authenticated %}
-      {% if alumnos %}
-        <div id="listar-alumnos">
-          <form action="{% url 'index' %}" method="post">
-              {% csrf_token %}
-              <input name="nombre" type="text" placeholder="Nombre">
-              <input name="apellido" type="text" placeholder="Apellido">
-              <input type="submit">
-            </form>
+    <form action="{% url 'index' %}" method="post">
+      {% csrf_token %}
+      <input name="nombre" type="text" placeholder="Nombre">
+      <input name="apellido" type="text" placeholder="Apellido">
+      <input type="submit">
+    </form>
+    {% if alumnos %}
+      <div id="listar-alumnos">
             <ul>
               {% for alumno in alumnos %}
 
