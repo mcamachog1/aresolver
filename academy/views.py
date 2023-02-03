@@ -13,14 +13,14 @@ from .models import User, Alumno, Asistencia
 def api_asistencias(request, alumno_id):
     if request.method == 'GET':
         alumno = Alumno.objects.get(id=alumno_id)
-        asistencias = Asistencia.objects.filter(alumno=alumno)
+        asistencias = listar_alumnos_por_fecha_de_asistencia() #Asistencia.objects.filter(alumno=alumno)
         print(asistencias)
         return JsonResponse({
             "asistencias": listar_asistencias(alumno_id)
             }, status=201)
     else:
         return JsonResponse({
-                    "asistencias": [a,b,c]
+                    "asistencias": listar_alumnos_por_fecha_de_asistencia()
                     }, status=201)             
     
 
@@ -31,10 +31,20 @@ def api_asistencias(request, alumno_id):
 #         }, status=201)
 
  # Create your views here.
-def crear_asistencia(request):
-    return render(request, "academy/asistencia.html",{
-        "alumnos": listar_alumnos_por_fecha_de_asistencia(),
-        })
+def asistencia(request):
+    
+    if request.method == 'GET':
+        return render(request, "academy/asistencia.html",{
+            "alumnos": listar_alumnos_por_fecha_de_asistencia(),
+            })
+    elif request.method == 'POST':
+        print(request.POST['fecha'])
+        alumno = Alumno.objects.get(id=request.POST['alumno_id'])
+        asistencia = Asistencia(alumno = alumno, fecha = request.POST['fecha'])
+        asistencia.save()
+        return HttpResponseRedirect(reverse("asistencia"))        
+    else:
+        return HttpResponse("Metodo no manejado")
 
 def crear_alumno(nombre, apellido):
     nuevo = Alumno(nombre = nombre, apellido = apellido)
@@ -59,20 +69,17 @@ def listar_alumnos_por_fecha_de_asistencia():
 
 # Listar los alumnos por orden de asistencia mas reciente
 def listar_asistencias(alumno_id):
-    # Crear estructura
-    asistencias = []
     # Seleccionar los alummnos
+    asistencias = []
     alumno = Alumno.objects.get(id = alumno_id)
-    # Crear registro con fecha mas reciente de asistencia
-    asistencia = Asistencia.objects.filter(alumno=alumno).order_by("-fecha").first()
-    
-    if asistencia is not None:
-        fecha_str = asistencia.fecha.strftime("%a %d-%m-%Y")
-    else:
-        fecha_str = alumno.fecha_creacion.strftime("%a %d-%m-%Y")
-    
-    registro = {"id":alumno.id,"nombre": f"{alumno.nombre} {alumno.apellido}", "fecha": fecha_str, "status": alumno.get_status_display()}
-    asistencias.append(registro)
+    query_set = Asistencia.objects.filter(alumno=alumno).order_by("-fecha")
+    for asistencia in query_set:
+        if asistencia is not None:
+            fecha_str = asistencia.fecha.strftime("%a %d-%m-%Y")
+        else:
+            fecha_str = alumno.fecha_creacion.strftime("%a %d-%m-%Y")    
+        registro = {"id":alumno.id,"nombre": f"{alumno.nombre} {alumno.apellido}", "fecha": fecha_str, "status": alumno.get_status_display()}
+        asistencias.append(registro)
     return (asistencias)
 
 def index(request):

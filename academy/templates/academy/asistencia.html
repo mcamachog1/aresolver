@@ -38,9 +38,9 @@
 {% block body %}
 {% if user.is_authenticated %}
 <div class="result"></div>
-<form action="{% url 'index' %}" method="post">
+<form action="{% url 'asistencia' %}" method="post">
   {% csrf_token %}
-  <select name="alumno" id="alumnos">
+  <select name="alumno_id" id="alumnos">
     <option value="-1">Seleccione un alumno:</option>
     {% for alumno in alumnos%}
     <option value="{{ alumno.id }}">{{ alumno.nombre }} {{ alumno.apellido }}</option>
