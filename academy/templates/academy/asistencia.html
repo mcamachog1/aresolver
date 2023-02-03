@@ -13,6 +13,7 @@
     const alumnos = document.querySelector('#alumnos');
     alumnos.addEventListener('change', (event) => asistencias_alumno(event.target.value))
     
+    // fetch con get
     function asistencias_alumno(id) {
       const asistencias = document.querySelector('#asistencias');
       asistencias.innerHTML = ""
@@ -25,10 +26,6 @@
 
           asistencias.innerHTML += `<li>${asistencia.nombre} ${asistencia.fecha} ${asistencia.status}</li>`
           })
-          //asistencias.forEach((a) => console.log(a));
-          // asistencias.forEach((asistencia) => {
-          //     console.log(asistencia);
-          // });
       });
     }
   })
