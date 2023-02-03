@@ -22,15 +22,18 @@ def api_asistencias(request, alumno_id):
         return JsonResponse({
                     "asistencias": listar_alumnos_por_fecha_de_asistencia()
                     }, status=201)             
-    
 
-#     alumno = Alumno.objects.get(id=alumno_id)
-#     asistencias = Asistencia.objects.filter(alumno=alumno)
-#     return JsonResponse({
-#         "asistencias": asistencias
-#         }, status=201)
+def api_inactivar_alumnos(request):
+    if request.method == 'GET':
+        alumnos = Alumno.objects.all()
+        for alumno in alumnos:
+            if True:
+              alumno.status = alumno.ACTIVO
+              alumno.save()
+        return JsonResponse({
+            "message": f"se inactivaron tanto alumnos"
+            }, status=201)      
 
- # Create your views here.
 def asistencia(request):
     
     if request.method == 'GET':
@@ -40,11 +43,16 @@ def asistencia(request):
     elif request.method == 'POST':
         print(request.POST['fecha'])
         alumno = Alumno.objects.get(id=request.POST['alumno_id'])
+        alumno.status = alumno.ACTIVO
+        alumno.save()
         asistencia = Asistencia(alumno = alumno, fecha = request.POST['fecha'])
         asistencia.save()
         return HttpResponseRedirect(reverse("asistencia"))        
     else:
         return HttpResponse("Metodo no manejado")
+
+def mantenimiento(request):
+    return render(request, "academy/index.html")
 
 def crear_alumno(nombre, apellido):
     nuevo = Alumno(nombre = nombre, apellido = apellido)
@@ -63,7 +71,7 @@ def listar_alumnos_por_fecha_de_asistencia():
             fecha_str = asistencia.fecha.strftime("%a %d-%m-%Y")
         else:
             fecha_str = alumno.fecha_creacion.strftime("%a %d-%m-%Y")
-        registro = {"id":alumno.id,"nombre": f"{alumno.nombre} {alumno.apellido}", "fecha": fecha_str, "status": alumno.get_status_display()}
+        registro = {"alumno":alumno, "id":alumno.id,"nombre": f"{alumno.nombre} {alumno.apellido}", "fecha": fecha_str, "status": alumno.get_status_display()}
         alumnos_fecha_mas_reciente.append(registro)
     return (alumnos_fecha_mas_reciente)
 
