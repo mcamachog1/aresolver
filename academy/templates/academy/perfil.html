@@ -1,0 +1,19 @@
+{% extends "academy/layout.html" %}
+{% load static %}
+
+{% block script %}
+
+{% endblock %}
+
+{% block body %}
+{% if user.is_authenticated %}
+<div class="result"></div>
+<form action="{% url 'editar_alumno' alumno.id %}" method="post">
+  {% csrf_token %}
+    <input name="nombre" type="text" value="{{ alumno.nombre}}" >
+    <input name="apellido" type="text" value="{{ alumno.apellido}}">
+    <input type="submit">
+</form>
+
+{% endif %}
+{% endblock %}

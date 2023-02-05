@@ -21,20 +21,42 @@
 
 {% block body %}
     {% if user.is_authenticated %}
-    <form action="{% url 'index' %}" method="post">
-      {% csrf_token %}
-      <input name="nombre" type="text" placeholder="Nombre">
-      <input name="apellido" type="text" placeholder="Apellido">
-      <input type="submit">
-    </form>
-    {% if alumnos %}
-      <div id="listar-alumnos">
-            <ul>
-              {% for alumno in alumnos %}
+      {% if mostrar == 'index' %}
+        <div id="listar-alumnos">
+          <form action="{% url 'index' %}" method="post">
+            {% csrf_token %}
+            <input name="nombre" type="text" placeholder="Nombre">
+            <input name="apellido" type="text" placeholder="Apellido">
+            <input type="submit">
+          </form>
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Útima Asistencia</th>
+                <th scope="col">Status</th>                  
+                <th scope="col">#</th>
+              </tr>
+            </thead>
+          <!-- <ul> -->
+            {% for alumno in alumnos %}
 
-                <li>{{ alumno.nombre }} {{ alumno.fecha }} {{ alumno.status }}</li>
+              <tbody>
+                <tr>
+                  <td>{{ alumno.nombre }}</td>
+                  <td>{{ alumno.fecha }}</td>
+                  <td>{{ alumno.status }}</td>
+                  <td><a href="{% url 'editar_alumno' alumno.id %}">Editar</a></td>
+                </tr>
+              </tbody>
+              
+              <!-- <li>
+                {{ alumno.nombre }} {{ alumno.fecha }} {{ alumno.status }}
+                <a href="{% url 'editar_alumno' alumno.id %}">Editar</a>
+              </li> -->
               {% endfor %}
-            </ul>
+            </table>
+          <!-- </ul> -->
         </div>
       {% else %}
         <div id="mantenimiento">
