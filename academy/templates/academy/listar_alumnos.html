@@ -4,8 +4,8 @@
       <tr>
         <th scope="col">Nombre</th>
         <th scope="col">Útima Asistencia</th>
-        <th scope="col">Status</th>                  
-        <th scope="col">#</th>
+        <th scope="col">Status</th>
+        <th scope="col">Acción</th>                  
       </tr>
     </thead>
   <!-- <ul> -->
@@ -16,7 +16,9 @@
           <td>{{ alumno.nombre }}</td>
           <td>{{ alumno.fecha }}</td>
           <td>{{ alumno.status }}</td>
-          <td><a href="{% url 'editar_alumno' alumno.id %}">Editar</a></td>
+          <td><a href="{% url 'editar_alumno' alumno.id %}"><span class="m-1">Editar</span></a>
+          <a href="{% url 'editar_alumno' alumno.id %}"><span class="m-1">Pagar</span></a></td>
+          
         </tr>
       </tbody>
 
