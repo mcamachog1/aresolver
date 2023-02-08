@@ -1,0 +1,24 @@
+
+<table class="table" id="table-alumnos">
+    <thead>
+      <tr>
+        <th scope="col">Nombre</th>
+        <th scope="col">Útima Asistencia</th>
+        <th scope="col">Status</th>                  
+        <th scope="col">#</th>
+      </tr>
+    </thead>
+  <!-- <ul> -->
+    {% for alumno in alumnos %}
+
+      <tbody>
+        <tr>
+          <td>{{ alumno.nombre }}</td>
+          <td>{{ alumno.fecha }}</td>
+          <td>{{ alumno.status }}</td>
+          <td><a href="{% url 'editar_alumno' alumno.id %}">Editar</a></td>
+        </tr>
+      </tbody>
+
+      {% endfor %}
+</table>

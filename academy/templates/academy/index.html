@@ -29,33 +29,8 @@
             <input name="apellido" type="text" placeholder="Apellido">
             <input type="submit">
           </form>
-          <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">Nombre</th>
-                <th scope="col">Útima Asistencia</th>
-                <th scope="col">Status</th>                  
-                <th scope="col">#</th>
-              </tr>
-            </thead>
-          <!-- <ul> -->
-            {% for alumno in alumnos %}
+          {% include "academy/listar_alumnos.html" %}
 
-              <tbody>
-                <tr>
-                  <td>{{ alumno.nombre }}</td>
-                  <td>{{ alumno.fecha }}</td>
-                  <td>{{ alumno.status }}</td>
-                  <td><a href="{% url 'editar_alumno' alumno.id %}">Editar</a></td>
-                </tr>
-              </tbody>
-              
-              <!-- <li>
-                {{ alumno.nombre }} {{ alumno.fecha }} {{ alumno.status }}
-                <a href="{% url 'editar_alumno' alumno.id %}">Editar</a>
-              </li> -->
-              {% endfor %}
-            </table>
           <!-- </ul> -->
         </div>
       {% else %}
