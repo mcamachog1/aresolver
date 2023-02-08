@@ -14,7 +14,7 @@ urlpatterns = [
     path("pagar/<int:alumno_id>", views.pagar, name="pagar"),
     path("mantenimiento", views.mantenimiento, name="mantenimiento"),
     # cargar-pago
-    path("cargar-pago", views.cargar_pago, name="cargar_pago"),
+    # path("cargar-pago", views.cargar_pago, name="cargar_pago"),
 
     # Api Routes
     path("api/asistencias/<int:alumno_id>", views.api_asistencias, name="api_asistencias"), 

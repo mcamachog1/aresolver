@@ -3,7 +3,7 @@
 {% block body %}
     {% if user.is_authenticated %}
     <h1>{{ alumno.nombre }} {{ alumno.apellido }}</h1>
-    <form action="{% url 'cargar_pago' %}" method="post">
+    <form action="{% url 'pagar' alumno.id %}" method="post">
         {% csrf_token %}
         <label for="fecha-pago">Fecha de pago</label>
         <input type="date" name="fecha_pago" placeholder="Fecha de pago" id="fecha-pago">
