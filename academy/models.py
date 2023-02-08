@@ -31,3 +31,10 @@ class Asistencia(models.Model):
 
     def serialize(self):
         return (f"id: {self.id} fecha: {self.fecha} - alumno: {self.alumno.nombre}")
+
+class Pago(models.Model):
+	fecha_pago = models.DateTimeField(auto_now_add=True)
+	monto = models.DecimalField(max_digits=7, decimal_places=2)
+	total_clases = models.IntegerField()
+	fecha_inicio = models.DateTimeField(auto_now_add=True)
+	alumno = models.ForeignKey(Alumno, on_delete=models.CASCADE, related_name="pagos_realizados", null=False) 

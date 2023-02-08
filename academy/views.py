@@ -5,22 +5,22 @@ from django.db import IntegrityError
 from django.urls import reverse
 
 from django.http import JsonResponse
-from .models import User, Alumno, Asistencia
+from .models import User, Alumno, Asistencia, Pago
 
 
 def api_asistencias(request, alumno_id):
-	if request.method == 'GET':
-			alumno = Alumno.objects.get(id=alumno_id)
-			# Asistencia.objects.filter(alumno=alumno)
-			asistencias = listar_alumnos_por_fecha_de_asistencia()
-			print(asistencias)
-			return JsonResponse({
-					"asistencias": listar_asistencias(alumno_id)
-			}, status=201)
-	else:
-			return JsonResponse({
-					"asistencias": listar_alumnos_por_fecha_de_asistencia()
-			}, status=201)
+    if request.method == 'GET':
+        alumno = Alumno.objects.get(id=alumno_id)
+        # Asistencia.objects.filter(alumno=alumno)
+        asistencias = listar_alumnos_por_fecha_de_asistencia()
+        print(asistencias)
+        return JsonResponse({
+            "asistencias": listar_asistencias(alumno_id)
+        }, status=201)
+    else:
+        return JsonResponse({
+            "asistencias": listar_alumnos_por_fecha_de_asistencia()
+        }, status=201)
 
 
 def api_inactivar_alumnos(request):
@@ -34,15 +34,17 @@ def api_inactivar_alumnos(request):
             "message": f"se inactivaron tanto alumnos"
         }, status=201)
 
-def cargar_pago(request, alumno_id=None):
-    if request.method == 'GET':
-        return render(request, "academy/cargar_pago.html", {
-            "variable":'mantenimiento'
-        })
-    elif request.method == 'POST':
-        return HttpResponse("Metodo no manejado") 
-    else:
-        return HttpResponse("Metodo no manejado")    
+
+# def cargar_pago(request, alumno_id=None):
+#     if request.method == 'GET':
+#         return render(request, "academy/cargar_pago.html", {
+#             "variable": 'mantenimiento'
+#         })
+#     elif request.method == 'POST':
+#         return HttpResponse("Metodo no manejado")
+#     else:
+#         return HttpResponse("Metodo no manejado")
+
 
 def asistencia(request):
     if request.method == 'GET':
@@ -63,47 +65,51 @@ def asistencia(request):
 
 def mantenimiento(request):
     return render(request, "academy/index.html", {
-			"mostrar":'mantenimiento'
-		})
+        "mostrar": 'mantenimiento'
+    })
 
 
 def crear_alumno(nombre, apellido):
     nuevo = Alumno(nombre=nombre, apellido=apellido)
     nuevo.save()
 
+
 def actualizar_perfil(perfil):
-	print(perfil['id'])
-	objeto = Alumno.objects.get(id=perfil['id'])
-	objeto.nombre = perfil['nombre']
-	objeto.apellido = perfil['apellido']
-	objeto.save()
+    print(perfil['id'])
+    objeto = Alumno.objects.get(id=perfil['id'])
+    objeto.nombre = perfil['nombre']
+    objeto.apellido = perfil['apellido']
+    objeto.save()
+
 
 def editar_alumno(request, id):
-	if request.method == 'GET':	
-		return render(request, "academy/perfil.html", {
-				"alumno": Alumno.objects.get(id=id),
-		})
-	elif (request.method == 'POST'):
-		perfil = {"id":id,
-			"nombre":request.POST["nombre"], 
-			"apellido": request.POST["apellido"]}
-		# print (perfil)
-		actualizar_perfil(perfil)
-		return HttpResponseRedirect(reverse("index"))
+    if request.method == 'GET':
+        return render(request, "academy/perfil.html", {
+            "alumno": Alumno.objects.get(id=id),
+        })
+    elif (request.method == 'POST'):
+        perfil = {"id": id,
+                  "nombre": request.POST["nombre"],
+                  "apellido": request.POST["apellido"]}
+        # print (perfil)
+        actualizar_perfil(perfil)
+        return HttpResponseRedirect(reverse("index"))
 
-def pagar(request, alumno_id):
-	if request.method == 'GET':	
-		return render(request, "academy/cargar_pago.html", {
-				"alumno": Alumno.objects.get(id=alumno_id),
-		})
-	# elif (request.method == 'POST'):
-	# 	pago = {"fecha_pago":request.POST["fecha_pago"],
-	# 		"total_clases":request.POST["total_clases"], 
-	# 		"fecha_inicio": request.POST["fecha_inicio"],
-    #         "monto":request.POST["monto"]}
-		# print (perfil)
-		# actualizar_perfil(perfil)
-		return HttpResponseRedirect(reverse("index"))
+
+def pagar(request, alumno_id=None):
+    if request.method == 'GET':
+        return render(request, "academy/cargar_pago.html", {
+            "alumno": Alumno.objects.get(id=alumno_id),
+        })
+    elif (request.method == 'POST'):
+        nuevo_pago = Pago()
+        nuevo_pago.alumno = Alumno.objects.get(id=alumno_id)
+        nuevo_pago.fecha_pago = request.POST["fecha_pago"]
+        nuevo_pago.total_clases = request.POST["total_clases"]
+        nuevo_pago.fecha_inicio = request.POST["fecha_inicio"]
+        nuevo_pago.monto = request.POST["monto"]
+        nuevo_pago.save()
+        return HttpResponseRedirect(reverse("index"))
 
 
 # Listar los alumnos por orden de asistencia mas reciente
@@ -151,7 +157,7 @@ def index(request):
     else:
         return render(request, "academy/index.html", {
             "alumnos": listar_alumnos_por_fecha_de_asistencia(),
-						"mostrar": 'index'
+            "mostrar": 'index'
         })
 
 
