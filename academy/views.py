@@ -91,6 +91,20 @@ def editar_alumno(request, id):
 		actualizar_perfil(perfil)
 		return HttpResponseRedirect(reverse("index"))
 
+def pagar(request, alumno_id):
+	if request.method == 'GET':	
+		return render(request, "academy/cargar_pago.html", {
+				"alumno": Alumno.objects.get(id=alumno_id),
+		})
+	# elif (request.method == 'POST'):
+	# 	pago = {"fecha_pago":request.POST["fecha_pago"],
+	# 		"total_clases":request.POST["total_clases"], 
+	# 		"fecha_inicio": request.POST["fecha_inicio"],
+    #         "monto":request.POST["monto"]}
+		# print (perfil)
+		# actualizar_perfil(perfil)
+		return HttpResponseRedirect(reverse("index"))
+
 
 # Listar los alumnos por orden de asistencia mas reciente
 def listar_alumnos_por_fecha_de_asistencia():

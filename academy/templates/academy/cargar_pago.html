@@ -1,3 +1,19 @@
-<form action="{% url 'cargar_pago' %}" method="post">
-    {% include "academy/alumno_input_form.html" %}
-</form>
+{% extends "academy/layout.html" %}
+{% load static %}
+{% block body %}
+    {% if user.is_authenticated %}
+    <h1>{{ alumno.nombre }} {{ alumno.apellido }}</h1>
+    <form action="{% url 'cargar_pago' %}" method="post">
+        {% csrf_token %}
+        <label for="fecha-pago">Fecha de pago</label>
+        <input type="date" name="fecha_pago" placeholder="Fecha de pago" id="fecha-pago">
+        <label for="total-clases">Total de clases</label>
+        <input type="number" name="total_clases" placeholder="8" id="total-clases">
+        <label for="fecha-inicio">Fecha de inicio</label>
+        <input type="date" name="fecha_inicio" id="fecha-inicio">
+        <label for="monto">Monto</label>
+        <input type="number" name="monto" id="monto">
+        <input type="submit" value="Guardar">
+    </form>
+    {% endif %}
+{% endblock %}
