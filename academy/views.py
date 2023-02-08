@@ -34,6 +34,15 @@ def api_inactivar_alumnos(request):
             "message": f"se inactivaron tanto alumnos"
         }, status=201)
 
+def cargar_pago(request, alumno_id=None):
+    if request.method == 'GET':
+        return render(request, "academy/cargar_pago.html", {
+            "variable":'mantenimiento'
+        })
+    elif request.method == 'POST':
+        return HttpResponse("Metodo no manejado") 
+    else:
+        return HttpResponse("Metodo no manejado")    
 
 def asistencia(request):
     if request.method == 'GET':

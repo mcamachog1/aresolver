@@ -7,6 +7,7 @@
     if (document.querySelector('#boton-inactivar-alumnos') != null)
       document.querySelector('#boton-inactivar-alumnos').addEventListener('click', () => inactivar_alumnos())
 
+
     function inactivar_alumnos(){
       fetch('api/inactivar_alumnos')
       .then(response => response.json())
@@ -36,6 +37,10 @@
       {% else %}
         <div id="mantenimiento">
           <button id="boton-inactivar-alumnos">Inactivar alumnos</button>
+          <form  action="{% url 'cargar_pago' %}">
+            {% csrf_token %}
+            <button type="submit">Cargar Pago</button>
+          </form>
         </div>
       {% endif %}
     {% endif %}

@@ -12,6 +12,8 @@ urlpatterns = [
     # editar-alumno
     path("editar-alumno/<int:id>", views.editar_alumno, name="editar_alumno"),
     path("mantenimiento", views.mantenimiento, name="mantenimiento"),
+    # cargar-pago
+    path("cargar-pago", views.cargar_pago, name="cargar_pago"),
 
     # Api Routes
     path("api/asistencias/<int:alumno_id>", views.api_asistencias, name="api_asistencias"), 
