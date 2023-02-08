@@ -5,28 +5,55 @@
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     const dt = new Date();
-
-    console.log(dt)
     const dateFormat = dt.getFullYear() + "-" +((dt.getMonth()+1).length != 2 ? "0" + (dt.getMonth() + 1) : (dt.getMonth()+1)) + "-" + (dt.getDate().length != 2 ?"0" + dt.getDate() : dt.getDate());
-    console.log(dateFormat)
     document.getElementById('fecha-asistencia').value = dateFormat  
     const alumnos = document.querySelector('#alumnos');
     alumnos.addEventListener('change', (event) => asistencias_alumno(event.target.value))
-    
+ 
     // fetch con get
     function asistencias_alumno(id) {
-      const asistencias = document.querySelector('#asistencias');
-      asistencias.innerHTML = ""
+      // funciones auxiliares
+      function addTable() {
+          // create a new table element
+          const newTable = document.createElement("table");
+          newTable.innerHTML = `
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">Nombre</th>
+                  <th scope="col">Útima Asistencia</th>
+                  <th scope="col">Status</th>                  
+                  </tr>
+              </thead>
+              <tbody id='table-body'>
+              </tbody>
+            </table>
+            `
+          newTable.classList.add("table")
+          // add the newly created element and its content into the DOM
+          // const currentDiv = document.getElementById("titulo");
+          document.body.appendChild(newTable)
+      }
+        
+      document.querySelector('table').remove();
+      addTable()
+      
       fetch(`api/asistencias/${id}`)
       .then(response => response.json())
       .then(json => {
-          json.asistencias.forEach((asistencia) => {
-          
-          console.log(asistencia.nombre);        
-
-          asistencias.innerHTML += `<li>${asistencia.nombre} ${asistencia.fecha} ${asistencia.status}</li>`
-          })
+        tableBody = document.querySelector('#table-body')
+        tableBody.innerHTML = ""
+        json.asistencias.forEach((asistencia) => {
+        console.log(asistencia.nombre);        
+        tableBody.innerHTML += 
+        `<tr>
+          <td>${ asistencia.nombre }</td>
+          <td>${ asistencia.fecha }</td>
+          <td>${ asistencia.status }</td>
+          </tr>`
+        })
       });
+      
     }
   })
 </script>
@@ -46,11 +73,8 @@
   <input name="fecha" type="date" id="fecha-asistencia">
   <input type="submit">
 </form>
-<ul id="asistencias">
-  {% for alumno in alumnos %}
 
-  <li>{{ alumno.nombre }} {{ alumno.fecha }} {{ alumno.status }}</li>
-  {% endfor %}
-</ul>
+{% include "academy/listar_alumnos.html" %}
+
 {% endif %}
 {% endblock %}
