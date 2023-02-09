@@ -2,18 +2,56 @@
 {% load static %}
 
 {% block script %}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const representantes = document.querySelector('#representantes');
+    const alumno_id = document.querySelector('#alumno_id');
+    representantes.addEventListener('change', (event) => asociar_representante(event.target.value, alumno_id))
 
+    // fetch con get
+    function asociar_representante(alumno_id, representante_id) {
+      fetch('/api_asociar_representante', {
+        method: 'POST',
+        body: JSON.stringify({
+          alumno_id: alumno_id,
+          representante_id: representante_id,
+        })
+      })
+        .then(response => response.json())
+        .then(result => {
+          // Print result
+          console.log(result);
+        });
+    }
+  })
+</script>
 {% endblock %}
 
 {% block body %}
 {% if user.is_authenticated %}
-<div class="result"></div>
 <form action="{% url 'editar_alumno' alumno.id %}" method="post">
   {% csrf_token %}
-    <input name="nombre" type="text" value="{{ alumno.nombre}}" >
-    <input name="apellido" type="text" value="{{ alumno.apellido}}">
-    <input type="submit">
+  <input name="nombre" type="text" value="{{ alumno.nombre}}">
+  <input name="apellido" type="text" value="{{ alumno.apellido}}">
+  <input type="submit">
+</form>
+<form action="{% url 'crear_representante' alumno.id %}" method="post">
+  {% csrf_token %}
+  <input name="nombre" type="text" placeholder="Nombre">
+  <input name="apellido" type="text" placeholder="Apellido">
+  <input name="celular" type="tel" placeholder="Número de teléfono">
+  <input name="email" type="email" placeholder="Email">
+  <input type="submit">
 </form>
 
+<input type="hidden" id="alumno_id" value="{{ alumno.id }}">
+
+  <select name="representante_id" id="representantes">
+    <option value="-1">Seleccione un representante:</option>
+    {% for representante in representantes %}
+    <option value="{{ representante.id }}">{{ representante.nombre }} {{ representantes.apellido }}</option>
+    {% endfor %}
+  </select>
+  <input type="submit" value="Asociar">
 {% endif %}
 {% endblock %}
