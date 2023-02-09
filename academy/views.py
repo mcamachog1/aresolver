@@ -5,7 +5,7 @@ from django.db import IntegrityError
 from django.urls import reverse
 
 from django.http import JsonResponse
-from .models import User, Alumno, Asistencia, Pago
+from .models import User, Alumno, Asistencia, Pago, Representante
 
 
 def api_asistencias(request, alumno_id):
@@ -86,6 +86,7 @@ def editar_alumno(request, id):
     if request.method == 'GET':
         return render(request, "academy/perfil.html", {
             "alumno": Alumno.objects.get(id=id),
+            "representantes": Representante.objects.all()
         })
     elif (request.method == 'POST'):
         perfil = {"id": id,
@@ -95,6 +96,38 @@ def editar_alumno(request, id):
         actualizar_perfil(perfil)
         return HttpResponseRedirect(reverse("index"))
 
+def crear_representante(request, id):
+    if request.method == 'GET':
+        return render(request, "academy/perfil.html", {
+            "alumno": Alumno.objects.get(id=id),
+        })
+    elif (request.method == 'POST'):
+        nuevo = Representante()
+        nuevo.nombre = request.POST['nombre']
+        nuevo.apellido = request.POST['apellido']
+        nuevo.celular = request.POST['celular']
+        nuevo.email = request.POST['email']
+        alumno = Alumno.objects.get(id=id)
+        alumno.representante = nuevo
+        nuevo.save()
+        return HttpResponseRedirect(reverse("index"))
+
+def api_asociar_representante(request, alumno_id, representante_id):
+    if request.method == 'POST':
+        alumno = Alumno.objects.get(id=alumno_id)
+        representante = Representante.objects.get(id=representante_id)
+        alumno.representante = representante
+        alumno.save()
+        return JsonResponse({
+            "message": f"se asocio el representante {representante.nombre} al alumno {alumno.nombre}"
+        }, status=201)
+
+    # if request.method == 'POST':
+    #     alumno = Alumno.objects.get(id=alumno_id)
+    #     representante = Representante.objects.get(id=representante_id)
+    #     alumno.representante = representante
+    #     alumno.save()
+    #     return HttpResponseRedirect(reverse("index"))
 
 def pagar(request, alumno_id=None):
     if request.method == 'GET':

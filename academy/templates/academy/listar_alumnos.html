@@ -13,11 +13,10 @@
 
       <tbody>
         <tr>
-          <td>{{ alumno.nombre }}</td>
+          <td><a href="{% url 'editar_alumno' alumno.id %}">{{ alumno.nombre }}</a></td>
           <td>{{ alumno.fecha }}</td>
           <td>{{ alumno.status }}</td>
-          <td><a href="{% url 'editar_alumno' alumno.id %}"><span class="m-1">Editar</span></a>
-          <a href="{% url 'pagar' alumno.id %}"><span class="m-1">Pagar</span></a></td>
+          <td><a href="{% url 'pagar' alumno.id %}"><span class="m-1">Pagar</span></a></td>
           
         </tr>
       </tbody>

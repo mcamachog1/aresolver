@@ -6,6 +6,14 @@ import datetime
 class User(AbstractUser):
     pass
 
+class Representante(models.Model):
+	nombre = models.CharField(max_length=30)
+	apellido = models.CharField(max_length=30)
+	email = models.EmailField(max_length=254, null=True)
+	fecha_creacion = models.DateTimeField(auto_now_add=True)
+	fecha_cambio = models.DateTimeField(auto_now=True)
+	celular = models.CharField(max_length=15, null=True)
+
 class Alumno(models.Model):
 	NUEVO = 'N'
 	ACTIVO = 'A'
@@ -18,12 +26,14 @@ class Alumno(models.Model):
 	nombre = models.CharField(max_length=30)
 	apellido = models.CharField(max_length=30)
 	cohorte = models.PositiveSmallIntegerField(null=True)
+	email = models.EmailField(max_length=254, null=True)
 	status = models.CharField(max_length=1, choices=STATUS_CHOICES, default=NUEVO)
 	fecha_creacion = models.DateTimeField(auto_now_add=True)
 	fecha_cambio = models.DateTimeField(auto_now=True)
+	representante = models.ForeignKey(Representante, on_delete=models.CASCADE, related_name="representados", null=True) 
 
 	def serialize(self):
-			return (f"{self.nombre} {self.apellido} {self.status}")
+			return (f"{self.nombre} {self.apellido} {self.representante.nombre}")
 
 class Asistencia(models.Model):
     fecha = models.DateField(null=False, default=datetime.datetime.now())
