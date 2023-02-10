@@ -7,7 +7,7 @@ class User(AbstractUser):
     pass
 
 class Representante(models.Model):
-	nombre = models.CharField(max_length=30)
+	nombre = models.CharField(max_length=30, blank=False)
 	apellido = models.CharField(max_length=30)
 	email = models.EmailField(max_length=254, null=True)
 	fecha_creacion = models.DateTimeField(auto_now_add=True)
