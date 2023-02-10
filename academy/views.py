@@ -84,9 +84,13 @@ def actualizar_perfil(perfil):
 
 def editar_alumno(request, id):
     if request.method == 'GET':
+        ultimo_pago = Pago.objects.filter(alumno=Alumno.objects.get(id=id)).order_by('-fecha_pago').first()
+        ultimo_pago.fecha_inicio
         return render(request, "academy/perfil.html", {
             "alumno": Alumno.objects.get(id=id),
-            "representantes": Representante.objects.all()
+            "representantes": Representante.objects.all(),
+            "pagos": Pago.objects.filter(alumno=Alumno.objects.get(id=id)).order_by('-fecha_pago'),
+            "clases_vistas": clases_vistas
         })
     elif (request.method == 'POST'):
         perfil = {"id": id,
