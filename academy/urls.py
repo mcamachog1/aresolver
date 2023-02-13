@@ -20,7 +20,7 @@ urlpatterns = [
 
     # Api Routes
     path("api/asistencias/<int:alumno_id>", views.api_asistencias, name="api_asistencias"), 
-    path("api/asociar_representantes/<int:alumno_id>/<int:representante_id>/", views.api_asociar_representante, name="api_asociar_representante"), 
+    path("api/asociar_representante/<int:alumno_id>/<int:representante_id>", views.api_asociar_representante, name="api_asociar_representante"), 
     path("api/inactivar_alumnos", views.api_inactivar_alumnos, name="api_inactivar_alumnos"),
 ]
 

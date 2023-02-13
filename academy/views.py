@@ -3,7 +3,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.urls import reverse
-
+from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from .models import User, Alumno, Asistencia, Pago, Representante
 
@@ -81,16 +81,23 @@ def actualizar_perfil(perfil):
     objeto.apellido = perfil['apellido']
     objeto.save()
 
+def contar_asistencias_hoy(alumno):
+    ultimo_pago = Pago.objects.filter(alumno=alumno).order_by('-fecha_pago').first()
+    ultimo_pago.fecha_inicio
+
+
 
 def editar_alumno(request, id):
     if request.method == 'GET':
         ultimo_pago = Pago.objects.filter(alumno=Alumno.objects.get(id=id)).order_by('-fecha_pago').first()
-        ultimo_pago.fecha_inicio
+        # ultimo_pago.fecha_inicio
+        mi_representante = Representante.objects.filter(alumno=Alumno.objects.get(id=id))
+        print(mi_representante)
         return render(request, "academy/perfil.html", {
             "alumno": Alumno.objects.get(id=id),
             "representantes": Representante.objects.all(),
             "pagos": Pago.objects.filter(alumno=Alumno.objects.get(id=id)).order_by('-fecha_pago'),
-            "clases_vistas": clases_vistas
+            "clases_vistas": "clases_vistas"
         })
     elif (request.method == 'POST'):
         perfil = {"id": id,
@@ -116,6 +123,7 @@ def crear_representante(request, id):
         nuevo.save()
         return HttpResponseRedirect(reverse("index"))
 
+@csrf_exempt
 def api_asociar_representante(request, alumno_id, representante_id):
     if request.method == 'POST':
         alumno = Alumno.objects.get(id=alumno_id)
