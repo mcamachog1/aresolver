@@ -88,15 +88,18 @@ def contar_asistencias_hoy(alumno):
 
 
 def editar_alumno(request, id):
+    sin_representante = False
     if request.method == 'GET':
         ultimo_pago = Pago.objects.filter(alumno=Alumno.objects.get(id=id)).order_by('-fecha_pago').first()
         # ultimo_pago.fecha_inicio
-        mi_representante = Representante.objects.filter(alumno=Alumno.objects.get(id=id))
-        print(mi_representante)
+        mi_representante = Alumno.objects.get(id=id).representante
+        if mi_representante is None :
+            sin_representante = True
         return render(request, "academy/perfil.html", {
             "alumno": Alumno.objects.get(id=id),
             "representantes": Representante.objects.all(),
             "pagos": Pago.objects.filter(alumno=Alumno.objects.get(id=id)).order_by('-fecha_pago'),
+            "sin_representante": sin_representante,
             "clases_vistas": "clases_vistas"
         })
     elif (request.method == 'POST'):
