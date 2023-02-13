@@ -13,6 +13,8 @@ class Representante(models.Model):
 	fecha_creacion = models.DateTimeField(auto_now_add=True)
 	fecha_cambio = models.DateTimeField(auto_now=True)
 	celular = models.CharField(max_length=15, null=True)
+	def serialize(self):
+			return (f"{self.nombre} {self.apellido}")
 
 class Alumno(models.Model):
 	NUEVO = 'N'
@@ -43,8 +45,8 @@ class Asistencia(models.Model):
         return (f"id: {self.id} fecha: {self.fecha} - alumno: {self.alumno.nombre}")
 
 class Pago(models.Model):
-	fecha_pago = models.DateTimeField(auto_now_add=True)
+	fecha_pago = models.DateField()
 	monto = models.DecimalField(max_digits=7, decimal_places=2)
 	total_clases = models.IntegerField()
-	fecha_inicio = models.DateTimeField(auto_now_add=True)
+	fecha_inicio = models.DateField()
 	alumno = models.ForeignKey(Alumno, on_delete=models.CASCADE, related_name="pagos_realizados", null=False) 
