@@ -9,17 +9,21 @@
     const alumno_id = document.querySelector('#alumno_id').value;
     const submitRepresentante = document.querySelector('#submit-representante');
     const inputNombre = document.querySelector('#input-nombre');
-    inputNombre.onkeyup = () => {
-        if (inputNombre.value.length > 0) {
-          submitRepresentante.disabled = false;
+    if (inputNombre != null){
+      inputNombre.onkeyup = () => {
+          if (inputNombre.value.length > 0) {
+            submitRepresentante.disabled = false;
+          }
+          else {
+            submitRepresentante.disabled = true;
+          }
         }
-        else {
-          submitRepresentante.disabled = true;
-        }
-      }
+    }
     // representantes.addEventListener('change', (event) => asociar_representante(alumno_id, event.target.value))
+    if (representantes != null) {
     representantes.addEventListener('change', (event) => { representante_id = event.target.value})
     document.querySelector('#asociar_representante').addEventListener('click', () => {asociar_representante(alumno_id, representante_id)});
+    }
 
     // fetch con get
     function asociar_representante(alumno_id, representante_id) {
@@ -59,15 +63,15 @@
   <input name="email" type="email" placeholder="Email">
   <input type="submit" id="submit-representante" disabled>
 </form> 
+<select name="representante_id" id="representantes">
+  <option value="-1">Seleccione un representante:</option>
+  {% for representante in representantes %}
+  <option value="{{ representante.id }}">{{ representante.nombre }} {{ representantes.apellido }}</option>
+  {% endfor %}
+</select>
+<input type="submit" value="Asociar" id="asociar_representante">
 {% endif %}
 <input type="hidden" id="alumno_id" value="{{ alumno.id }}">
-  <select name="representante_id" id="representantes">
-    <option value="-1">Seleccione un representante:</option>
-    {% for representante in representantes %}
-    <option value="{{ representante.id }}">{{ representante.nombre }} {{ representantes.apellido }}</option>
-    {% endfor %}
-  </select>
-  <input type="submit" value="Asociar" id="asociar_representante">
   <ul>
     {% for pago in pagos %}
       <li>

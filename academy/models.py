@@ -32,7 +32,7 @@ class Alumno(models.Model):
 	status = models.CharField(max_length=1, choices=STATUS_CHOICES, default=NUEVO)
 	fecha_creacion = models.DateTimeField(auto_now_add=True)
 	fecha_cambio = models.DateTimeField(auto_now=True)
-	representante = models.ForeignKey(Representante, on_delete=models.CASCADE, related_name="representados", null=True) 
+	representante = models.ForeignKey(Representante, on_delete=models.SET_NULL, related_name="representados", null=True) 
 
 	def serialize(self):
 			return (f"{self.nombre} {self.apellido} {self.representante.nombre}")

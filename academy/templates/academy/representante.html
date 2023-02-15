@@ -1,0 +1,21 @@
+{% extends "academy/layout.html" %}
+{% load static %}
+
+{% block script %}
+{% endblock %}
+
+{% block body %}
+{% if user.is_authenticated %}
+    <form action="{% url 'representante' %}" method="post">
+        {% csrf_token %}
+        <input name="nombre" type="text" placeholder="Nombre">
+        <input name="apellido" type="text" placeholder="Apellido">
+        <input type="submit">
+    </form>
+    <ul>
+        {% for representante in representantes %}
+        <li> <a href="{% url 'actualizar_representante' representante.id %}">{{ representante.nombre }}</a></li>
+        {% endfor %}
+    </ul>
+{% endif %}
+{% endblock %}

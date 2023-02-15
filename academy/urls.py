@@ -11,7 +11,9 @@ urlpatterns = [
     path("asistencia", views.asistencia, name="asistencia"),
     # editar-alumno
     path("editar-alumno/<int:id>", views.editar_alumno, name="editar_alumno"),
-    path("crear-representante/<int:id>", views.crear_representante, name="crear_representante"),
+    path("representante/<int:id>", views.actualizar_representante, name="actualizar_representante"),
+    path("representante", views.representante, name="representante"),
+    path("crear-representante/<int:alumno_id>", views.crear_representante, name="crear_representante"),
     # path("asociar-representante/<int:alumno_id>/<int:representante_id>/", views.asociar_representante, name="asociar_representante"),
     path("pagar/<int:alumno_id>", views.pagar, name="pagar"),
     path("mantenimiento", views.mantenimiento, name="mantenimiento"),
