@@ -110,10 +110,10 @@ def editar_alumno(request, id):
         actualizar_perfil(perfil)
         return HttpResponseRedirect(reverse("index"))
 
-def crear_representante(request, id):
+def crear_representante(request, alumno_id):
     if request.method == 'GET':
         return render(request, "academy/perfil.html", {
-            "alumno": Alumno.objects.get(id=id),
+            "alumno": Alumno.objects.get(id=alumno_id),
         })
     elif (request.method == 'POST'):
         nuevo = Representante()
@@ -121,9 +121,10 @@ def crear_representante(request, id):
         nuevo.apellido = request.POST['apellido']
         nuevo.celular = request.POST['celular']
         nuevo.email = request.POST['email']
-        alumno = Alumno.objects.get(id=id)
-        alumno.representante = nuevo
         nuevo.save()
+        alumno = Alumno.objects.get(id=alumno_id)
+        alumno.representante = nuevo
+        alumno.save()
         return HttpResponseRedirect(reverse("index"))
 
 @csrf_exempt
@@ -208,6 +209,26 @@ def index(request):
             "mostrar": 'index'
         })
 
+
+def actualizar_representante(request, id):
+    if request.method == 'POST':
+        representante = Representante.objects.get(id=id)
+        representante.nombre = request.POST["nombre"]
+        representante.apellido = request.POST["apellido"]
+        representante.save()
+        return HttpResponseRedirect(reverse("representante"))
+
+def representante(request):
+    if request.method == 'POST':
+        nuevo = Representante()
+        nuevo.nombre = request.POST["nombre"]
+        nuevo.apellido = request.POST["apellido"]
+        nuevo.save()
+        return HttpResponseRedirect(reverse("representante"))
+    else:
+        return render(request, "academy/representante.html", {
+            "representantes": Representante.objects.all(),
+        })
 
 def login_view(request):
     if request.method == "POST":

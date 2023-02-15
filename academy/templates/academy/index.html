@@ -37,7 +37,7 @@
       {% else %}
         <div id="mantenimiento">
           <button id="boton-inactivar-alumnos">Inactivar alumnos</button>
-          <form  action="{% url 'cargar_pago' %}">
+          <form  action="{% url 'pagar' %}">
             {% csrf_token %}
             <button type="submit">Cargar Pago</button>
           </form>
