@@ -2,20 +2,55 @@
 {% load static %}
 
 {% block script %}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const botonesAcciones = document.querySelectorAll('.accion-representante')
+    const inputsNombre = document.querySelectorAll('.nombre-representante')
+    const botonEliminar = document.querySelector('#boton-eliminar')
+
+    document.querySelector('.nombre-representante').onkeyup = () => {
+      if (document.querySelector('.nombre-representante').value.length > 0) {
+        for (let i = 0; i < botonesAcciones.length; i++) {
+          if (botonesAcciones[i] != null)
+            botonesAcciones[i].disabled = false;
+        }
+      }
+      else {
+        for (let i = 0; i < botonesAcciones.length; i++) {
+          if (botonesAcciones[i] != null && botonesAcciones[i] != botonEliminar)
+            botonesAcciones[i].disabled = true;
+        }
+      }
+      botonEliminar.disabled = true
+    }
+  })
+</script>
 {% endblock %}
 
 {% block body %}
 {% if user.is_authenticated %}
-    <form action="{% url 'representante' %}" method="post">
-        {% csrf_token %}
-        <input name="nombre" type="text" placeholder="Nombre">
-        <input name="apellido" type="text" placeholder="Apellido">
-        <input type="submit">
-    </form>
-    <ul>
-        {% for representante in representantes %}
-        <li> <a href="{% url 'actualizar_representante' representante.id %}">{{ representante.nombre }}</a></li>
-        {% endfor %}
-    </ul>
+{% if representante %}
+<h1 id="titulo">Actualizar</h1>
+<form action="{% url 'actualizar_representante' representante.id %}" method="post">
+  {% csrf_token %}
+  <input name="nombre" type="text" value="{{ representante.nombre }}" class="nombre-representante">
+  <input name="apellido" type="text" value="{{ representante.apellido }}">
+  <input type="submit" value="Salvar" name="salvar" class="accion-representante" disabled>
+  <input type="submit" value="Eliminar" name="eliminar" class="accion-representante" id="boton-eliminar">
+</form>
+{% else %}
+<h1 id="titulo">Nuevo</h1>
+<form action="{% url 'representante'  %}" method="post">
+  {% csrf_token %}
+  <input name="nombre" type="text" placeholder="Nombre" class="nombre-representante">
+  <input name="apellido" type="text" placeholder="Apellido">
+  <input type="submit" value="Crear" class="accion-representante" disabled>
+</form>
+{% endif %}
+<ul>
+  {% for representante in representantes %}
+  <li> <a href="{% url 'actualizar_representante' representante.id %}">{{ representante.nombre }}</a></li>
+  {% endfor %}
+</ul>
 {% endif %}
 {% endblock %}
