@@ -110,6 +110,13 @@ def editar_alumno(request, id):
         actualizar_perfil(perfil)
         return HttpResponseRedirect(reverse("index"))
 
+def api_representante(request, representante_id):
+    if request.method == 'GET':
+        representante = Representante.objects.get(id=representante_id)
+        return JsonResponse({
+            "representante": representante
+        }, status=201)
+
 def crear_representante(request, alumno_id):
     if request.method == 'GET':
         return render(request, "academy/perfil.html", {
@@ -213,10 +220,19 @@ def index(request):
 def actualizar_representante(request, id):
     if request.method == 'POST':
         representante = Representante.objects.get(id=id)
-        representante.nombre = request.POST["nombre"]
-        representante.apellido = request.POST["apellido"]
-        representante.save()
+        if 'salvar' in request.POST:
+            representante.nombre = request.POST["nombre"]
+            representante.apellido = request.POST["apellido"]
+            representante.save()
+            
+        elif 'eliminar' in request.POST:
+            representante.delete()
         return HttpResponseRedirect(reverse("representante"))
+    elif request.method == 'GET':
+        return render(request, "academy/representante.html", {
+            "representantes": Representante.objects.all(),
+            "representante": Representante.objects.get(id=id),
+        })
 
 def representante(request):
     if request.method == 'POST':
