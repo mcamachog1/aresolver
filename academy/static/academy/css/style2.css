@@ -1,0 +1,14 @@
+.contenedor-principal {
+    border: 1px solid red;
+    margin: 2px;
+    padding: 4px; 
+}
+
+.contenedor-lista-de-tutores{
+    margin-top: 5px; 
+    border: 1px solid blue;
+}
+
+.contenedor-entrada-de-datos{
+    border: 1px solid green;
+}

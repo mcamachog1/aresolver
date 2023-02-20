@@ -6,6 +6,17 @@ import datetime
 class User(AbstractUser):
     pass
 
+# Clase Tutores
+class Tutor(models.Model):
+	nombre = models.CharField(max_length=30, blank=False)
+	apellido = models.CharField(max_length=30)
+	email = models.EmailField(max_length=254, null=True)
+	fecha_nacimiento = models.DateTimeField(null=True)
+	celular = models.CharField(max_length=15, null=True)
+	def serialize(self):
+			return (f"{self.nombre} {self.apellido}")
+
+# Clase Representantes
 class Representante(models.Model):
 	nombre = models.CharField(max_length=30, blank=False)
 	apellido = models.CharField(max_length=30)

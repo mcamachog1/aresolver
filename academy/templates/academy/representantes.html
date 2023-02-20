@@ -30,8 +30,7 @@
 {% block body %}
 {% if user.is_authenticated %}
 {% if representante %}
-<h1 id="titulo">Actualizar</h1>
-<form action="{% url 'actualizar_representante' representante.id %}" method="post">
+<form action="{% url 'representante_edit' representante.id %}" method="post">
   {% csrf_token %}
   <input name="nombre" type="text" value="{{ representante.nombre }}" class="nombre-representante">
   <input name="apellido" type="text" value="{{ representante.apellido }}">
@@ -39,18 +38,15 @@
   <input type="submit" value="Eliminar" name="eliminar" class="accion-representante" id="boton-eliminar">
 </form>
 {% else %}
-<h1 id="titulo">Nuevo</h1>
-<form action="{% url 'representante'  %}" method="post">
+<form action="{% url 'representante_new'  %}" method="post">
   {% csrf_token %}
   <input name="nombre" type="text" placeholder="Nombre" class="nombre-representante">
   <input name="apellido" type="text" placeholder="Apellido">
   <input type="submit" value="Crear" class="accion-representante" disabled>
 </form>
 {% endif %}
-<ul>
-  {% for representante in representantes %}
-  <li> <a href="{% url 'actualizar_representante' representante.id %}">{{ representante.nombre }}</a></li>
-  {% endfor %}
-</ul>
+
+{% include "academy/tabla_representantes.html" %}    
+
 {% endif %}
 {% endblock %}

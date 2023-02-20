@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />    
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-        <!-- <link href="{% static 'auctions/css/styles2.css' %}" rel="stylesheet"> -->
+    <link href="{% static 'academy/css/style2.css' %}" rel="stylesheet">
     {% block script %}
     {% endblock %}
     </head>
@@ -17,9 +17,8 @@
     <ul class="nav">
         {% if user.is_authenticated %}
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'index' %}">Inicio</a>
+                <a class="nav-link" href="{% url 'alumnos' %}">Inicio</a>
             </li>            
-
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'asistencia' %}">Asistencias</a>
             </li>            
@@ -27,8 +26,11 @@
                 <a class="nav-link" href="{% url 'mantenimiento' %}">Mantenimiento</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'representante' %}">Representante</a>
+                <a class="nav-link" href="{% url 'representantes' %}">Representantes</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'tutores' %}">Tutores</a>
+            </li>            
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
             </li>
