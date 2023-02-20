@@ -1,0 +1,24 @@
+{% if representantes %}
+<table class="table" id="table-representantes">
+    <thead>
+      <tr>
+        <th scope="col">Nombre</th>
+        <th scope="col">Apellido</th>
+        <th scope="col">Acción</th>                  
+      </tr>
+    </thead>
+  <!-- <ul> -->
+    {% for representante in representantes %}
+
+      <tbody>
+        <tr>
+          <td><a href="{% url 'representante_entry' representante.id %}">{{ representante.nombre }}</a></td>
+          <td>{{ representante.apellido }}</td>
+          <td><a href="{% url 'representante_delete' representante.id %}"><span class="m-1">Eliminar</span></a></td>
+          
+        </tr>
+      </tbody>
+
+      {% endfor %}
+</table>
+{% endif %}

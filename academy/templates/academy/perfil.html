@@ -48,14 +48,14 @@
 
 {% block body %}
 {% if user.is_authenticated %}
-<form action="{% url 'editar_alumno' alumno.id %}" method="post">
+<form action="{% url 'alumno_edit' alumno.id %}" method="post">
   {% csrf_token %}
   <input name="nombre" type="text" value="{{ alumno.nombre}}">
   <input name="apellido" type="text" value="{{ alumno.apellido}}">
   <input type="submit">
 </form>
 {% if sin_representante %}
-<form action="{% url 'crear_representante' alumno.id %}" method="post">
+<form action="{% url 'representante_new' alumno.id %}" method="post">
   {% csrf_token %}
   <input name="nombre" type="text" placeholder="Nombre" id="input-nombre">
   <input name="apellido" type="text" placeholder="Apellido">

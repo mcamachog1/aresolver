@@ -1,0 +1,41 @@
+{% extends "academy/layout.html" %}
+{% load static %}
+
+{% block script %}
+{% endblock %}
+
+{% block body %}
+    {% if user.is_authenticated %}
+    <div class="contenedor-principal">
+        <div class="contenedor-entrada-de-datos">
+        {% if tutor %}
+            <form action="{% url 'tutor_edit' tutor.id %}" method="post">
+                {% csrf_token %}
+                <input type="text" name="nombre" value="{{ tutor.nombre }}">
+                <input type="text" name="apellido" value="{{ tutor.apellido }}">
+                <input type="submit" name="grabar" value="Grabar">
+            </form>
+        {% else %}
+            <form action="{% url 'tutor_new' %}" method="post">
+                {% csrf_token %}
+                <input type="text" name="nombre" placeholder="Nombre">
+                <input type="text" name="apellido" placeholder="Apellido">
+                <input type="submit" name="grabar" value="Grabar">
+            </form>
+        {% endif %}
+        </div>        
+        <div class="contenedor-lista-de-tutores">
+
+            {% include "academy/tabla_tutores.html" %}            
+            <!-- <ul>
+                {% for tutor in tutores %}
+                <li>{{ tutor.nombre }}
+                    <a href="{% url 'tutor_entry' tutor.id %}">Editar</a>
+                    <a href="{% url 'tutor_delete' tutor.id %}">Eliminar</a>
+                </li>
+                {% endfor %}
+            </ul> -->
+        </div>
+    </div>
+    {% endif %}
+{% endblock %}
