@@ -12,7 +12,8 @@ urlpatterns = [
     path("register", views.register_view, name="register"),  
     
     # asistencias
-    path("asistencia", views.asistencia, name="asistencia"),
+    path("asistencias", views.asistencias, name="asistencias"),
+    path("asistencia_delete/<int:asistencia_id>", views.asistencia_delete, name="asistencia_delete"),
     
     # alumnos
     path("alumnos", views.alumnos, name="alumnos"),

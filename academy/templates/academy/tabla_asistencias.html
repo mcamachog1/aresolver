@@ -4,6 +4,7 @@
       <tr>
         <th scope="col">Nombre</th>
         <th scope="col">Fecha de asistencia</th>
+        <th scope="col">Acción</th>
       </tr>
     </thead>
     {% for asistencia in asistencias %}
@@ -11,6 +12,7 @@
         <tr>
           <td>{{ asistencia.alumno.nombre }}</td>
           <td>{{ asistencia.fecha }}</td>
+          <td><a href="{% url 'asistencia_delete' asistencia.id %}">Eliminar</a></td>
         </tr>
       </tbody>
       {% endfor %}

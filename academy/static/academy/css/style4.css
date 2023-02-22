@@ -12,3 +12,11 @@
 .contenedor-entrada-de-datos{
     border: 1px solid green;
 }
+
+.titulo-del-grafico{
+    font-size: medium;
+    font-weight: bold;
+    margin-bottom: 30px;
+    margin-top: 10px;
+
+}

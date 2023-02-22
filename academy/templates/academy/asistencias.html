@@ -62,11 +62,11 @@
 {% block body %}
 {% if user.is_authenticated %}
 <div class="result"></div>
-<form action="{% url 'asistencia' %}" method="post">
+<form action="{% url 'asistencias' %}" method="post">
   {% include "academy/alumno_input_form.html" %}
 </form>
 
-{% include "academy/tabla_alumnos.html" %}
+{% include "academy/tabla_asistencias.html" %}
 
 {% endif %}
 {% endblock %}

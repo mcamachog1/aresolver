@@ -41,9 +41,15 @@
             <input type="submit" value="Grabar">
             </form>
         {% endif %}
-        <br><br>
-        Ultimas clases pagadas: {{ultimas_clases_pagadas}}
-        Ultimas asistencias: {{ultimas_asistencias}}
+        <div class="titulo-del-grafico">Porcentaje de clases vistas {{ porcentaje }}%</div> 
+        {% if ultimas_clases_pagadas and ultimas_asistencias %}
+            <div class="chart-wrap "> <!-- quitar el estilo "horizontal" para visualizar verticalmente -->       
+                <div class="grid">
+                    <div class="bar" style="--bar-value:{{ porcentaje }}%;" title="Clases vistas {{ porcentaje }}%"></div>
+                </div>
+              </div>
+        {% endif %}
+        <br>
         {% if alumnos %}
             {% include "academy/tabla_alumnos.html" %}    
         {% endif %}
