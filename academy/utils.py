@@ -44,12 +44,18 @@ def listar_asistencias(alumno_id):
 def ultimas_clases_pagadas(alumno_id):
     alumno = Alumno.objects.get(id=alumno_id)
     ultimo_pago = Pago.objects.filter(alumno=alumno).order_by("fecha_pago").last()
-    return ultimo_pago.total_clases
+    if ultimo_pago is None:
+        return 0
+    else:
+       return ultimo_pago.total_clases
 
 def ultimo_inicio_de_clases(alumno_id):
     alumno = Alumno.objects.get(id=alumno_id)
     ultimo_pago = Pago.objects.filter(alumno=alumno).order_by("fecha_pago").last()
-    return ultimo_pago.fecha_inicio
+    if ultimo_pago is None:
+        return datetime.now()
+    else: 
+       return ultimo_pago.fecha_inicio
 
 
 def ultimas_asistencias(alumno_id):

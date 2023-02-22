@@ -9,6 +9,15 @@ from datetime import datetime
 from .models import User, Alumno, Asistencia, Pago, Representante, Tutor
 from .utils import *
 
+
+# Asistencias
+
+# Eliminar asistencia
+def asistencia_delete(request, asistencia_id):
+    asistencia = Asistencia.objects.get(id=asistencia_id)
+    asistencia.delete()
+    return HttpResponseRedirect(reverse("asistencias"))   
+
 # Pagos
 
 # Listar los pagos
@@ -78,7 +87,9 @@ def alumno_entry(request, alumno_id):
         "asistencias": Asistencia.objects.filter(alumno=Alumno.objects.get(id=alumno_id)).order_by("-fecha"),
         "pagos": Pago.objects.filter(alumno=Alumno.objects.get(id=alumno_id)).order_by("-fecha_pago"),
         "ultimas_clases_pagadas": ultimas_clases_pagadas(alumno_id),
-        "ultimas_asistencias": ultimas_asistencias(alumno_id)
+        "ultimas_asistencias": ultimas_asistencias(alumno_id),
+        "porcentaje": round(ultimas_asistencias(alumno_id) / ultimas_clases_pagadas(alumno_id) * 100,2)
+
     })  
 
 
@@ -230,10 +241,11 @@ def api_inactivar_alumnos(request):
 #     else:
 #         return HttpResponse("Metodo no manejado")
 
-def asistencia(request):
+def asistencias(request):
     if request.method == 'GET':
-        return render(request, "academy/asistencia.html", {
-            "alumnos": listar_alumnos_por_fecha_de_asistencia(),
+        return render(request, "academy/asistencias.html", {
+            "alumnos": Alumno.objects.all().order_by("nombre"),
+            "asistencias": Asistencia.objects.all().order_by("-fecha"),
         })
     elif request.method == 'POST':
         print(request.POST['fecha'])
@@ -242,7 +254,7 @@ def asistencia(request):
         alumno.save()
         asistencia = Asistencia(alumno=alumno, fecha=request.POST['fecha'])
         asistencia.save()
-        return HttpResponseRedirect(reverse("asistencia"))
+        return HttpResponseRedirect(reverse("asistencias"))
     else:
         return HttpResponse("Metodo no manejado")
 
