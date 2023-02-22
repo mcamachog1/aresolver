@@ -1,0 +1,47 @@
+{% extends "academy/layout.html" %}
+{% load static %}
+
+{% block script %}
+{% endblock %}
+
+{% block body %}
+    {% if user.is_authenticated %}
+        <div class="contenedor-principal">
+            <div class="contenedor-entrada-de-datos">
+                <!-- alumno que hace el pago -->
+                <form action="{% url 'pago_new' %}" method="post">
+                    {% csrf_token %}
+                    {% if alumno %}
+                        <select name="alumno_id" id="alumnos">
+                            <option value="-1">Seleccione un alumno:</option>
+                            <!-- alumno que recorre el conjunto de alumnos para llenar el select -->
+                            {% for objeto in alumnos%}
+                                {% if objeto.id != alumno.id %}
+                                    <option value="{{ alumno.id }}">{{ alumno.nombre }} {{ alumno.apellido }}</option>
+                                {% else %}
+                                    <option value="{{ alumno.id }}" selected>{{ alumno.nombre }} {{ alumno.apellido }}</option>
+                                {% endif %}
+                            {% endfor %}
+                        </select>
+                    {% else %}
+                        <select name="alumno_id" id="alumnos">
+                            <option value="-1">Seleccione un alumno:</option>
+                            {% for alumno in alumnos%}
+                                <option value="{{ alumno.id }}">{{ alumno.nombre }} {{ alumno.apellido }}</option>
+                            {% endfor %}
+                        </select>
+                    {% endif %}
+                    <input type="date" name="fecha_pago" >
+                    <input type="number" name="monto" placeholder="Monto USD">
+                    <input type="number" name="total_clases" placeholder="8">
+                    <input type="date" name="fecha_inicio" >
+                    <input type="submit" name="grabar" value="Grabar">
+                </form>
+            </div>   
+            <br><br>     
+            <div>
+                {% include "academy/tabla_pagos.html" %}            
+            </div>        
+        </div>
+    {% endif %}
+{% endblock %}

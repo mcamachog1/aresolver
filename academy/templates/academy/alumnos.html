@@ -2,44 +2,62 @@
 {% load static %}
 
 {% block script %}
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    if (document.querySelector('#boton-inactivar-alumnos') != null)
-      document.querySelector('#boton-inactivar-alumnos').addEventListener('click', () => inactivar_alumnos())
-
-
-    function inactivar_alumnos(){
-      fetch('api/inactivar_alumnos')
-      .then(response => response.json())
-      .then(json => {
-          
-          console.log(json.message);
-      });
-    }
-  })
-</script>
 {% endblock %}
 
 {% block body %}
     {% if user.is_authenticated %}
-      {% if alumno %}
-      <form action="{% url 'alumno_edit' alumno.id %}" method="post">
-        {% csrf_token %}
-        <input name="nombre" type="text" value="{{ alumno.nombre }}" class="nombre-representante">
-        <input name="apellido" type="text" value="{{ alumno.apellido }}">
-        <input type="submit" value="Salvar" name="salvar" class="accion">
-        <input type="submit" value="Eliminar" name="eliminar" class="accion" id="boton-eliminar">
-      </form>
-      {% else %}
-      <div id="listar-alumnos">
-        <form action="{% url 'alumno_new' %}" method="post">
-          {% csrf_token %}
-          <input name="nombre" type="text" placeholder="Nombre">
-          <input name="apellido" type="text" placeholder="Apellido">
-          <input type="submit">
-        </form>
-        {% include "academy/tabla_alumnos.html" %}
-      </div>
-      {% endif %}
-    {% endif %} 
+        {% if alumno %}
+            <form action="{% url 'alumno_edit' alumno.id %}" method="post">
+                {% csrf_token %}
+                <input name="nombre" type="text" value="{{ alumno.nombre }}" >
+                <input name="apellido" type="text" value="{{ alumno.apellido }}">
+                <input name="email" type="email" value="{{ alumno.email }}" placeholder="Email">
+                
+                <select name="representante_id" id="representantes">
+                    <option value="-1">Seleccione un representante:</option>
+                    {% for representante in representantes %}
+                        {% if representante.id == alumno.representante.id %}
+                            <option value="{{ representante.id }}" selected>{{ representante.nombre }} {{ representante.apellido }}</option>
+                        {% else %}
+                            <option value="{{ representante.id }}">{{ representante.nombre }} {{ representante.apellido }}</option>          
+                        {% endif %}
+                    {% endfor %}
+                </select>                
+                
+                
+                
+                <input type="submit" value="Salvar" name="salvar" >
+                <input type="submit" value="Eliminar" name="eliminar" id="boton-eliminar">
+
+
+
+            </form>
+        {% else %}
+            <form action="{% url 'alumno_new'  %}" method="post">
+            {% csrf_token %}
+            <input name="nombre" type="text" placeholder="Nombre" class="nombre-alumno">
+            <input name="apellido" type="text" placeholder="Apellido">
+            <input name="email" type="email" placeholder="Email">  
+            <input type="submit" value="Grabar">
+            </form>
+        {% endif %}
+        <br><br>
+        Ultimas clases pagadas: {{ultimas_clases_pagadas}}
+        Ultimas asistencias: {{ultimas_asistencias}}
+        {% if alumnos %}
+            {% include "academy/tabla_alumnos.html" %}    
+        {% endif %}
+
+        {% if asistencias %}
+            <h2>Asistencias</h2>
+            {% include "academy/tabla_asistencias.html" %}    
+        {% endif %}
+
+        {% if pagos %}
+            <h2>Pagos</h2>
+            {% include "academy/tabla_pagos.html" %}    
+        {% endif %}
+
+
+    {% endif %}
 {% endblock %}

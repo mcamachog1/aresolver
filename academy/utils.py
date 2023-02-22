@@ -39,3 +39,22 @@ def listar_asistencias(alumno_id):
                     "fecha": fecha_str, "status": alumno.get_status_display()}
         asistencias.append(registro)
     return (asistencias)
+
+# Funciones para presentar % de consumo de las clases
+def ultimas_clases_pagadas(alumno_id):
+    alumno = Alumno.objects.get(id=alumno_id)
+    ultimo_pago = Pago.objects.filter(alumno=alumno).order_by("fecha_pago").last()
+    return ultimo_pago.total_clases
+
+def ultimo_inicio_de_clases(alumno_id):
+    alumno = Alumno.objects.get(id=alumno_id)
+    ultimo_pago = Pago.objects.filter(alumno=alumno).order_by("fecha_pago").last()
+    return ultimo_pago.fecha_inicio
+
+
+def ultimas_asistencias(alumno_id):
+    alumno = Alumno.objects.get(id=alumno_id)
+    fecha_inicio_ultimo_ciclo = ultimo_inicio_de_clases(alumno_id)
+    # sampledate__gte=datetime.date(2011, 1, 1)
+    asistencias = Asistencia.objects.filter(fecha__gte=fecha_inicio_ultimo_ciclo, alumno=alumno)
+    return asistencias.count()

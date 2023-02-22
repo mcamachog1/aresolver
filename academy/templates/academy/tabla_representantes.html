@@ -3,8 +3,8 @@
     <thead>
       <tr>
         <th scope="col">Nombre</th>
-        <th scope="col">Apellido</th>
-        <th scope="col">Acción</th>                  
+        <th scope="col">Email</th>                  
+        <th scope="col">Acción</th>
       </tr>
     </thead>
   <!-- <ul> -->
@@ -12,8 +12,8 @@
 
       <tbody>
         <tr>
-          <td><a href="{% url 'representante_entry' representante.id %}">{{ representante.nombre }}</a></td>
-          <td>{{ representante.apellido }}</td>
+          <td><a href="{% url 'representante_entry' representante.id %}">{{ representante.nombre }} {{ representante.apellido }}</a></td>
+          <td>{{ representante.email }}</td>          
           <td><a href="{% url 'representante_delete' representante.id %}"><span class="m-1">Eliminar</span></a></td>
           
         </tr>

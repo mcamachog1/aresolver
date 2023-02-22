@@ -2,6 +2,7 @@
 <table class="table" id="table-alumnos">
     <thead>
       <tr>
+        <th scope="col">Id</th>
         <th scope="col">Nombre</th>
         <th scope="col">Útima Asistencia</th>
         <th scope="col">Status</th>
@@ -10,16 +11,18 @@
     </thead>
   <!-- <ul> -->
     {% for alumno in alumnos %}
-
       <tbody>
         <tr>
+          <td>{{ alumno.id }}</td>
           <td><a href="{% url 'alumno_entry' alumno.id %}">{{ alumno.nombre }}</a></td>
           <td>{{ alumno.fecha }}</td>
           <td>{{ alumno.status }}</td>
-          <td><a href="{% url 'pagar' alumno.id %}"><span class="m-1">Pagar</span></a></td>
+          <td>
+            <a href="{% url 'pagos_alumno' alumno.id %}"><span class="m-1">Pagar</span></a>
+            <a href="{% url 'alumno_delete' alumno.id %}"><span class="m-1">Eliminar</span></a>
+          </td>
           
         </tr>
       </tbody>
-
       {% endfor %}
 </table>

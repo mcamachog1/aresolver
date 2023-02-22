@@ -1,0 +1,17 @@
+
+<table class="table" id="table-asistencia">
+    <thead>
+      <tr>
+        <th scope="col">Nombre</th>
+        <th scope="col">Fecha de asistencia</th>
+      </tr>
+    </thead>
+    {% for asistencia in asistencias %}
+      <tbody>
+        <tr>
+          <td>{{ asistencia.alumno.nombre }}</td>
+          <td>{{ asistencia.fecha }}</td>
+        </tr>
+      </tbody>
+      {% endfor %}
+</table>

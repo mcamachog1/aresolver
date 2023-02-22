@@ -21,10 +21,13 @@
             </li>            
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'asistencia' %}">Asistencias</a>
-            </li>            
+            </li>   
             <li class="nav-item">
+                <a class="nav-link" href="{% url 'pagos' %}">Pagos</a>
+            </li>                        
+            <!-- <li class="nav-item">
                 <a class="nav-link" href="{% url 'mantenimiento' %}">Mantenimiento</a>
-            </li>
+            </li> -->
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'representantes' %}">Representantes</a>
             </li>
@@ -32,7 +35,7 @@
                 <a class="nav-link" href="{% url 'tutores' %}">Tutores</a>
             </li>            
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+                <a class="nav-link" href="{% url 'logout' %}">Salir</a>
             </li>
 
         {% else %}
@@ -46,9 +49,9 @@
     </ul>
     <div>
         {% if user.is_authenticated %}
-        Signed in as <strong>{{ user.username }}</strong>.
+        Logeado como <strong>{{ user.username }}</strong>.
         {% else %}
-        Not signed in.
+        No registrado
         {% endif %}
     </div>    
     <hr>    
