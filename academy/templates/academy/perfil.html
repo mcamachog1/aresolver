@@ -6,7 +6,7 @@
   document.addEventListener('DOMContentLoaded', function () {
     let representante_id = null
     const representantes = document.querySelector('#representantes');
-    const alumno_id = document.querySelector('#alumno_id').value;
+    const alumno_id = document.querySelector('#alumno-id').value;
     const submitRepresentante = document.querySelector('#submit-representante');
     const inputNombre = document.querySelector('#input-nombre');
     if (inputNombre != null){
@@ -22,7 +22,7 @@
     // representantes.addEventListener('change', (event) => asociar_representante(alumno_id, event.target.value))
     if (representantes != null) {
     representantes.addEventListener('change', (event) => { representante_id = event.target.value})
-    document.querySelector('#asociar_representante').addEventListener('click', () => {asociar_representante(alumno_id, representante_id)});
+    // document.querySelector('#asociar-representante').addEventListener('click', () => {asociar_representante(alumno_id, representante_id)});
     }
 
     // fetch con get
@@ -48,30 +48,27 @@
 
 {% block body %}
 {% if user.is_authenticated %}
-<form action="{% url 'alumno_edit' alumno.id %}" method="post">
-  {% csrf_token %}
-  <input name="nombre" type="text" value="{{ alumno.nombre}}">
-  <input name="apellido" type="text" value="{{ alumno.apellido}}">
-  <input type="submit">
-</form>
-{% if sin_representante %}
-<form action="{% url 'representante_new' alumno.id %}" method="post">
-  {% csrf_token %}
-  <input name="nombre" type="text" placeholder="Nombre" id="input-nombre">
-  <input name="apellido" type="text" placeholder="Apellido">
-  <input name="celular" type="tel" placeholder="Número de teléfono" pattern="^[+58]{3} 4[1,2,4,6]{2} [0-9]{7}">
-  <input name="email" type="email" placeholder="Email">
-  <input type="submit" id="submit-representante" disabled>
-</form> 
-<select name="representante_id" id="representantes">
-  <option value="-1">Seleccione un representante:</option>
-  {% for representante in representantes %}
-  <option value="{{ representante.id }}">{{ representante.nombre }} {{ representantes.apellido }}</option>
-  {% endfor %}
-</select>
-<input type="submit" value="Asociar" id="asociar_representante">
-{% endif %}
-<input type="hidden" id="alumno_id" value="{{ alumno.id }}">
+  <form action="{% url 'alumno_edit' alumno.id %}" method="post">
+    {% csrf_token %}
+    <input name="nombre" type="text" value="{{ alumno.nombre}}">
+    <input name="apellido" type="text" value="{{ alumno.apellido}}">
+    <br><br>
+    <label for="representantes">Representante</label>
+    <br>
+    <select name="representante_id" id="representantes">
+      <option value="-1">Seleccione un representante:</option>
+      {% for representante in representantes %}
+      {% if representante.id == alumno.representante.id %}
+      <option value="{{ representante.id }}" selected>{{ representante.nombre }} {{ representante.apellido }}</option>
+      {% else %}
+      <option value="{{ representante.id }}">{{ representante.nombre }} {{ representante.apellido }}</option>          
+      {% endif %}
+      {% endfor %}
+    </select>
+    <!-- <input type="submit" value="Asociar" id="asociar-representante"> -->
+    <input type="hidden" name = "alumno_id" id="alumno-id" value="{{ alumno.id }}">
+    <input type="submit" value="Grabar">
+  </form>
   <ul>
     {% for pago in pagos %}
       <li>
@@ -79,5 +76,17 @@
       </li>
     {% endfor %}
   </ul>
+  {% if representante is None %}
+    <h1>{{representante}}</h1>
+    <form action="{% url 'representante_new' %}" method="post">
+      {% csrf_token %}
+      <input name="nombre" type="text" placeholder="Nombre" id="input-nombre">
+      <input name="apellido" type="text" placeholder="Apellido">
+      <input name="celular" type="tel" placeholder="Número de teléfono" pattern="^[+58]{3} 4[1,2,4,6]{2} [0-9]{7}">
+      <input name="email" type="email" placeholder="Email">
+      <input type="submit" id="submit-representante">
+      <input name="alumno_id" type="hidden" value="{{ alumno.id }}">
+    </form>
+  {% endif %}
 {% endif %}
 {% endblock %}

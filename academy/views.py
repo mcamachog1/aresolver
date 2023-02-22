@@ -9,6 +9,44 @@ from datetime import datetime
 from .models import User, Alumno, Asistencia, Pago, Representante, Tutor
 from .utils import *
 
+# Pagos
+
+# Listar los pagos
+def pagos(request):
+    return render(request, "academy/pagos.html", {
+        "pagos": Pago.objects.all().order_by("-fecha_pago"),
+        "alumnos": Alumno.objects.all(),
+        # .order_by('-fecha_pago')
+    })
+
+# Listar los pagos de un alumno
+def pagos_alumno(request, alumno_id):
+    return render(request, f"academy/pagos.html", {
+        "pagos": Pago.objects.filter(alumno=Alumno.objects.get(id=alumno_id)).order_by("-fecha_pago"),
+        "alumno": Alumno.objects.get(id=alumno_id),
+        "alumnos": Alumno.objects.all(),
+    })    
+
+# Crear nuevo pago  
+def pago_new(request):
+    if (request.method == 'POST'):
+        alumno = Alumno.objects.get(id=request.POST["alumno_id"])
+        pago = Pago()
+        pago.alumno = alumno
+        pago.fecha_pago = request.POST["fecha_pago"]
+        pago.total_clases = request.POST["total_clases"]
+        pago.fecha_inicio = request.POST["fecha_inicio"]
+        pago.monto = request.POST["monto"]
+        pago.save()
+        return HttpResponseRedirect(reverse("pagos")) 
+
+# Eliminar un pago
+def pago_delete(request, pago_id):
+    pago = Pago.objects.get(id=pago_id)
+    pago.delete()
+    return HttpResponseRedirect(reverse("pagos"))   
+
+
 # Alumnos
 
 # Listar los alumnos
@@ -28,7 +66,7 @@ def alumno_new(request):
 
 # Eliminar un alumno 
 def alumno_delete(request, alumno_id):
-    alumno = Representante.objects.get(id=alumno_id)
+    alumno = Alumno.objects.get(id=alumno_id)
     alumno.delete()
     return HttpResponseRedirect(reverse("alumnos"))   
 
@@ -36,39 +74,45 @@ def alumno_delete(request, alumno_id):
 def alumno_entry(request, alumno_id):
     return render(request, "academy/alumnos.html", {
         "alumno": Alumno.objects.get(id=alumno_id),
+        "representantes": Representante.objects.all().order_by("nombre"),
+        "asistencias": Asistencia.objects.filter(alumno=Alumno.objects.get(id=alumno_id)).order_by("-fecha"),
+        "pagos": Pago.objects.filter(alumno=Alumno.objects.get(id=alumno_id)).order_by("-fecha_pago"),
+        "ultimas_clases_pagadas": ultimas_clases_pagadas(alumno_id),
+        "ultimas_asistencias": ultimas_asistencias(alumno_id)
     })  
 
-# Editar un alumno
-def alumno_edit(request, alumno_id):
-    sin_representante = False
-    if request.method == 'GET':
-        ultimo_pago = Pago.objects.filter(alumno=Alumno.objects.get(id=alumno_id)).order_by('-fecha_pago').first()
-        # ultimo_pago.fecha_inicio
-        mi_representante = Alumno.objects.get(id=alumno_id).representante
-        if mi_representante is None :
-            sin_representante = True
-        return render(request, "academy/perfil.html", {
-            "alumno": Alumno.objects.get(id=alumno_id),
-            "representantes": Representante.objects.all(),
-            "pagos": Pago.objects.filter(alumno=Alumno.objects.get(id=alumno_id)).order_by('-fecha_pago'),
-            "sin_representante": sin_representante,
-            "clases_vistas": "clases_vistas"
-        })
-    elif (request.method == 'POST'):
-        perfil = {"id": alumno_id,
-                  "nombre": request.POST["nombre"],
-                  "apellido": request.POST["apellido"]}
-        # print (perfil)
-        actualizar_perfil(perfil)
-        return HttpResponseRedirect(reverse("alumnos"))
 
+
+    # ultimo_pago = Pago.objects.filter(alumno=Alumno.objects.get(id=alumno_id)).order_by('-fecha_pago').first()
+    # mi_representante = Alumno.objects.get(id=alumno_id).representante
+    # return render(request, "academy/perfil.html", {
+    #     "alumno": Alumno.objects.get(id=alumno_id),
+    #     "representantes": Representante.objects.all(),
+    #     "pagos": Pago.objects.filter(alumno=Alumno.objects.get(id=alumno_id)).order_by('-fecha_pago'),
+    #     "representante": mi_representante,
+    #     "clases_vistas": "clases_vistas"
+    # })
+
+# Actualizar un alumno
+def alumno_edit(request, alumno_id):
+    if (request.method == 'POST'):
+        perfil = {
+            "id": alumno_id,
+            "nombre": request.POST["nombre"],
+            "apellido": request.POST["apellido"]}
+        actualizar_perfil(perfil)
+        if 'representante_id' in request.POST:
+            alumno = Alumno.objects.get(id=alumno_id)
+            alumno.representante = Representante.objects.get(id=request.POST['representante_id'])
+            alumno.save()
+        return HttpResponseRedirect(reverse("alumnos"))
 
 # Representantes
 
 # Listar los representantes
 def representantes(request):
     return render(request, "academy/representantes.html", {
-        "representantes": Representante.objects.all(),
+        "representantes": Representante.objects.all().order_by("nombre"),
     })  
 
 # Crear un nuevo representante
@@ -77,7 +121,14 @@ def representante_new(request):
         representante = Representante()
         representante.nombre = request.POST['nombre']
         representante.apellido = request.POST['apellido']
+        representante.email = request.POST['email']
         representante.save()
+        
+        # Al crear el representante se asocia al alumno si se recibe el id
+        if 'alumno_id' in request.POST:
+            alumno = Alumno.objects.get(id=request.POST['alumno_id'])
+            alumno.representante = representante
+            alumno.save()
         return HttpResponseRedirect(reverse("representantes"))    
 
 # Eliminar un representante    
@@ -98,16 +149,16 @@ def representante_edit(request, representante_id):
         representante = Representante.objects.get(id=representante_id)
         representante.nombre = request.POST['nombre']
         representante.apellido = request.POST['apellido']
+        representante.email = request.POST['email']
         representante.save()
         return HttpResponseRedirect(reverse("representantes"))     
-
 
 # Tutores
 
 # Listar los tutores
 def tutores(request):
     return render(request, "academy/tutores.html", {
-        "tutores": Tutor.objects.all(),
+        "tutores": Tutor.objects.all().order_by("nombre"),
     })    
 
 # Crear un nuevo tutor
@@ -196,7 +247,7 @@ def asistencia(request):
         return HttpResponse("Metodo no manejado")
 
 def mantenimiento(request):
-    return render(request, "academy/index.html", {
+    return render(request, "#", {
         "mostrar": 'mantenimiento'
     })
 
@@ -278,7 +329,7 @@ def pagar(request, alumno_id=None):
         nuevo_pago.fecha_inicio = request.POST["fecha_inicio"]
         nuevo_pago.monto = request.POST["monto"]
         nuevo_pago.save()
-        return HttpResponseRedirect(reverse("index"))
+        return HttpResponseRedirect(reverse("alumnos"))
 
 
 # def index(request):
@@ -306,7 +357,7 @@ def login_view(request):
         # Check if authentication successful
         if user is not None:
             login(request, user)
-            return HttpResponseRedirect(reverse("index"))
+            return HttpResponseRedirect(reverse("alumnos"))
         else:
             return render(request, "academy/login.html", {
                 "message": "Invalid username and/or password."
@@ -317,7 +368,7 @@ def login_view(request):
 # logout
 def logout_view(request):
     logout(request)
-    return HttpResponseRedirect(reverse("index"))
+    return HttpResponseRedirect(reverse("alumnos"))
 
 # register
 def register_view(request):
@@ -343,6 +394,6 @@ def register_view(request):
             })
         user.save()
         login(request, user)
-        return HttpResponseRedirect(reverse("index"))
+        return HttpResponseRedirect(reverse("alumnos"))
     else:
         return render(request, "academy/register.html")

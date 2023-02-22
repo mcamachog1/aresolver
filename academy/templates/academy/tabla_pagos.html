@@ -1,0 +1,39 @@
+{% if pagos %}
+<table class="table" id="table-tutores">
+    <thead>
+      <tr>
+        <th scope="col">Alumno</th>
+        <th scope="col">Fecha de pago</th>
+        <th scope="col">Monto</th>
+        <th scope="col">Clases pagadas</th>                  
+        <th scope="col">Fecha de inicio</th>
+        <th scope="col">Acción</th>
+      </tr>
+    </thead>
+  <!-- <ul> -->
+    {% for pago in pagos %}
+      <tbody>
+        <tr>
+          {% if alumno %}
+            {% if alumno == pago.alumno %}
+              <td>{{ pago.alumno.nombre }} {{ pago.alumno.apellido }}</td>
+              <td>{{ pago.fecha_pago }}</td>
+              <td>{{ pago.monto }}</td>
+              <td>{{ pago.total_clases }}</td>
+              <td>{{ pago.fecha_inicio }}</td>
+              <td><a href="{% url 'pago_delete' pago.id %}">Eliminar</a></td>
+            {% endif %}
+          {% else %}
+            <td><a href="{% url 'pagos_alumno' pago.alumno.id %}">{{ pago.alumno.nombre }} {{ pago.alumno.apellido }}</a></td>
+            <td>{{ pago.fecha_pago }}</td>
+            <td>{{ pago.monto }}</td>
+            <td>{{ pago.total_clases }}</td>
+            <td>{{ pago.fecha_inicio }}</td>
+            <td><a href="{% url 'pago_delete' pago.id %}">Eliminar</a></td>            
+          {% endif %}
+        </tr>
+      </tbody>
+
+      {% endfor %}
+</table>
+{% endif %}

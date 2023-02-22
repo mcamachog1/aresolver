@@ -3,15 +3,16 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    # index GET lista los alumnos, POST crea un alumno
+    # index es alumnos.html
     path("", views.alumnos, name="alumnos"),
+
+    # autenticación
     path("login", views.login_view, name="login"),    
     path("logout", views.logout_view, name="logout"),
     path("register", views.register_view, name="register"),  
+    
+    # asistencias
     path("asistencia", views.asistencia, name="asistencia"),
-    # editar-alumno
-    # path("editar-alumno/<int:id>", views.editar_alumno, name="editar_alumno"),
-    # path("representante/<int:id>", views.actualizar_representante, name="actualizar_representante"),
     
     # alumnos
     path("alumnos", views.alumnos, name="alumnos"),
@@ -33,7 +34,12 @@ urlpatterns = [
     path("tutor_new", views.tutor_new, name="tutor_new"),
     path("tutor_edit/<int:tutor_id>", views.tutor_edit, name="tutor_edit"),
     path("tutor_delete/<int:tutor_id>", views.tutor_delete, name="tutor_delete"),
-        
+
+    # pagos
+    path("pagos", views.pagos, name="pagos"),    
+    path("pago_new", views.pago_new, name="pago_new"),  
+    path("pago_delete/<int:pago_id>", views.pago_delete, name="pago_delete"),  
+    path("pagos_alumno/<int:alumno_id>", views.pagos_alumno, name="pagos_alumno"),  
     # path("crear-representante/<int:alumno_id>", views.crear_representante, name="crear_representante"),
     # path("asociar-representante/<int:alumno_id>/<int:representante_id>/", views.asociar_representante, name="asociar_representante"),
     path("pagar/<int:alumno_id>", views.pagar, name="pagar"),
