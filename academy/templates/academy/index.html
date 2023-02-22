@@ -1,0 +1,69 @@
+{% extends "academy/layout.html" %}
+{% load static %}
+
+{% block script %}
+{% endblock %}
+
+{% block body %}
+    {% if user.is_authenticated %}
+        {% if alumno %}
+            <form action="{% url 'alumno_edit' alumno.id %}" method="post">
+                {% csrf_token %}
+                <input name="nombre" type="text" value="{{ alumno.nombre }}" >
+                <input name="apellido" type="text" value="{{ alumno.apellido }}">
+                <input name="email" type="email" value="{{ alumno.email }}" placeholder="Email">
+                
+                <select name="representante_id" id="representantes">
+                    <option value="-1">Seleccione un representante:</option>
+                    {% for representante in representantes %}
+                        {% if representante.id == alumno.representante.id %}
+                            <option value="{{ representante.id }}" selected>{{ representante.nombre }} {{ representante.apellido }}</option>
+                        {% else %}
+                            <option value="{{ representante.id }}">{{ representante.nombre }} {{ representante.apellido }}</option>          
+                        {% endif %}
+                    {% endfor %}
+                </select>                
+                
+                
+                
+                <input type="submit" value="Salvar" name="salvar" >
+                <input type="submit" value="Eliminar" name="eliminar" id="boton-eliminar">
+
+
+
+            </form>
+        {% else %}
+            <form action="{% url 'alumno_new'  %}" method="post">
+            {% csrf_token %}
+            <input name="nombre" type="text" placeholder="Nombre" class="nombre-alumno">
+            <input name="apellido" type="text" placeholder="Apellido">
+            <input name="email" type="email" placeholder="Email">  
+            <input type="submit" value="Grabar">
+            </form>
+        {% endif %}
+        <div class="titulo-del-grafico">Porcentaje de clases vistas {{ porcentaje }}%</div> 
+        {% if ultimas_clases_pagadas and ultimas_asistencias %}
+            <div class="chart-wrap "> <!-- quitar el estilo "horizontal" para visualizar verticalmente -->       
+                <div class="grid">
+                    <div class="bar" style="--bar-value:{{ porcentaje }}%;" title="Clases vistas {{ porcentaje }}%"></div>
+                </div>
+              </div>
+        {% endif %}
+        <br>
+        {% if alumnos %}
+            {% include "academy/tabla_alumnos.html" %}    
+        {% endif %}
+
+        {% if asistencias %}
+            <h2>Asistencias</h2>
+            {% include "academy/tabla_asistencias.html" %}    
+        {% endif %}
+
+        {% if pagos %}
+            <h2>Pagos</h2>
+            {% include "academy/tabla_pagos.html" %}    
+        {% endif %}
+
+
+    {% endif %}
+{% endblock %}
