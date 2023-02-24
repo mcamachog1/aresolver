@@ -53,7 +53,7 @@ def ultimo_inicio_de_clases(alumno_id):
     alumno = Alumno.objects.get(id=alumno_id)
     ultimo_pago = Pago.objects.filter(alumno=alumno).order_by("fecha_pago").last()
     if ultimo_pago is None:
-        return datetime.now()
+        return Asistencia.objects.filter(alumno=alumno).order_by("fecha").first().fecha
     else: 
        return ultimo_pago.fecha_inicio
 
@@ -61,6 +61,7 @@ def ultimo_inicio_de_clases(alumno_id):
 def ultimas_asistencias(alumno_id):
     alumno = Alumno.objects.get(id=alumno_id)
     fecha_inicio_ultimo_ciclo = ultimo_inicio_de_clases(alumno_id)
+    print(fecha_inicio_ultimo_ciclo)
     # sampledate__gte=datetime.date(2011, 1, 1)
     asistencias = Asistencia.objects.filter(fecha__gte=fecha_inicio_ultimo_ciclo, alumno=alumno)
     return asistencias.count()
