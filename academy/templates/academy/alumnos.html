@@ -41,8 +41,8 @@
             <input type="submit" value="Grabar">
             </form>
         {% endif %}
+        {% if ultimas_clases_pagadas or ultimas_asistencias %}
         <div class="titulo-del-grafico">Porcentaje de clases vistas {{ porcentaje }}%</div> 
-        {% if ultimas_clases_pagadas and ultimas_asistencias %}
             <div class="chart-wrap "> <!-- quitar el estilo "horizontal" para visualizar verticalmente -->       
                 <div class="grid">
                     <div class="bar" style="--bar-value:{{ porcentaje }}%;" title="Clases vistas {{ porcentaje }}%"></div>

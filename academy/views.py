@@ -81,6 +81,12 @@ def alumno_delete(request, alumno_id):
 
 # Ver un alumno
 def alumno_entry(request, alumno_id):
+    if ultimas_clases_pagadas(alumno_id) != 0:
+        porcentaje = round(ultimas_asistencias(alumno_id) / ultimas_clases_pagadas(alumno_id) * 100,2)
+    else:
+        porcentaje = round(ultimas_asistencias(alumno_id) * 100,2)
+    print(ultimas_asistencias(alumno_id))
+    print(porcentaje)
     return render(request, "academy/alumnos.html", {
         "alumno": Alumno.objects.get(id=alumno_id),
         "representantes": Representante.objects.all().order_by("nombre"),
@@ -88,21 +94,9 @@ def alumno_entry(request, alumno_id):
         "pagos": Pago.objects.filter(alumno=Alumno.objects.get(id=alumno_id)).order_by("-fecha_pago"),
         "ultimas_clases_pagadas": ultimas_clases_pagadas(alumno_id),
         "ultimas_asistencias": ultimas_asistencias(alumno_id),
-        "porcentaje": round(ultimas_asistencias(alumno_id) / ultimas_clases_pagadas(alumno_id) * 100,2)
+        "porcentaje": porcentaje
 
     })  
-
-
-
-    # ultimo_pago = Pago.objects.filter(alumno=Alumno.objects.get(id=alumno_id)).order_by('-fecha_pago').first()
-    # mi_representante = Alumno.objects.get(id=alumno_id).representante
-    # return render(request, "academy/perfil.html", {
-    #     "alumno": Alumno.objects.get(id=alumno_id),
-    #     "representantes": Representante.objects.all(),
-    #     "pagos": Pago.objects.filter(alumno=Alumno.objects.get(id=alumno_id)).order_by('-fecha_pago'),
-    #     "representante": mi_representante,
-    #     "clases_vistas": "clases_vistas"
-    # })
 
 # Actualizar un alumno
 def alumno_edit(request, alumno_id):
