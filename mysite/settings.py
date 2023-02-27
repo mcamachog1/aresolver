@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-!cd0v*xol@f6k=q5k1i=**i(15bpm3dka8ipdd45mk+p7it!th
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['https://mcamachog.pythonanywhere.com/','mcamachog.pythonanywhere.com',"mcamachog.pythonanywhere.com"]
 
 
 # Application definition
@@ -125,10 +125,10 @@ STATIC_URL = '/static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# 
+#
 # Para quitar error de dos grupos de auth.user
 AUTH_USER_MODEL = 'academy.User'
 
 #
 # Para eliminar error de CSRF no permitido
-CSRF_TRUSTED_ORIGINS = ['https://8000-mcamachog1-aresolver*.gitpod.io','https://*.gitpod.io']
+CSRF_TRUSTED_ORIGINS = ['https://8000-mcamachog1-aresolver*.gitpod.io','https://*.gitpod.io','https://mcamachog.pythonanywhere.com/']
