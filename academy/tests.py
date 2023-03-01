@@ -4,6 +4,7 @@ from .models import User, Alumno, Asistencia, Pago, Representante, Tutor, Asiste
 from datetime import datetime
 from datetime import date
 from .utils import *
+from django.urls import reverse
 
 # Create your tests here.
 
@@ -31,6 +32,7 @@ class AcademyTestCase(TestCase):
         Asistencia.objects.create(fecha=datetime.strptime("2023-02-18", "%Y-%m-%d"),alumno=alumno_3)
         Asistencia.objects.create(fecha=datetime.strptime("2023-02-20", "%Y-%m-%d"),alumno=alumno_3)
 
+
     def test_pagos(self):
         alumno_1 = Alumno.objects.get(nombre='Pedrito')
         self.assertEqual(alumno_1.pagos_realizados.count(), 1)
@@ -45,11 +47,33 @@ class AcademyTestCase(TestCase):
         # self.assertEqual(ultimo_inicio_de_clases(alumno_1.id),datetime.strptime("2023-02-16", "%Y-%m-%d").date())
         self.assertEqual(ultimo_inicio_de_clases(alumno_1.id),datetime.strptime("2023-02-16", "%Y-%m-%d").date())
 
-
-    def test_alumno_entry(self):
+    def test_alumno_con_2_asistencias(self):
         alumno = Alumno.objects.get(nombre='Pedrito')
         c = Client()
-        response = c.get(f"/alumno_entry{alumno.id}/")
+        response = c.get(f"/alumno_entry/{alumno.id}")
         print(response)
         self.assertEqual(response.status_code, 200)
-        # self.assertEqual(response.context["alumnos"].count(), 4)
+        self.assertEqual(response.context["porcentaje"], 50)
+
+    def test_alumno_sin_asistencias(self):
+        alumno = Alumno.objects.get(nombre='Laura')
+        c = Client()
+        response = c.get(f"/alumno_entry/{alumno.id}")
+        print(response)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["porcentaje"], 0)
+    
+    def test_alumno_con_asistencia_sin_pago(self):
+        alumno = Alumno.objects.get(nombre='Maria')
+        c = Client()
+        response = c.get(f"/alumno_entry/{alumno.id}")
+        print(response)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context["porcentaje"], 100)
+
+    def test_alumnos(self):
+        c = Client()
+        response = c.get("/alumnos")
+        # print(len(response.context['alumnos']))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.context["alumnos"]), 4)

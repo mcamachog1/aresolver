@@ -84,7 +84,10 @@ def alumno_entry(request, alumno_id):
     if ultimas_clases_pagadas(alumno_id) != 0:
         porcentaje = round(ultimas_asistencias(alumno_id) / ultimas_clases_pagadas(alumno_id) * 100,2)
     else:
-        porcentaje = round(ultimas_asistencias(alumno_id) * 100,2)
+        if ultimas_asistencias(alumno_id) > 0:
+            porcentaje = 100
+        else:
+            porcentaje = 0
     print(ultimas_asistencias(alumno_id))
     print(porcentaje)
     return render(request, "academy/alumnos.html", {
