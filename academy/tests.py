@@ -2,6 +2,7 @@ from django.test import TestCase, Client
 from django.db.models import Max
 from .models import User, Alumno, Asistencia, Pago, Representante, Tutor, Asistencia
 from datetime import datetime
+from datetime import date
 from .utils import *
 
 # Create your tests here.
@@ -33,3 +34,13 @@ class AcademyTestCase(TestCase):
     def test_pagos(self):
         alumno_1 = Alumno.objects.get(nombre='Pedrito')
         self.assertEqual(alumno_1.pagos_realizados.count(), 1)
+        # datetime.strptime(date_str, '%m-%d-%Y').date()
+        # self.assertEqual(ultimo_inicio_de_clases(alumno_1.id),datetime.strptime("2023-02-16", "%Y-%m-%d").date())
+        # self.assertEqual(ultimo_inicio_de_clases(alumno_1.id),datetime.strptime("2023-02-16", "%Y-%m-%d").date())
+
+    def test_pagos2(self):
+        alumno_1 = Alumno.objects.get(nombre='Pedrito')
+        # self.assertEqual(alumno_1.pagos_realizados.count(), 1)
+        # datetime.strptime(date_str, '%m-%d-%Y').date()
+        # self.assertEqual(ultimo_inicio_de_clases(alumno_1.id),datetime.strptime("2023-02-16", "%Y-%m-%d").date())
+        self.assertEqual(ultimo_inicio_de_clases(alumno_1.id),datetime.strptime("2023-02-16", "%Y-%m-%d").date())
