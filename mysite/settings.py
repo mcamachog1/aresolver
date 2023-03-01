@@ -25,7 +25,7 @@ SECRET_KEY = SECRET_KEY
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://mcamachog.pythonanywhere.com/','mcamachog.pythonanywhere.com',"mcamachog.pythonanywhere.com"]
+ALLOWED_HOSTS = ['https://mcamachog.pythonanywhere.com/','mcamachog.pythonanywhere.com',"mcamachog.pythonanywhere.com", "127.0.0.1"]
 
 
 # Application definition
