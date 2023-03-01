@@ -44,3 +44,12 @@ class AcademyTestCase(TestCase):
         # datetime.strptime(date_str, '%m-%d-%Y').date()
         # self.assertEqual(ultimo_inicio_de_clases(alumno_1.id),datetime.strptime("2023-02-16", "%Y-%m-%d").date())
         self.assertEqual(ultimo_inicio_de_clases(alumno_1.id),datetime.strptime("2023-02-16", "%Y-%m-%d").date())
+
+
+    def test_alumno_entry(self):
+        alumno = Alumno.objects.get(nombre='Pedrito')
+        c = Client()
+        response = c.get(f"/alumno_entry{alumno.id}/")
+        print(response)
+        self.assertEqual(response.status_code, 200)
+        # self.assertEqual(response.context["alumnos"].count(), 4)
