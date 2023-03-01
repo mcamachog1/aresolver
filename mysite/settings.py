@@ -25,7 +25,7 @@ SECRET_KEY = SECRET_KEY
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://mcamachog.pythonanywhere.com/','mcamachog.pythonanywhere.com',"mcamachog.pythonanywhere.com", "127.0.0.1"]
+ALLOWED_HOSTS = ['https://mcamachog.pythonanywhere.com/','mcamachog.pythonanywhere.com',"mcamachog.pythonanywhere.com", "127.0.0.1","localhost"]
 
 
 # Application definition
@@ -130,5 +130,5 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'academy.User'
 
 #
-# Para eliminar error de CSRF no permitido
+# Para eliminar error 403 de CSRF no permitido
 CSRF_TRUSTED_ORIGINS = ['https://8000-mcamachog1-aresolver*.gitpod.io','https://*.gitpod.io','https://mcamachog.pythonanywhere.com/']
