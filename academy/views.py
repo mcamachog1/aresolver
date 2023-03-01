@@ -107,7 +107,9 @@ def alumno_edit(request, alumno_id):
         perfil = {
             "id": alumno_id,
             "nombre": request.POST["nombre"],
-            "apellido": request.POST["apellido"]}
+            "apellido": request.POST["apellido"],
+            "email": request.POST["email"]
+            }
         actualizar_perfil(perfil)
         if 'representante_id' in request.POST:
             alumno = Alumno.objects.get(id=alumno_id)
@@ -274,6 +276,7 @@ def actualizar_perfil(perfil):
     objeto = Alumno.objects.get(id=perfil['id'])
     objeto.nombre = perfil['nombre']
     objeto.apellido = perfil['apellido']
+    objeto.email = perfil['email']
     objeto.save()
 
 def contar_asistencias_hoy(alumno):
