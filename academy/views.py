@@ -25,6 +25,7 @@ def pagos(request):
     return render(request, "academy/pagos.html", {
         "pagos": Pago.objects.all().order_by("-fecha_pago"),
         "alumnos": Alumno.objects.all(),
+        "nav-item": "pagos"
         # .order_by('-fecha_pago')
     })
 
@@ -63,6 +64,7 @@ def alumnos(request):
     return render(request, "academy/alumnos.html", {
         "alumnos": listar_alumnos_por_fecha_de_asistencia(),        
     })  
+
 
 # Crear un nuevo alumno
 def alumno_new(request):
