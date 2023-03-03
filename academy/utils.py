@@ -75,6 +75,9 @@ def obtener_academia(request):
         if request.user.id is None:
             return False
         else:
-            return Academia.objects.get(director=request.user.id)
+            if User.objects.get(id=request.user.id).tipo_de_usuario == 'D' :
+                return Academia.objects.get(director=request.user.id)
+            else :
+                return False
     else:
         return False

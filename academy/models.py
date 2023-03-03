@@ -18,6 +18,19 @@ class User(AbstractUser):
 	]
 	tipo_de_usuario = models.CharField(max_length=1, choices=USER_TYPE_CHOICES, default=VISITANTE)
 
+
+class Academia(models.Model):
+	nombre = models.CharField(max_length=30)
+	director = models.OneToOneField(
+		User,
+		on_delete=models.CASCADE,
+		related_name="academia",
+		null=True
+	)
+
+	def __str__(self):
+		return self.nombre
+
 # Clase Tutores
 class Tutor(models.Model):
 	nombre = models.CharField(max_length=30, blank=False)
@@ -25,6 +38,7 @@ class Tutor(models.Model):
 	email = models.EmailField(max_length=254, null=True)
 	fecha_nacimiento = models.DateTimeField(null=True)
 	celular = models.CharField(max_length=15, null=True)
+	academia = models.ForeignKey(Academia, on_delete=models.CASCADE, related_name="tutores_de_una_academia", null=True)
 	def serialize(self):
 			return (f"{self.nombre} {self.apellido}")
 
@@ -39,17 +53,6 @@ class Representante(models.Model):
 	def serialize(self):
 			return (f"{self.nombre} {self.apellido}")
 
-class Academia(models.Model):
-	nombre = models.CharField(max_length=30)
-	director = models.OneToOneField(
-		User,
-		on_delete=models.CASCADE,
-		related_name="academia",
-		null=True
-	)
-
-	def __str__(self):
-		return self.nombre
 
 class Alumno(models.Model):
 	NUEVO = 'N'
@@ -95,3 +98,4 @@ class Pago(models.Model):
 	total_clases = models.IntegerField()
 	fecha_inicio = models.DateField()
 	alumno = models.ForeignKey(Alumno, on_delete=models.CASCADE, related_name="pagos_realizados", null=False) 
+	academia = models.ForeignKey(Academia, on_delete=models.CASCADE, related_name="pagos_de_una_academia", null=True)
