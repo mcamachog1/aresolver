@@ -6,11 +6,44 @@ from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from datetime import datetime
-from .models import User, Alumno, Asistencia, Pago, Representante, Tutor
+from .models import User, Alumno, Asistencia, Pago, Representante, Tutor, Academia
 from .utils import *
 
 
 # Asistencias
+
+# Listar asistencias
+def asistencias(request):
+    if request.method == 'GET':
+        return render(request, "academy/asistencias.html", {
+            "alumnos": Alumno.objects.all().order_by("nombre"),
+            "tutores": Tutor.objects.all().order_by("nombre"),
+            "academias": Academia.objects.all().order_by("nombre"),
+            "asistencias": Asistencia.objects.all().order_by("-fecha"),
+        })
+
+
+# Crear una nueva asistencia
+def asistencia_new(request):
+    if (request.method == 'POST'):
+        alumno = Alumno.objects.get(id=request.POST['alumno_id'])
+        alumno.status = alumno.ACTIVO
+        alumno.save()
+        asistencia = Asistencia()
+        asistencia.alumno=alumno
+        asistencia.fecha=request.POST['fecha']
+        asistencia.tutor=Tutor.objects.get(id=request.POST['tutor_id'])
+        asistencia.academia=Academia.objects.get(id=request.POST['academia_id'])
+        asistencia.save()
+        return HttpResponseRedirect(reverse("asistencias"))
+
+# Ver una asistencia
+def asistencia_entry(request, asistencia_id):
+    alumno = Asistencia.objects.get(id=asistencia_id).alumno
+    return render(request, "academy/asistencias.html", {
+        "asistencia": Asistencia.objects.get(id=asistencia_id),
+        "asistencias": Asistencia.objects.filter(alumno=alumno).order_by("-fecha"),
+     })  
 
 # Eliminar asistencia
 def asistencia_delete(request, asistencia_id):
@@ -60,16 +93,23 @@ def pago_delete(request, pago_id):
 
 # Listar los alumnos
 def alumnos(request):
-    return render(request, "academy/alumnos.html", {
-        "alumnos": listar_alumnos_por_fecha_de_asistencia(),        
-    })  
+    academia = obtener_academia(request)
+    if academia:
+        return render(request, "academy/alumnos.html", {
+            "alumnos": listar_alumnos_por_fecha_de_asistencia(academia),        
+        })  
+    else:
+        return render(request, "academy/login.html")
 
 # Crear un nuevo alumno
 def alumno_new(request):
     if (request.method == 'POST'):
+        academia = Academia.objects.get(director=request.user.id)        
         alumno = Alumno()
         alumno.nombre = request.POST['nombre']
         alumno.apellido = request.POST['apellido']
+        alumno.save()
+        alumno.academias.add(academia)
         alumno.save()
         return HttpResponseRedirect(reverse("alumnos"))    
 
@@ -240,22 +280,6 @@ def api_inactivar_alumnos(request):
 #     else:
 #         return HttpResponse("Metodo no manejado")
 
-def asistencias(request):
-    if request.method == 'GET':
-        return render(request, "academy/asistencias.html", {
-            "alumnos": Alumno.objects.all().order_by("nombre"),
-            "asistencias": Asistencia.objects.all().order_by("-fecha"),
-        })
-    elif request.method == 'POST':
-        print(request.POST['fecha'])
-        alumno = Alumno.objects.get(id=request.POST['alumno_id'])
-        alumno.status = alumno.ACTIVO
-        alumno.save()
-        asistencia = Asistencia(alumno=alumno, fecha=request.POST['fecha'])
-        asistencia.save()
-        return HttpResponseRedirect(reverse("asistencias"))
-    else:
-        return HttpResponse("Metodo no manejado")
 
 def mantenimiento(request):
     return render(request, "#", {
@@ -376,6 +400,7 @@ def login_view(request):
             })
     else:
         return render(request, "academy/login.html")
+
 
 # logout
 def logout_view(request):

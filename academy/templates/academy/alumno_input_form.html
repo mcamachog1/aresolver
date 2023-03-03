@@ -1,9 +1,0 @@
-{% csrf_token %}
-<select name="alumno_id" id="alumnos">
-    <option value="-1">Seleccione un alumno:</option>
-    {% for alumno in alumnos%}
-    <option value="{{ alumno.id }}">{{ alumno.nombre }} {{ alumno.apellido }}</option>
-    {% endfor %}
-</select>
-<input name="fecha" type="date" id="fecha-asistencia">
-<input type="submit">
