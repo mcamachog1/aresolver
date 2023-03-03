@@ -1,0 +1,24 @@
+{% csrf_token %}
+<select name="alumno_id" id="alumnos">
+    <option value="-1">Seleccione un alumno:</option>
+    {% for alumno in alumnos%}
+    <option value="{{ alumno.id }}">{{ alumno.nombre }} {{ alumno.apellido }}</option>
+    {% endfor %}
+</select>
+
+<select name="tutor_id" id="tutores">
+    <option value="-1">Seleccione un tutor:</option>
+    {% for tutor in tutores%}
+    <option value="{{ tutor.id }}">{{ tutor.nombre }} {{ tutor.apellido }}</option>
+    {% endfor %}
+</select>
+
+<select name="academia_id" id="academias">
+    <option value="-1">Seleccione un tutor:</option>
+    {% for academia in academias%}
+    <option value="{{ academia.id }}">{{ academia.nombre }} {{ academia.apellido }}</option>
+    {% endfor %}
+</select>
+
+<input name="fecha" type="date" id="fecha-asistencia">
+<input type="submit">

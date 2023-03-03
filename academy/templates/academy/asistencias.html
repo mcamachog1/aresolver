@@ -62,10 +62,15 @@
 {% block body %}
 {% if user.is_authenticated %}
 <div class="result"></div>
-<form action="{% url 'asistencias' %}" method="post">
-  {% include "academy/alumno_input_form.html" %}
-</form>
 
+{% if asistencia %}
+  <p>Nombre: {{ asistencia.alumno.nombre }}</p>
+  <p>Fecha: {{ asistencia.fecha }}</p>
+{% else %}
+  <form action="{% url 'asistencia_new' %}" method="post">
+    {% include "academy/asistencia_input_form.html" %}
+  </form>
+{% endif %}
 {% include "academy/tabla_asistencias.html" %}
 
 {% endif %}
