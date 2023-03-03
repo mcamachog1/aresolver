@@ -15,11 +15,13 @@ from .utils import *
 # Listar asistencias
 def asistencias(request):
     if request.method == 'GET':
+        academia = obtener_academia(request)
         return render(request, "academy/asistencias.html", {
-            "alumnos": Alumno.objects.all().order_by("nombre"),
-            "tutores": Tutor.objects.all().order_by("nombre"),
-            "academias": Academia.objects.all().order_by("nombre"),
-            "asistencias": Asistencia.objects.all().order_by("-fecha"),
+            "alumnos": Alumno.objects.filter(academias=academia).order_by("nombre"),
+            "tutores": Tutor.objects.filter(academia=academia).order_by("nombre"),
+            "academias": Academia.objects.all(),
+            "asistencias": Asistencia.objects.filter(academia=academia).order_by("-fecha"),
+            "academia": academia
         })
 
 
@@ -55,9 +57,10 @@ def asistencia_delete(request, asistencia_id):
 
 # Listar los pagos
 def pagos(request):
+    academia = obtener_academia(request)
     return render(request, "academy/pagos.html", {
-        "pagos": Pago.objects.all().order_by("-fecha_pago"),
-        "alumnos": Alumno.objects.all(),
+        "pagos": Pago.objects.filter(academia=academia).order_by("-fecha_pago"),
+        "alumnos": Alumno.objects.filter(academias=academia),
         # .order_by('-fecha_pago')
     })
 
@@ -71,6 +74,7 @@ def pagos_alumno(request, alumno_id):
 
 # Crear nuevo pago  
 def pago_new(request):
+    academia = obtener_academia(request)
     if (request.method == 'POST'):
         alumno = Alumno.objects.get(id=request.POST["alumno_id"])
         pago = Pago()
@@ -79,6 +83,8 @@ def pago_new(request):
         pago.total_clases = request.POST["total_clases"]
         pago.fecha_inicio = request.POST["fecha_inicio"]
         pago.monto = request.POST["monto"]
+        pago.save()
+        pago.academia = academia
         pago.save()
         return HttpResponseRedirect(reverse("pagos")) 
 

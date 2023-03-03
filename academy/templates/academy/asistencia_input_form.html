@@ -13,11 +13,9 @@
     {% endfor %}
 </select>
 
+<!-- Cambiar a futuro dependiendo del tipo de usuario (selleccionar academia) -->
 <select name="academia_id" id="academias">
-    <option value="-1">Seleccione un tutor:</option>
-    {% for academia in academias%}
-    <option value="{{ academia.id }}">{{ academia.nombre }} {{ academia.apellido }}</option>
-    {% endfor %}
+    <option value="{{ academia.id }}">{{ academia.nombre }}</option>
 </select>
 
 <input name="fecha" type="date" id="fecha-asistencia">
