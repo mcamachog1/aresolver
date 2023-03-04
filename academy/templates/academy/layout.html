@@ -10,11 +10,19 @@
         integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link href="{% static 'academy/css/style4.css' %}" rel="stylesheet">
     <link href="{% static 'academy/css/grafico.css' %}" rel="stylesheet">
+    <style>
+        .active {
+            font-weight: 600;
+        }
+    </style>
 </head>
 
 <body>
+
+    
+
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="{% url 'alumnos' %}">Inicio</a>
+        <a class="navbar-brand" href="{% url 'alumnos' %}"><img src="https://i.ibb.co/Zd1s3vZ/Logo-Corto-Cuadrado.jpg" alt="Logo-Aresolver" width="60px"></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -23,16 +31,18 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 {% if user.is_authenticated %}
-                    <li class="nav-item active">
-                        <a class="nav-link" href="{% url 'asistencias' %}">Asistencias</a>
+                    <li class="nav-item {% if request.resolver_match.url_name == 'asistencias' %} active {% endif %}">
+                        <a class="nav-link" 
+                           href="{% url 'asistencias' %}">Asistencias
+                        </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" id="nav-pagos" href="{% url 'pagos' %}">Pagos</a>
+                    <li class="nav-item {% if request.resolver_match.url_name == 'pagos' %} active {% endif %}">
+                        <a class="nav-link" href="{% url 'pagos' %}">Pagos</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item {% if request.resolver_match.url_name == 'representantes' %} active {% endif %}">
                         <a class="nav-link" href="{% url 'representantes' %}">Representantes</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item {% if request.resolver_match.url_name == 'tutores' %} active {% endif %}">
                         <a class="nav-link" href="{% url 'tutores' %}">Tutores</a>
                     </li>
                     <li class="nav-item">
@@ -71,26 +81,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
         integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
         crossorigin="anonymous"></script>
-    <script>
-        $(document).ready(function () {
-              $("ul.navbar-nav > li").click(function (e) {
-            //    $("ul.navbar-nav > li").removeClass("active");
-            //    $(this).addClass("active");
-                    console.log('hola')
-                });
-            });
-        
-        // document.addEventListener('DOMContentLoaded', function () {
-        //     const opcionesDelMenu = document.getElementsByClassName('nav-item')
-        //     console.log(opcionesDelMenu[1]);
-        //     opcionesDelMenu[1].classList.add("active")
-            // opcionesDelMenu[2].addEventListener('click', )
-            // for (const opcion of opcionesDelMenu) {
-            //     opcion.addEventListener('click', console.log("le di click") )
-            //     console.log(opcion);
-            // }
-        // })
-    </script>
+
 </body>
 
 </html>
