@@ -80,9 +80,9 @@ def obtener_academia(request):
             # Validar el tipo de usuario logueado
             if usuario.tipo_de_usuario == usuario.DIRECTOR :
                 return Academia.objects.get(director=request.user.id)
-            # Si no es director ve los datos de Kayros
-            elif usuario.tipo_de_usuario != usuario.DIRECTOR :                
-                return Academia.objects.get(director=4)
+            # Si no es director ve los datos de Dummy
+            elif usuario.tipo_de_usuario != usuario.DIRECTOR :
+                return Academia.objects.get(nombre="Dummy")                
             else :
                 return False
     else:
