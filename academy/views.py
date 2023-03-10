@@ -251,17 +251,17 @@ def tutor_edit(request, tutor_id):
 # APIs           
 
 def api_asistencias(request, alumno_id):
+    academia = obtener_academia(request)
     if request.method == 'GET':
         alumno = Alumno.objects.get(id=alumno_id)
         # Asistencia.objects.filter(alumno=alumno)
-        asistencias = listar_alumnos_por_fecha_de_asistencia()
-        print(asistencias)
+        asistencias = listar_alumnos_por_fecha_de_asistencia(academia)
         return JsonResponse({
             "asistencias": listar_asistencias(alumno_id)
         }, status=201)
     else:
         return JsonResponse({
-            "asistencias": listar_alumnos_por_fecha_de_asistencia()
+            "asistencias": listar_alumnos_por_fecha_de_asistencia(academia)
         }, status=201)
 
 
