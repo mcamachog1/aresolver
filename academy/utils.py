@@ -1,19 +1,16 @@
 from datetime import datetime
-from .models import User, Alumno, Asistencia, Pago, Representante, Tutor
+from .models import User, Alumno, Asistencia, Pago, Representante, Tutor, Academia
 
 # Listar los alumnos por orden de asistencia mas reciente
-def listar_alumnos_por_fecha_de_asistencia():
-    def fecha_ultima_asistencia(e):
-        return datetime.strptime(e['fecha'], "%a %d-%m-%Y")
-
+def listar_alumnos_por_fecha_de_asistencia(academia):
     # Crear estructura
     alumnos_fecha_mas_reciente = []
     # Seleccionar los alummnos
-    alumnos = Alumno.objects.all()
+    alumnos = Alumno.objects.filter(academias=academia)
     # Recorrer los alumnos y crear registro con alumno y fecha mas reciente de asistencia
     for alumno in alumnos:
         asistencia = Asistencia.objects.filter(
-            alumno=alumno).order_by("-fecha").first()
+            alumno=alumno, academia=academia).order_by("-fecha").first()
         if asistencia is not None:
             fecha_str = asistencia.fecha.strftime("%a %d-%m-%Y")
         else:
@@ -59,11 +56,34 @@ def ultimo_inicio_de_clases(alumno_id):
     else: 
        return ultimo_pago.fecha_inicio
 
+def fecha_ultima_asistencia(e):
+    return datetime.strptime(e['fecha'], "%a %d-%m-%Y")
+
 
 def ultimas_asistencias(alumno_id):
+
     alumno = Alumno.objects.get(id=alumno_id)
     fecha_inicio_ultimo_ciclo = ultimo_inicio_de_clases(alumno_id)
     print(fecha_inicio_ultimo_ciclo)
     # sampledate__gte=datetime.date(2011, 1, 1)
     asistencias = Asistencia.objects.filter(fecha__gte=fecha_inicio_ultimo_ciclo, alumno=alumno)
     return asistencias.count()
+
+
+def obtener_academia(request):
+    if request:
+        if request.user.id is None:
+            return False
+        else:
+            # Obtener el usuario logueado
+            usuario = User.objects.get(id=request.user.id)
+            # Validar el tipo de usuario logueado
+            if usuario.tipo_de_usuario == usuario.DIRECTOR :
+                return Academia.objects.get(director=request.user.id)
+            # Si no es director ve los datos de Kayros
+            elif usuario.tipo_de_usuario != usuario.DIRECTOR :                
+                return Academia.objects.get(director=4)
+            else :
+                return False
+    else:
+        return False

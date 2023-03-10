@@ -4,14 +4,18 @@
       <tr>
         <th scope="col">Nombre</th>
         <th scope="col">Fecha de asistencia</th>
+        <th scope="col">Tutor</th>
+        <th scope="col">Academia</th>
         <th scope="col">Acción</th>
       </tr>
     </thead>
     {% for asistencia in asistencias %}
       <tbody>
         <tr>
-          <td>{{ asistencia.alumno.nombre }}</td>
+          <td><a href="{% url 'asistencia_entry' asistencia.id %}">{{ asistencia.alumno.nombre }}</a></td>
           <td>{{ asistencia.fecha }}</td>
+          <td>{{ asistencia.tutor.nombre }}</td>
+          <td>{{ asistencia.academia.nombre }}</td>
           <td><a href="{% url 'asistencia_delete' asistencia.id %}">Eliminar</a></td>
         </tr>
       </tbody>
