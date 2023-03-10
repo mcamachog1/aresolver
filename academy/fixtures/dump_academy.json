@@ -1,0 +1,19 @@
+[
+    {
+      "model": "academy.academia",
+      "pk": 2,
+      "fields": {
+        "nombre": "Dummy",
+        "director": 6
+      }
+    },
+    {
+      "model": "academy.academia",
+      "pk": 3,
+      "fields": {
+        "nombre": "Kairos",
+        "director": 7
+      }
+    }
+  ]
+  

@@ -13,6 +13,8 @@ urlpatterns = [
     
     # asistencias
     path("asistencias", views.asistencias, name="asistencias"),
+    path("asistencia_new", views.asistencia_new, name="asistencia_new"),
+    path("asistencia_entry/<int:asistencia_id>", views.asistencia_entry, name="asistencia_entry"),    
     path("asistencia_delete/<int:asistencia_id>", views.asistencia_delete, name="asistencia_delete"),
     
     # alumnos
