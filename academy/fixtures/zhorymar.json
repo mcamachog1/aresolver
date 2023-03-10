@@ -1,0 +1,20 @@
+[
+    {
+        "model": "academy.user",
+        "pk": 8,  
+        "fields": {
+          "email": "zhorymar@gmail.com",
+          "password":"12345",
+          "tipo_de_usuario": "D"
+        }
+      },
+      {
+        "model": "academy.academia",
+        "pk": 5,
+        "fields": {
+          "nombre": "Asesorías Zhorymar",
+          "director": 8
+        }
+    }
+]
+  
