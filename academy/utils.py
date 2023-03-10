@@ -75,8 +75,14 @@ def obtener_academia(request):
         if request.user.id is None:
             return False
         else:
-            if User.objects.get(id=request.user.id).tipo_de_usuario == 'D' :
+            # Obtener el usuario logueado
+            usuario = User.objects.get(id=request.user.id)
+            # Validar el tipo de usuario logueado
+            if usuario.tipo_de_usuario == usuario.DIRECTOR :
                 return Academia.objects.get(director=request.user.id)
+            # Si no es director ve los datos de Kayros
+            elif usuario.tipo_de_usuario != usuario.DIRECTOR :                
+                return Academia.objects.get(director=4)
             else :
                 return False
     else:
