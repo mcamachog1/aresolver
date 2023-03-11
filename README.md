@@ -20,4 +20,4 @@ To get started with Python Django on Gitpod, add a [`.gitpod.yml`](./.gitpod.yml
 
 
 ## Cargar academias por batch
-python manage.py loaddata dump_academy.json
+python manage.py loaddata zhorymar.json
