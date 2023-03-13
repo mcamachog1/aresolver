@@ -11,8 +11,8 @@
       </tr>
     </thead>
   <!-- <ul> -->
+  <tbody>
     {% for pago in pagos %}
-      <tbody>
         <tr>
           {% if alumno %}
             {% if alumno == pago.alumno %}
@@ -32,8 +32,15 @@
             <td><a href="{% url 'pago_delete' pago.id %}">Eliminar</a></td>            
           {% endif %}
         </tr>
-      </tbody>
-
-      {% endfor %}
+    {% endfor %}
+        <tr>
+          <td></td>
+          <td></td>
+          <td>pago.monto </td>
+          <td>pago.total_clases</td>
+          <td></td>
+          <td></td>
+        </tr>
+  </tbody>
 </table>
 {% endif %}

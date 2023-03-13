@@ -12,7 +12,7 @@
     {% for asistencia in asistencias %}
       <tbody>
         <tr>
-          <td><a href="{% url 'asistencia_entry' asistencia.id %}">{{ asistencia.alumno.nombre }}</a></td>
+          <td><a href="{% url 'asistencia_entry' asistencia.id %}">{{ asistencia.alumno.nombre }} {{asistencia.alumno.apellido}}</a></td>
           <td>{{ asistencia.fecha }}</td>
           <td>{{ asistencia.tutor.nombre }}</td>
           <td>{{ asistencia.academia.nombre }}</td>

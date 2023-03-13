@@ -58,8 +58,14 @@ def asistencia_delete(request, asistencia_id):
 # Listar los pagos
 def pagos(request):
     academia = obtener_academia(request)
+    # mes = Pago.objects.filter(date__year='2020', 
+    #                   date__month='01')
+    # month = datetime.now().month
+    # year = datetime.now().year
+    month = "01"
+    year = "2023"
     return render(request, "academy/pagos.html", {
-        "pagos": Pago.objects.filter(academia=academia).order_by("-fecha_pago"),
+        "pagos": Pago.objects.filter(academia=academia, fecha_pago__year=str(year), fecha_pago__month=str(month)).order_by("-fecha_pago"),
         "alumnos": Alumno.objects.filter(academias=academia),
         # .order_by('-fecha_pago')
     })

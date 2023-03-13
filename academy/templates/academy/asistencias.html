@@ -64,7 +64,7 @@
 <div class="result"></div>
 
 {% if asistencia %}
-  <p>Nombre: {{ asistencia.alumno.nombre }}</p>
+  <p>Nombre: {{asistencia.alumno.nombre}}</p>
   <p>Fecha: {{ asistencia.fecha }}</p>
 {% else %}
   <form action="{% url 'asistencia_new' %}" method="post">

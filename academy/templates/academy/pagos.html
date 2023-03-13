@@ -1,9 +1,6 @@
 {% extends "academy/layout.html" %}
 {% load static %}
 
-{% block script %}
-{% endblock %}
-
 {% block body %}
     {% if user.is_authenticated %}
         <div class="contenedor-principal">
@@ -40,8 +37,22 @@
             </div>   
             <br><br>     
             <div>
+                <input type="text" name="datepicker" id="datepicker" width="100px"/>
+            </div>
+            <div>
                 {% include "academy/tabla_pagos.html" %}            
             </div>        
         </div>
     {% endif %}
+    {% block script %}
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                $("#datepicker").datepicker({
+                    format: "mm-yyyy",
+                    startView: "months",
+                    minViewMode: "months"
+                });
+            })
+        </script>
+    {% endblock %}
 {% endblock %}
