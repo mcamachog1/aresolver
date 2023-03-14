@@ -50,8 +50,16 @@
                 $("#datepicker").datepicker({
                     format: "mm-yyyy",
                     startView: "months",
-                    minViewMode: "months"
+                    minViewMode: "months",
+                    autoclose: true 
                 });
+
+                $('#datepicker').datepicker()
+                    .on('changeDate', function(e) {
+                        console.log(e.date)
+                        // `e` here contains the extra attributes
+                });
+
             })
         </script>
     {% endblock %}
