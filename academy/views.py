@@ -5,9 +5,14 @@ from django.db import IntegrityError
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
+from django.core.serializers import serialize
+import json
+from django.core.mail import send_mail
+
 from datetime import datetime
 from .models import User, Alumno, Asistencia, Pago, Representante, Tutor, Academia
 from .utils import *
+
 
 
 # Asistencias
@@ -38,6 +43,21 @@ def asistencia_new(request):
         asistencia.academia=Academia.objects.get(id=request.POST['academia_id'])
         asistencia.save()
         return HttpResponseRedirect(reverse("asistencias"))
+
+# Crear una nueva asistencia conociend al alumno
+def asistencia_alumno(request, alumno_id):
+    if (request.method == 'POST'):
+        alumno = Alumno.objects.get(id=alumno_id)
+        alumno.status = alumno.ACTIVO
+        alumno.save()
+        asistencia = Asistencia()
+        asistencia.alumno=alumno
+        now = datetime.now()
+        asistencia.fecha= now.date()
+        asistencia.tutor=Asistencia.objects.filter(alumno=alumno).order_by("-fecha").first().tutor
+        asistencia.academia=Academia.objects.filter(alumno=alumno).order_by("-fecha").first().academia
+        asistencia.save()
+    return HttpResponseRedirect(reverse("asistencias"))
 
 # Ver una asistencia
 def asistencia_entry(request, asistencia_id):
@@ -260,15 +280,12 @@ def api_asistencias(request, alumno_id):
     academia = obtener_academia(request)
     if request.method == 'GET':
         alumno = Alumno.objects.get(id=alumno_id)
+        asistencias = Asistencia.objects.filter(alumno=alumno,academia=academia)
+        serialized_data = serialize("json", asistencias)
+        serialized_data = json.loads(serialized_data)
         # Asistencia.objects.filter(alumno=alumno)
-        asistencias = listar_alumnos_por_fecha_de_asistencia(academia)
-        return JsonResponse({
-            "asistencias": listar_asistencias(alumno_id)
-        }, status=201)
-    else:
-        return JsonResponse({
-            "asistencias": listar_alumnos_por_fecha_de_asistencia(academia)
-        }, status=201)
+        return JsonResponse({"asistencias": serialized_data}, safe=False, status=200)
+    
 
 
 def api_inactivar_alumnos(request):
@@ -365,21 +382,31 @@ def api_asociar_representante(request, alumno_id, representante_id):
     #     alumno.save()
     #     return HttpResponseRedirect(reverse("index"))
 
-def pagar(request, alumno_id=None):
-    if request.method == 'GET':
-        return render(request, "academy/cargar_pago.html", {
-            "alumno": Alumno.objects.get(id=alumno_id),
-        })
-    elif (request.method == 'POST'):
-        nuevo_pago = Pago()
-        nuevo_pago.alumno = Alumno.objects.get(id=alumno_id)
-        nuevo_pago.fecha_pago = request.POST["fecha_pago"]
-        nuevo_pago.total_clases = request.POST["total_clases"]
-        nuevo_pago.fecha_inicio = request.POST["fecha_inicio"]
-        nuevo_pago.monto = request.POST["monto"]
-        nuevo_pago.save()
-        return HttpResponseRedirect(reverse("alumnos"))
+# def pagar(request, alumno_id=None):
+#     if request.method == 'GET':
+#         return render(request, "academy/cargar_pago.html", {
+#             "alumno": Alumno.objects.get(id=alumno_id),
+#         })
+#     elif (request.method == 'POST'):
+#         nuevo_pago = Pago()
+#         nuevo_pago.alumno = Alumno.objects.get(id=alumno_id)
+#         nuevo_pago.fecha_pago = request.POST["fecha_pago"]
+#         nuevo_pago.total_clases = request.POST["total_clases"]
+#         nuevo_pago.fecha_inicio = request.POST["fecha_inicio"]
+#         nuevo_pago.monto = request.POST["monto"]
+#         nuevo_pago.save()
+#         return HttpResponseRedirect(reverse("alumnos"))
 
+
+
+def pagar(request):
+    send_mail(
+        'Subject here',
+        'Here is the message.',
+        'mcamachog@gmail.com',
+        ['aresolveronline@gmail.com'],
+        fail_silently=False,
+    )
 
 # def index(request):
 #     if request.method == 'POST':

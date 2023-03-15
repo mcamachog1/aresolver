@@ -21,12 +21,12 @@
               <thead>
                 <tr>
                   <th scope="col">Nombre</th>
-                  <th scope="col">Útima Asistencia</th>
-                  <th scope="col">Status</th>                  
-                  </tr>
+                  <th scope="col">Fecha de asistencia</th>
+                  <th scope="col">Tutor</th>
+                  <th scope="col">Academia</th>
+                  <th scope="col">Acción</th>
+                </tr>
               </thead>
-              <tbody id='table-body'>
-              </tbody>
             </table>
             `
           newTable.classList.add("table")
@@ -41,21 +41,16 @@
       fetch(`api/asistencias/${id}`)
       .then(response => response.json())
       .then(json => {
-        tableBody = document.querySelector('#table-body')
-        tableBody.innerHTML = ""
         json.asistencias.forEach((asistencia) => {
-        console.log(asistencia.nombre);        
-        tableBody.innerHTML += 
-        `<tr>
-          <td>${ asistencia.nombre }</td>
-          <td>${ asistencia.fecha }</td>
-          <td>${ asistencia.status }</td>
-          </tr>`
+          console.log(asistencia.fields)
+          console.log(asistencia.fields.fecha);    
+          console.log(asistencia.fields.alumno.nombre)
+          console.log(asistencia.fields.academia)
+          console.log(asistencia.fields.tutor)
         })
-      });
-      
-    }
-  })
+      })
+    };
+  });
 </script>
 {% endblock %}
 
