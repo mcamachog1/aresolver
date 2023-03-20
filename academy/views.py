@@ -6,8 +6,13 @@ from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.core.serializers import serialize
-import json
 from django.core.mail import send_mail
+
+from pprint import pprint
+
+import inspect
+import json
+
 
 from datetime import datetime
 from .models import User, Alumno, Asistencia, Pago, Representante, Tutor, Academia
@@ -44,7 +49,8 @@ def asistencia_new(request):
         asistencia.save()
         return HttpResponseRedirect(reverse("asistencias"))
 
-# Crear una nueva asistencia conociend al alumno
+# Crear una nueva asistencia express conociendo al alumno
+# manteniendo sus ultimos valores (academia y tutor)
 def asistencia_alumno(request, alumno_id):
     if (request.method == 'POST'):
         alumno = Alumno.objects.get(id=alumno_id)
@@ -55,9 +61,27 @@ def asistencia_alumno(request, alumno_id):
         now = datetime.now()
         asistencia.fecha= now.date()
         asistencia.tutor=Asistencia.objects.filter(alumno=alumno).order_by("-fecha").first().tutor
-        asistencia.academia=Academia.objects.filter(alumno=alumno).order_by("-fecha").first().academia
+        asistencia.academia=Asistencia.objects.filter(alumno=alumno).order_by("-fecha").first().academia
         asistencia.save()
-    return HttpResponseRedirect(reverse("asistencias"))
+        #  reverse("admin:app_list", kwargs={"app_label": "auth"})
+        return HttpResponseRedirect(reverse("alumno_entry", kwargs={"alumno_id":alumno_id}))
+
+# Crear una nueva asistencia manual conociendo al alumno
+# despliega el template de asistencias, seleccionando en la lista desplegable el alumno
+# que hizo el requerimiento
+def asistencia_manual_alumno(request, alumno_id):
+    if (request.method == 'GET'):
+        alumno = Alumno.objects.get(id=alumno_id)
+        academia = obtener_academia(request)
+        return render(request, "academy/asistencias.html", {
+            "alumno": alumno,
+            "tutor": tutor_ultima_asistencia(alumno_id),
+            "academias": Academia.objects.all(),
+            "asistencias": Asistencia.objects.filter(academia=academia, alumno=alumno).order_by("-fecha"),
+            "academia": academia
+        })        
+        
+
 
 # Ver una asistencia
 def asistencia_entry(request, asistencia_id):
@@ -70,27 +94,39 @@ def asistencia_entry(request, asistencia_id):
 # Eliminar asistencia
 def asistencia_delete(request, asistencia_id):
     asistencia = Asistencia.objects.get(id=asistencia_id)
+    alumno_id = asistencia.alumno.id
     asistencia.delete()
-    return HttpResponseRedirect(reverse("asistencias"))   
+    url = request.headers['Referer']
+    if "alumno" in url:
+        return HttpResponseRedirect(reverse("alumno_entry", kwargs={"alumno_id":alumno_id}))
+    elif "asistencias" in url:
+        return HttpResponseRedirect(reverse("asistencias"))
+    # pprint(inspect.getmembers(request))
 
 # Pagos
 
 # Listar los pagos
 def pagos(request):
+    month = "01"
+    year = "2023"    
     academia = obtener_academia(request)
+    total_pagos = total_pagado_por_mes(academia,year,month)
+    total_clases = total_clases_por_mes(academia,year,month)
     # mes = Pago.objects.filter(date__year='2020', 
     #                   date__month='01')
     # month = datetime.now().month
     # year = datetime.now().year
-    month = "01"
-    year = "2023"
+
     return render(request, "academy/pagos.html", {
         "pagos": Pago.objects.filter(academia=academia, fecha_pago__year=str(year), fecha_pago__month=str(month)).order_by("-fecha_pago"),
         "alumnos": Alumno.objects.filter(academias=academia),
+        "total_pagos": total_pagos,
+        "total_clases": total_clases,
+
         # .order_by('-fecha_pago')
     })
 
-# Listar los pagos de un alumno
+# Listar los pagos de un alumno 
 def pagos_alumno(request, alumno_id):
     return render(request, f"academy/pagos.html", {
         "pagos": Pago.objects.filter(alumno=Alumno.objects.get(id=alumno_id)).order_by("-fecha_pago"),
@@ -161,8 +197,6 @@ def alumno_entry(request, alumno_id):
             porcentaje = 100
         else:
             porcentaje = 0
-    print(ultimas_asistencias(alumno_id))
-    print(porcentaje)
     return render(request, "academy/alumnos.html", {
         "alumno": Alumno.objects.get(id=alumno_id),
         "representantes": Representante.objects.all().order_by("nombre"),
@@ -188,7 +222,7 @@ def alumno_edit(request, alumno_id):
             alumno = Alumno.objects.get(id=alumno_id)
             alumno.representante = Representante.objects.get(id=request.POST['representante_id'])
             alumno.save()
-        return HttpResponseRedirect(reverse("alumnos"))
+        return HttpResponseRedirect(reverse("alumno_entry", kwargs={"alumno_id":alumno_id}))
 
 # Representantes
 
@@ -277,14 +311,11 @@ def tutor_edit(request, tutor_id):
 # APIs           
 
 def api_asistencias(request, alumno_id):
-    academia = obtener_academia(request)
     if request.method == 'GET':
+        academia = obtener_academia(request)
         alumno = Alumno.objects.get(id=alumno_id)
-        asistencias = Asistencia.objects.filter(alumno=alumno,academia=academia)
-        serialized_data = serialize("json", asistencias)
-        serialized_data = json.loads(serialized_data)
-        # Asistencia.objects.filter(alumno=alumno)
-        return JsonResponse({"asistencias": serialized_data}, safe=False, status=200)
+        asistencias = datos_tabla_asistencia(alumno, academia)
+        return JsonResponse({"asistencias": asistencias}, safe=False, status=200)
     
 
 

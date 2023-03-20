@@ -2,36 +2,57 @@
 {% load static %}
 
 {% block script %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+        // Show compose view and hide other views
+            document.querySelector('#contenedor-editar-alumno').style.display = 'none';
+            var boton_editar = document.querySelector('#boton-editar-alumno');
+            var status_div = boton_editar.style.display;
+            boton_editar.addEventListener('click', () => {
+                if (document.querySelector('#contenedor-editar-alumno').style.display == 'none')
+                    document.querySelector('#contenedor-editar-alumno').style.display = 'block';
+                else 
+                    document.querySelector('#contenedor-editar-alumno').style.display = 'none';
+            });
+        })
+    </script>
 {% endblock %}
-
+{% block style %}
+    <style>
+        .titulo-alumno {
+            font-weight: bold;
+            font-size: 30px;
+        }
+    </style>
+{% endblock %}
 {% block body %}
     {% if user.is_authenticated %}
-        {% if alumno %}
+    {% if alumno %}
+        <div class="d-flex">
+            <div class="titulo-alumno">{{ alumno.nombre }} {{ alumno.apellido }}</div>
+            <button class="btn btn-outline-primary m-2" id="boton-editar-alumno">Editar</button>
+        </div>
+        <div class="contenedor-editar-alumno" id="contenedor-editar-alumno">
             <form action="{% url 'alumno_edit' alumno.id %}" method="post">
                 {% csrf_token %}
-                <input name="nombre" type="text" value="{{ alumno.nombre }}" >
-                <input name="apellido" type="text" value="{{ alumno.apellido }}">
-                <input name="email" type="email" value="{{ alumno.email }}" placeholder="Email">
-                
-                <select name="representante_id" id="representantes">
-                    <option value="-1">Seleccione un representante:</option>
-                    {% for representante in representantes %}
-                        {% if representante.id == alumno.representante.id %}
-                            <option value="{{ representante.id }}" selected>{{ representante.nombre }} {{ representante.apellido }}</option>
-                        {% else %}
-                            <option value="{{ representante.id }}">{{ representante.nombre }} {{ representante.apellido }}</option>          
-                        {% endif %}
-                    {% endfor %}
-                </select>                
-                
-                
-                
-                <input type="submit" value="Salvar" name="salvar" >
-                <input type="submit" value="Eliminar" name="eliminar" id="boton-eliminar">
+                    <input name="nombre" type="text" value="{{ alumno.nombre }}" >
+                    <input name="apellido" type="text" value="{{ alumno.apellido }}">
+                    <input name="email" type="email" value="{% if alumno.email is not None %} {{ alumno.email }} {% endif %}" placeholder="Email">
 
-
-
+                    <select name="representante_id" id="representantes">
+                        <option value="-1">Seleccione un representante:</option>
+                        {% for representante in representantes %}
+                            {% if representante.id == alumno.representante.id %}
+                                <option value="{{ representante.id }}" selected>{{ representante.nombre }} {{ representante.apellido }}</option>
+                            {% else %}
+                                <option value="{{ representante.id }}">{{ representante.nombre }} {{ representante.apellido }}</option>          
+                            {% endif %}
+                        {% endfor %}
+                    </select>                
+                    <input type="submit" value="Salvar" name="salvar">
+                    <input type="submit" value="Eliminar" name="eliminar" id="boton-eliminar">
             </form>
+        </div>
         {% else %}
             <form action="{% url 'alumno_new'  %}" method="post">
             {% csrf_token %}
@@ -42,7 +63,10 @@
             </form>
         {% endif %}
         {% if ultimas_clases_pagadas or ultimas_asistencias %}
-        <div class="titulo-del-grafico">Porcentaje de clases vistas {{ porcentaje }}%</div> 
+            <div class="titulo-del-grafico">
+                <div>Sesiones vistas: {{ ultimas_asistencias }}</div> 
+                <div>Sesiones pagadas: {{ ultimas_clases_pagadas }}</div>
+            </div>
             <div class="chart-wrap "> <!-- quitar el estilo "horizontal" para visualizar verticalmente -->       
                 <div class="grid">
                     <div class="bar" style="--bar-value:{{ porcentaje }}%;" title="Clases vistas {{ porcentaje }}%"></div>
@@ -54,13 +78,29 @@
             {% include "academy/tabla_alumnos.html" %}    
         {% endif %}
 
-        {% if asistencias %}
-            <h2>Asistencias</h2>
+        {% if asistencias and alumno %}
+            <div class="cargar-asistencia">
+                <h2>Asistencias</h2>
+                <div style="display: flex; justify-content: flex-end">
+                    <form class="mx-2" action="{% url 'asistencia_alumno' alumno.id %}" method="post">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-primary">Asistencia Express</button>
+                    </form>
+                    <form class="mx-2" action="{% url 'asistencias' %}">
+                        <button type="submit" class="btn btn-outline-primary">Asistencia Manual</button>
+                    </form>
+                </div>
+            </div>
             {% include "academy/tabla_asistencias.html" %}    
         {% endif %}
 
         {% if pagos %}
-            <h2>Pagos</h2>
+            <div class="cargar-pago">
+                <h2>Pagos</h2>
+                <a href="{% url 'pagos_alumno' alumno.id %}">
+                    <button class="btn btn-outline-primary">Cargar Pago</button>
+                </a>
+            </div>
             {% include "academy/tabla_pagos.html" %}    
         {% endif %}
 

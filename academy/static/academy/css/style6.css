@@ -1,0 +1,48 @@
+.contenedor-principal {
+    border: 1px solid red;
+    margin: 2px;
+    padding: 4px; 
+}
+
+.contenedor-lista-de-tutores{
+    margin-top: 5px; 
+    border: 1px solid blue;
+}
+
+.contenedor-entrada-de-datos{
+    border: 1px solid green;
+}
+
+.titulo-del-grafico{
+    font-size: medium;
+    font-weight: bold;
+    margin-bottom: 30px;
+    margin-top: 10px;
+
+}
+
+.active {
+    font-weight: 600;
+}
+
+.cargar-asistencia, .cargar-pago {
+    display:flex;
+    justify-content: space-between;
+    padding: 10px;
+}
+
+.btn-verde {
+    color: #fff;
+    background-color: #169979;
+    border-color: #169979;
+}
+
+.btn-verde:hover, .btn-verde:focus, .btn-verde:active, .btn-verde.active, .open>.dropdown-toggle.btn-verde {
+    color: #fff;
+    background-color: #a7ca18;
+    border-color: #fff; /*set the color you want here*/
+}
+
+.titulo-alumno {
+    font-weight: 400;
+}

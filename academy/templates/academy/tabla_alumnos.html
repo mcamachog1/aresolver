@@ -5,8 +5,7 @@
         <th scope="col">Id</th>
         <th scope="col">Nombre</th>
         <th scope="col">Útima Asistencia</th>
-        <th scope="col">Status</th>
-        <th scope="col">Acción</th>                  
+        <th scope="col">Status</th>                  
       </tr>
     </thead>
   <!-- <ul> -->
@@ -17,10 +16,6 @@
           <td><a href="{% url 'alumno_entry' alumno.id %}">{{ alumno.nombre }}</a></td>
           <td>{{ alumno.fecha }}</td>
           <td>{{ alumno.status }}</td>
-          <td>
-            <a href="{% url 'pagos_alumno' alumno.id %}"><span class="m-1">Pagar</span></a>
-            <a href="{% url 'asistencia_alumno' alumno.id %}"><span class="m-1">Asistencia</span></a>
-          </td>
           
         </tr>
       </tbody>

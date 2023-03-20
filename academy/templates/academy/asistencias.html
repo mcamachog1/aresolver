@@ -4,69 +4,78 @@
 {% block script %}
 <script>
   document.addEventListener('DOMContentLoaded', function () {
-    const dt = new Date();
-    const dateFormat = dt.getFullYear() + "-" +((dt.getMonth()+1).length != 2 ? "0" + (dt.getMonth() + 1) : (dt.getMonth()+1)) + "-" + (dt.getDate().length != 2 ?"0" + dt.getDate() : dt.getDate());
-    document.getElementById('fecha-asistencia').value = dateFormat  
-    const alumnos = document.querySelector('#alumnos');
-    alumnos.addEventListener('change', (event) => asistencias_alumno(event.target.value))
- 
-    // fetch con get
-    function asistencias_alumno(id) {
-      // funciones auxiliares
-      function addTable() {
-          // create a new table element
-          const newTable = document.createElement("table");
-          newTable.innerHTML = `
-            <table>
-              <thead>
-                <tr>
-                  <th scope="col">Nombre</th>
-                  <th scope="col">Fecha de asistencia</th>
-                  <th scope="col">Tutor</th>
-                  <th scope="col">Academia</th>
-                  <th scope="col">Acción</th>
-                </tr>
-              </thead>
-            </table>
-            `
-          newTable.classList.add("table")
-          // add the newly created element and its content into the DOM
-          // const currentDiv = document.getElementById("titulo");
-          document.body.appendChild(newTable)
-      }
-        
-      document.querySelector('table').remove();
-      addTable()
-      
-      fetch(`api/asistencias/${id}`)
-      .then(response => response.json())
-      .then(json => {
-        json.asistencias.forEach((asistencia) => {
-          console.log(asistencia.fields)
-          console.log(asistencia.fields.fecha);    
-          console.log(asistencia.fields.alumno.nombre)
-          console.log(asistencia.fields.academia)
-          console.log(asistencia.fields.tutor)
+    if (document.querySelector('#fecha-asistencia')) {
+      const dt = new Date();
+      console.log(dt)
+      const dateFormat = dt.getFullYear() + "-" +((dt.getMonth()+1).length != 2 ? "0" + (dt.getMonth() + 1) : (dt.getMonth()+1)) + "-" + (dt.getDate()< 10 ?"0" + dt.getDate() : dt.getDate());
+      console.log(dateFormat)
+      document.getElementById('fecha-asistencia').value = dateFormat  
+    
+      const alumnos = document.querySelector('#alumnos');
+      alumnos.addEventListener('change', (event) => asistencias_alumno(event.target.value))
+  
+      // fetch con get
+      function asistencias_alumno(id) {
+        // funciones auxiliares
+        function addTable() {
+            // create a new table element
+            const newTable = document.createElement("table");
+            newTable.innerHTML = `
+              <table>
+                <thead>
+                  <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Fecha de asistencia</th>
+                    <th scope="col">Tutor</th>
+                    <th scope="col">Academia</th>
+                    <th scope="col">Acción</th>
+                  </tr>
+                </thead>
+                <tbody id='table-body'>
+                </tbody>                
+              </table>
+              `
+            newTable.classList.add("table")
+            // add the newly created element and its content into the DOM
+            // const currentDiv = document.getElementById("titulo");
+            document.body.appendChild(newTable)
+        }
+          
+        document.querySelector('table').remove();
+        addTable()
+
+        tableBody = document.querySelector('#table-body')
+        fetch(`api/asistencias/${id}`)
+        .then(response => response.json())
+        .then(json => {
+          json.asistencias.forEach((asistencia) => {
+            tableBody.innerHTML += 
+            `<tr>
+              <td>${ asistencia.nombre }</td>
+              <td>${ asistencia.fecha }</td>
+              <td>${ asistencia.tutor }</td>
+              <td>${ asistencia.academia }</td>
+              <td><a href='asistencia_delete/${ asistencia.id }'>Eliminar</a></td>
+            </tr>`
+          })
         })
-      })
-    };
+      };
+    }
   });
 </script>
 {% endblock %}
 
 {% block body %}
-{% if user.is_authenticated %}
-<div class="result"></div>
+  {% if user.is_authenticated %}
+    {% if asistencia %}
+      <p>Nombre: {{asistencia.alumno.nombre}}</p>
+      <p>Fecha: {{ asistencia.fecha }}</p>
+    {% else %}
+      <form action="{% url 'asistencia_new' %}" method="post">
+        {% include "academy/asistencia_input_form.html" %}
+      </form>
+    {% endif %}
+    {% include "academy/tabla_asistencias.html" %}
 
-{% if asistencia %}
-  <p>Nombre: {{asistencia.alumno.nombre}}</p>
-  <p>Fecha: {{ asistencia.fecha }}</p>
-{% else %}
-  <form action="{% url 'asistencia_new' %}" method="post">
-    {% include "academy/asistencia_input_form.html" %}
-  </form>
-{% endif %}
-{% include "academy/tabla_asistencias.html" %}
-
-{% endif %}
+  {% endif %}
 {% endblock %}
