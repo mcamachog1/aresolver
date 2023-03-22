@@ -5,6 +5,7 @@ from django.db import IntegrityError
 from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
+from django.core.paginator import Paginator
 from django.core.serializers import serialize
 from django.core.mail import send_mail
 
@@ -197,10 +198,14 @@ def alumno_entry(request, alumno_id):
             porcentaje = 100
         else:
             porcentaje = 0
+    asistencias = Asistencia.objects.filter(alumno=Alumno.objects.get(id=alumno_id)).order_by("-fecha")
+    paginator = Paginator(asistencias, 5)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     return render(request, "academy/alumnos.html", {
         "alumno": Alumno.objects.get(id=alumno_id),
         "representantes": Representante.objects.all().order_by("nombre"),
-        "asistencias": Asistencia.objects.filter(alumno=Alumno.objects.get(id=alumno_id)).order_by("-fecha"),
+        "asistencias": page_obj,
         "pagos": Pago.objects.filter(alumno=Alumno.objects.get(id=alumno_id)).order_by("-fecha_pago"),
         "ultimas_clases_pagadas": ultimas_clases_pagadas(alumno_id),
         "ultimas_asistencias": ultimas_asistencias(alumno_id),
@@ -505,3 +510,4 @@ def register_view(request):
         return HttpResponseRedirect(reverse("alumnos"))
     else:
         return render(request, "academy/register.html")
+  

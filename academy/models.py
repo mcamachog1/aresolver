@@ -39,7 +39,7 @@ class Tutor(models.Model):
 	email = models.EmailField(max_length=254, null=True)
 	fecha_nacimiento = models.DateTimeField(null=True)
 	celular = models.CharField(max_length=15, null=True)
-	academia = models.ForeignKey(Academia, on_delete=models.CASCADE, related_name="tutores_de_una_academia", null=True)
+	academia = models.ForeignKey(Academia, on_delete=models.CASCADE, related_name="tutores", null=True)
 	def serialize(self):
 			return (f"{self.nombre} {self.apellido}")
 
@@ -51,6 +51,7 @@ class Representante(models.Model):
 	fecha_creacion = models.DateTimeField(auto_now_add=True)
 	fecha_cambio = models.DateTimeField(auto_now=True)
 	celular = models.CharField(max_length=15, null=True)
+	academia = models.ForeignKey(Academia, on_delete=models.CASCADE, related_name="representantes", null=True)
 	def serialize(self):
 			return (f"{self.nombre} {self.apellido}")
 
@@ -87,8 +88,8 @@ class Alumno(models.Model):
 class Asistencia(models.Model):
 	fecha = models.DateField(null=False, default=datetime.datetime.now())
 	alumno = models.ForeignKey(Alumno, on_delete=models.CASCADE, related_name="asistencias", null=False) 
-	academia = models.ForeignKey(Academia, on_delete=models.CASCADE, related_name="academias", null=True)
-	tutor = models.ForeignKey(Tutor, on_delete=models.CASCADE, related_name="tutores", null=True)
+	academia = models.ForeignKey(Academia, on_delete=models.CASCADE, related_name="asistencias", null=True)
+	tutor = models.ForeignKey(Tutor, on_delete=models.CASCADE, related_name="asistencias", null=True)
 
 	def serialize(self):
 		return (f"id: {self.id} fecha: {self.fecha} - alumno: {self.alumno.nombre} - academia: {self.academia.nombre} - tutor: {self.tutor.nombre}")
@@ -99,4 +100,4 @@ class Pago(models.Model):
 	total_clases = models.IntegerField()
 	fecha_inicio = models.DateField()
 	alumno = models.ForeignKey(Alumno, on_delete=models.CASCADE, related_name="pagos_realizados", null=False) 
-	academia = models.ForeignKey(Academia, on_delete=models.CASCADE, related_name="pagos_de_una_academia", null=True)
+	academia = models.ForeignKey(Academia, on_delete=models.CASCADE, related_name="pagos_realizados", null=True)

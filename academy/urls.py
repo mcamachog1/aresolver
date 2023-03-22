@@ -50,10 +50,11 @@ urlpatterns = [
     path("mantenimiento", views.mantenimiento, name="mantenimiento"),
     # cargar-pago
     # path("cargar-pago", views.cargar_pago, name="cargar_pago"),
-
+    
     # Api Routes
     path("api/asistencias/<int:alumno_id>", views.api_asistencias, name="api_asistencias"), 
     path("api/asociar_representante/<int:alumno_id>/<int:representante_id>", views.api_asociar_representante, name="api_asociar_representante"), 
     path("api/inactivar_alumnos", views.api_inactivar_alumnos, name="api_inactivar_alumnos"),
+
 ]
 

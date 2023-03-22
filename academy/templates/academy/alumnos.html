@@ -80,7 +80,35 @@
 
         {% if asistencias and alumno %}
             <div class="cargar-asistencia">
-                <h2>Asistencias</h2>
+                <div style="display: flex; justify-content: flex-start">
+                    <h2>Asistencias</h2>
+                    <nav aria-label="Page navigation example" class="mx-3">
+                        <ul class="pagination">
+                        {% if asistencias.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page=1">Primera</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ asistencias.previous_page_number }}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        {% endif %}
+                        <li class="page-item"><span class="page-link">Página {{ asistencias.number }} de {{ asistencias.paginator.num_pages }}.</span>
+                        </li>
+                        {% if asistencias.has_next %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ asistencias.next_page_number }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ asistencias.paginator.num_pages }}">Última</a>
+                        </li>
+                        {% endif %}
+                        </ul>
+                    </nav>
+                </div>
                 <div style="display: flex; justify-content: flex-end">
                     <form class="mx-2" action="{% url 'asistencia_alumno' alumno.id %}" method="post">
                         {% csrf_token %}
@@ -91,7 +119,8 @@
                     </form>
                 </div>
             </div>
-            {% include "academy/tabla_asistencias.html" %}    
+            {% include "academy/tabla_asistencias.html" %} 
+
         {% endif %}
 
         {% if pagos %}
