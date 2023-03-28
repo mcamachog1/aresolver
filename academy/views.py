@@ -10,6 +10,7 @@ from django.core import serializers
 from django.core.mail import send_mail
 
 from pprint import pprint
+from datetime import date
 
 import inspect
 import json
@@ -102,10 +103,11 @@ def asistencia_delete(request, asistencia_id):
 
 # Listar los pagos
 def pagos(request):
-    month = "01"
-    year = "2023"    
+    # Ojo que pasa si la fecha no devuelve registros? La tabla no se pinta y da error
+    month = date.today().month 
+    year = date.today().year
     academia = obtener_academia(request)
-    total_pagos = total_pagos_por_mes(academia,year,month)
+    total_pagos = total_montos_por_mes(academia,year,month)
     total_clases = total_clases_pagadas_por_mes(academia,year,month)
     # mes = Pago.objects.filter(date__year='2020', 
     #                   date__month='01')
