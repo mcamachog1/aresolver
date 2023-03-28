@@ -37,7 +37,7 @@
             </div>   
             <br><br>     
             <div>
-                <input type="text" name="datepicker" id="datepicker" width="100px"/>
+                <input type="text" onkeydown="return false" name="datepicker" id="datepicker" width="100px"/>
             </div>
             <div>
                 {% include "academy/tabla_pagos.html" %}            
@@ -47,6 +47,38 @@
     {% block script %}
         <script>
             document.addEventListener('DOMContentLoaded', function () {
+                function addRows(pagos, total_monto_mes, total_clases_mes) {
+                    // borrar body original
+                    if (document.querySelector('#body-tabla-pagos'))
+                        document.querySelector('#body-tabla-pagos').remove();
+                    const newTbody = document.createElement("tbody");
+                    newTbody.setAttribute("id","body-tabla-pagos");
+                    pagos.forEach(pago => {
+                        newTbody.innerHTML += 
+                        `<tr>
+                            <td>${ pago.nombre }</td>
+                            <td>${ pago.fecha_pago }</td>
+                            <td>${ pago.monto }</td>
+                            <td>${ pago.total_clases }</td>
+                            <td>${ pago.fecha_inicio }</td>
+                            <td><a href='pago_delete/${ pago.id }'>Eliminar</a></td>
+                        </tr>`
+                        })
+                    
+                    // Fila de totales
+                    newTbody.innerHTML += 
+                        `<tr>
+                            <td></td>
+                            <td></td>
+                            <td>${ total_monto_mes }</td>
+                            <td>${ total_clases_mes }</td>
+                            <td></td>
+                            <td></td>
+                        </tr>`
+                    
+                    document.querySelector('#tabla-pagos').appendChild(newTbody)
+                }        
+
                 $("#datepicker").datepicker({
                     format: "mm-yyyy",
                     startView: "months",
@@ -55,12 +87,21 @@
                 });
 
                 $('#datepicker').datepicker()
-                    .on('changeDate', function(e) {
-                        console.log(e.date)
-                        // `e` here contains the extra attributes
+                    .on('hide', function(e) {
+                        console.log(e)
+                        let month = e.date.getMonth() + 1;
+                        let year = e.date.getFullYear();
+                        fetch(`api/pagos/${month}/${year}`)
+                            .then(response => response.json())
+                            .then(json => {
+                                console.log(json)
+                                const pagos = JSON.parse(json.pagos)
+                                // pagos.forEach(element => console.log(element.fields));
+                                addRows(pagos, json.total_monto_mes, json.total_clases_mes)
+                            })
+                        })
                 });
 
-            })
         </script>
     {% endblock %}
 {% endblock %}

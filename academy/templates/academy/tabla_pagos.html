@@ -1,5 +1,5 @@
 {% if pagos %}
-<table class="table" id="table-tutores">
+<table class="table" id="tabla-pagos">
     <thead>
       <tr>
         <th scope="col">Alumno</th>
@@ -11,7 +11,7 @@
       </tr>
     </thead>
   <!-- <ul> -->
-  <tbody>
+  <tbody id="body-tabla-pagos">
     {% for pago in pagos %}
         <tr>
           {% if alumno %}
@@ -24,7 +24,7 @@
               <td><a href="{% url 'pago_delete' pago.id %}">Eliminar</a></td>
             {% endif %}
           {% else %}
-            <td><a href="{% url 'pagos_alumno' pago.alumno.id %}">{{ pago.alumno.nombre }} {{ pago.alumno.apellido }}</a></td>
+            <td>{{ pago.alumno.nombre }} {{ pago.alumno.apellido }}</td>
             <td>{{ pago.fecha_pago }}</td>
             <td>{{ pago.monto }}</td>
             <td>{{ pago.total_clases }}</td>
@@ -36,8 +36,8 @@
         <tr>
           <td></td>
           <td></td>
-          <td>{{ total_pagos }}</td>
-          <td>{{ total_clases }}</td>
+          <!-- <td>{{ total_pagos }}</td>
+          <td>{{ total_clases }}</td> -->
           <td></td>
           <td></td>
         </tr>

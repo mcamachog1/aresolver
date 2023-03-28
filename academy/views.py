@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from django.core.paginator import Paginator
-from django.core.serializers import serialize
+from django.core import serializers
 from django.core.mail import send_mail
 
 from pprint import pprint
@@ -14,12 +14,9 @@ from pprint import pprint
 import inspect
 import json
 
-
 from datetime import datetime
 from .models import User, Alumno, Asistencia, Pago, Representante, Tutor, Academia
 from .utils import *
-
-
 
 # Asistencias
 
@@ -34,7 +31,6 @@ def asistencias(request):
             "asistencias": Asistencia.objects.filter(academia=academia).order_by("-fecha"),
             "academia": academia
         })
-
 
 # Crear una nueva asistencia
 def asistencia_new(request):
@@ -82,8 +78,6 @@ def asistencia_manual_alumno(request, alumno_id):
             "academia": academia
         })        
         
-
-
 # Ver una asistencia
 def asistencia_entry(request, asistencia_id):
     alumno = Asistencia.objects.get(id=asistencia_id).alumno
@@ -111,8 +105,8 @@ def pagos(request):
     month = "01"
     year = "2023"    
     academia = obtener_academia(request)
-    total_pagos = total_pagado_por_mes(academia,year,month)
-    total_clases = total_clases_por_mes(academia,year,month)
+    total_pagos = total_pagos_por_mes(academia,year,month)
+    total_clases = total_clases_pagadas_por_mes(academia,year,month)
     # mes = Pago.objects.filter(date__year='2020', 
     #                   date__month='01')
     # month = datetime.now().month
@@ -157,7 +151,6 @@ def pago_delete(request, pago_id):
     pago.delete()
     return HttpResponseRedirect(reverse("pagos"))   
 
-
 # Alumnos
 
 # Listar los alumnos
@@ -169,7 +162,6 @@ def alumnos(request):
         })  
     else:
         return render(request, "academy/login.html")
-
 
 # Crear un nuevo alumno
 def alumno_new(request):
@@ -313,53 +305,6 @@ def tutor_edit(request, tutor_id):
         tutor.save()
         return HttpResponseRedirect(reverse("tutores"))
 
-# APIs           
-
-def api_asistencias(request, alumno_id):
-    if request.method == 'GET':
-        academia = obtener_academia(request)
-        alumno = Alumno.objects.get(id=alumno_id)
-        asistencias = datos_tabla_asistencia(alumno, academia)
-        return JsonResponse({"asistencias": asistencias}, safe=False, status=200)
-    
-
-
-def api_inactivar_alumnos(request):
-    if request.method == 'GET':
-        alumnos = Alumno.objects.all()
-        for alumno in alumnos:
-            if True:
-                alumno.status = alumno.ACTIVO
-                alumno.save()
-        return JsonResponse({
-            "message": f"se inactivaron tanto alumnos"
-        }, status=201)
-
-
-# def cargar_pago(request, alumno_id=None):
-#     if request.method == 'GET':
-#         return render(request, "academy/cargar_pago.html", {
-#             "variable": 'mantenimiento'
-#         })
-#     elif request.method == 'POST':
-#         return HttpResponse("Metodo no manejado")
-#     else:
-#         return HttpResponse("Metodo no manejado")
-
-
-def mantenimiento(request):
-    return render(request, "#", {
-        "mostrar": 'mantenimiento'
-    })
-
-# Alumnos
-
-
-
-def crear_alumno(nombre, apellido):
-    nuevo = Alumno(nombre=nombre, apellido=apellido)
-    nuevo.save()
-
 
 def actualizar_perfil(perfil):
     print(perfil['id'])
@@ -369,69 +314,15 @@ def actualizar_perfil(perfil):
     objeto.email = perfil['email']
     objeto.save()
 
-def contar_asistencias_hoy(alumno):
-    ultimo_pago = Pago.objects.filter(alumno=alumno).order_by('-fecha_pago').first()
-    ultimo_pago.fecha_inicio
+# def contar_asistencias_hoy(alumno):
+#     ultimo_pago = Pago.objects.filter(alumno=alumno).order_by('-fecha_pago').first()
+#     ultimo_pago.fecha_inicio
 
+def mantenimiento(request):
+    return render(request, "#", {
+        "mostrar": 'mantenimiento'
+    })
 
-
-
-def api_representante(request, representante_id):
-    if request.method == 'GET':
-        representante = Representante.objects.get(id=representante_id)
-        return JsonResponse({
-            "representante": representante
-        }, status=201)
-
-# def crear_representante(request, alumno_id):
-#     if request.method == 'GET':
-#         return render(request, "academy/perfil.html", {
-#             "alumno": Alumno.objects.get(id=alumno_id),
-#         })
-#     elif (request.method == 'POST'):
-#         nuevo = Representante()
-#         nuevo.nombre = request.POST['nombre']
-#         nuevo.apellido = request.POST['apellido']
-#         nuevo.celular = request.POST['celular']
-#         nuevo.email = request.POST['email']
-#         nuevo.save()
-#         alumno = Alumno.objects.get(id=alumno_id)
-#         alumno.representante = nuevo
-#         alumno.save()
-#         return HttpResponseRedirect(reverse("index"))
-
-@csrf_exempt
-def api_asociar_representante(request, alumno_id, representante_id):
-    if request.method == 'POST':
-        alumno = Alumno.objects.get(id=alumno_id)
-        representante = Representante.objects.get(id=representante_id)
-        alumno.representante = representante
-        alumno.save()
-        return JsonResponse({
-            "message": f"se asocio el representante {representante.nombre} al alumno {alumno.nombre}"
-        }, status=201)
-
-    # if request.method == 'POST':
-    #     alumno = Alumno.objects.get(id=alumno_id)
-    #     representante = Representante.objects.get(id=representante_id)
-    #     alumno.representante = representante
-    #     alumno.save()
-    #     return HttpResponseRedirect(reverse("index"))
-
-# def pagar(request, alumno_id=None):
-#     if request.method == 'GET':
-#         return render(request, "academy/cargar_pago.html", {
-#             "alumno": Alumno.objects.get(id=alumno_id),
-#         })
-#     elif (request.method == 'POST'):
-#         nuevo_pago = Pago()
-#         nuevo_pago.alumno = Alumno.objects.get(id=alumno_id)
-#         nuevo_pago.fecha_pago = request.POST["fecha_pago"]
-#         nuevo_pago.total_clases = request.POST["total_clases"]
-#         nuevo_pago.fecha_inicio = request.POST["fecha_inicio"]
-#         nuevo_pago.monto = request.POST["monto"]
-#         nuevo_pago.save()
-#         return HttpResponseRedirect(reverse("alumnos"))
 
 
 
@@ -443,17 +334,6 @@ def pagar(request):
         ['aresolveronline@gmail.com'],
         fail_silently=False,
     )
-
-# def index(request):
-#     if request.method == 'POST':
-#         crear_alumno(request.POST["nombre"], request.POST["apellido"])
-#         return HttpResponseRedirect(reverse("index"))
-#     else:
-#         return render(request, "academy/index.html", {
-#             "alumnos": listar_alumnos_por_fecha_de_asistencia(),
-#             "mostrar": 'index'
-#         })
-
 
 # Autenticación
 
@@ -476,7 +356,6 @@ def login_view(request):
             })
     else:
         return render(request, "academy/login.html")
-
 
 # logout
 def logout_view(request):
@@ -510,4 +389,64 @@ def register_view(request):
         return HttpResponseRedirect(reverse("alumnos"))
     else:
         return render(request, "academy/register.html")
+
+# APIs           
+
+@csrf_exempt
+def api_asociar_representante(request, alumno_id, representante_id):
+    if request.method == 'POST':
+        alumno = Alumno.objects.get(id=alumno_id)
+        representante = Representante.objects.get(id=representante_id)
+        alumno.representante = representante
+        alumno.save()
+        return JsonResponse({
+            "message": f"se asocio el representante {representante.nombre} al alumno {alumno.nombre}"
+        }, status=201)
+
+def api_asistencias(request, alumno_id):
+    if request.method == 'GET':
+        academia = obtener_academia(request)
+        alumno = Alumno.objects.get(id=alumno_id)
+        asistencias = datos_tabla_asistencia(alumno, academia)
+        return JsonResponse({"asistencias": asistencias}, safe=False, status=200)
+    
+def api_inactivar_alumnos(request):
+    if request.method == 'GET':
+        alumnos = Alumno.objects.all()
+        for alumno in alumnos:
+            if True:
+                alumno.status = alumno.ACTIVO
+                alumno.save()
+        return JsonResponse({
+            "message": f"se inactivaron tanto alumnos"
+        }, status=201)
+
+def api_pagos(request, month, year):
+    academia = obtener_academia(request)
+    total_pagos_mes = total_pagos_por_mes(academia,year,month)
+    total_clases_mes = total_clases_pagadas_por_mes(academia,year,month)
+    total_monto_mes = total_montos_por_mes(academia,year,month)
+    pagos_pintar = tabla_pagos(Pago.objects.filter(academia=academia, fecha_pago__year=str(year), fecha_pago__month=str(month)).order_by("-fecha_pago"))
+    pagos = json.dumps(pagos_pintar)
+    return JsonResponse({
+        "pagos": pagos,
+        "total_pagos_mes": total_pagos_mes,
+        "total_clases_mes": total_clases_mes,
+        "total_monto_mes": total_monto_mes,
+        "message": f"se llamo api pagos con mes {month} y año {year}"
+        }, status=201)  
   
+def api_representante(request, representante_id):
+    if request.method == 'GET':
+        representante = Representante.objects.get(id=representante_id)
+        return JsonResponse({
+            "representante": representante
+        }, status=201)
+
+def api_alumno_entry(request, alumno_id):
+    alumno = Alumno.objects.get(id=alumno_id)
+    nombre = f"{alumno.nombre} {alumno.apellido}"
+    if request.method == 'GET':
+        return JsonResponse({
+            "nombre": nombre
+        }, status=201)

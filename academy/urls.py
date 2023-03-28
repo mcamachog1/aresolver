@@ -44,7 +44,6 @@ urlpatterns = [
     path("pago_new", views.pago_new, name="pago_new"),  
     path("pago_delete/<int:pago_id>", views.pago_delete, name="pago_delete"),  
     path("pagos_alumno/<int:alumno_id>", views.pagos_alumno, name="pagos_alumno"),  
-    # path("crear-representante/<int:alumno_id>", views.crear_representante, name="crear_representante"),
     # path("asociar-representante/<int:alumno_id>/<int:representante_id>/", views.asociar_representante, name="asociar_representante"),
     path("pagar/<int:alumno_id>", views.pagar, name="pagar"),
     path("mantenimiento", views.mantenimiento, name="mantenimiento"),
@@ -55,6 +54,8 @@ urlpatterns = [
     path("api/asistencias/<int:alumno_id>", views.api_asistencias, name="api_asistencias"), 
     path("api/asociar_representante/<int:alumno_id>/<int:representante_id>", views.api_asociar_representante, name="api_asociar_representante"), 
     path("api/inactivar_alumnos", views.api_inactivar_alumnos, name="api_inactivar_alumnos"),
+    path("api/alumno_entry/<int:alumno_id>", views.api_alumno_entry, name="api_alumno_entry"), 
+    path("api/pagos/<int:month>/<int:year>", views.api_pagos, name="api_pagos"),
 
 ]
 

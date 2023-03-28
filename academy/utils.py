@@ -107,12 +107,25 @@ def obtener_academia(request):
 
 # Funciones usadas en las views
 
-def total_pagado_por_mes(academia,anio,mes):
-    return 52
+def total_pagos_por_mes(academia,year,month):
+    return Pago.objects.filter(academia=academia, fecha_pago__year=str(year), fecha_pago__month=str(month)).count()
 
-def total_clases_por_mes(academia,anio,mes):
-    return 4
+def total_clases_vistas_por_mes(academia,year,month):
+    return Asistencia.objects.filter(academia=academia, fecha__year=str(year), fecha__month=str(month)).count()
 
+def total_clases_pagadas_por_mes(academia,year,month):
+    pagos = Pago.objects.filter(academia=academia, fecha_pago__year=str(year), fecha_pago__month=str(month))
+    total = 0
+    for pago in pagos:
+        total += pago.total_clases
+    return total
+
+def total_montos_por_mes(academia,year,month):
+    pagos = Pago.objects.filter(academia=academia, fecha_pago__year=str(year), fecha_pago__month=str(month))
+    total = 0
+    for pago in pagos:
+        total += pago.monto
+    return total
 
 
 
@@ -135,3 +148,27 @@ def datos_tabla_asistencia(alumno, academia):
         }
         data.append(registro)
     return(data)        
+
+# recibe: lista de objetos pago
+# retorna: una lista de diccionarios para convertir a JSON
+# registro = {
+#   alumno: nombre del alumno
+#   fecha_pago: fecha de pago
+#   monto: monto del pago
+#   clases_pagadas: total clases pagadas
+#   fecha_inicio: fecha de inicio de las clases pagadas
+# }
+# uso: para que la funcion api_pagos(month, year) retorne el formato exacto que necesita el template pagos.html
+def tabla_pagos(pagos):
+    registros = []
+    for pago in pagos:
+        registro = {
+            "id": pago.id,
+            "nombre": f"{Alumno.objects.get(id=pago.alumno.id).nombre} {Alumno.objects.get(id=pago.alumno.id).apellido}",
+            "fecha_pago": pago.fecha_pago.strftime('%Y-%m-%d'),
+            "monto": str(pago.monto),
+            "total_clases": pago.total_clases,
+            "fecha_inicio": pago.fecha_inicio.strftime("%a %d-%m-%Y")
+        }
+        registros.append(registro)
+    return registros
