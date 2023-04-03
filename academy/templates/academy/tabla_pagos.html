@@ -1,16 +1,14 @@
-{% if pagos %}
 <table class="table" id="tabla-pagos">
-    <thead>
-      <tr>
-        <th scope="col">Alumno</th>
-        <th scope="col">Fecha de pago</th>
-        <th scope="col">Monto</th>
-        <th scope="col">Clases pagadas</th>                  
-        <th scope="col">Fecha de inicio</th>
-        <th scope="col">Acción</th>
-      </tr>
-    </thead>
-  <!-- <ul> -->
+  <thead>
+    <tr>
+      <th scope="col">Alumno</th>
+      <th scope="col">Fecha de pago</th>
+      <th scope="col">Monto</th>
+      <th scope="col">Clases pagadas</th>                  
+      <th scope="col">Fecha de inicio</th>
+      <th scope="col">Acción</th>
+    </tr>
+  </thead>
   <tbody id="body-tabla-pagos">
     {% for pago in pagos %}
         <tr>
@@ -34,7 +32,7 @@
         </tr>
     {% endfor %}
         <tr>
-          <td></td>
+          <td>Total mes</td>
           <td></td>
           <td>{{ total_pagos }}</td>
           <td>{{ total_clases }}</td>
@@ -43,4 +41,3 @@
         </tr>
   </tbody>
 </table>
-{% endif %}

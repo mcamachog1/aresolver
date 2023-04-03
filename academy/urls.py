@@ -20,6 +20,7 @@ urlpatterns = [
     
     # alumnos
     path("alumnos", views.alumnos, name="alumnos"),
+    # path("alumnos/<str:qstr>", views.alumnos, name="alumnos"),
     path("alumno_new", views.alumno_new, name="alumno_new"),
     path("alumno_entry/<int:alumno_id>", views.alumno_entry, name="alumno_entry"),
     path("alumno_edit/<int:alumno_id>", views.alumno_edit, name="alumno_edit"),    
@@ -47,15 +48,20 @@ urlpatterns = [
     # path("asociar-representante/<int:alumno_id>/<int:representante_id>/", views.asociar_representante, name="asociar_representante"),
     path("pagar/<int:alumno_id>", views.pagar, name="pagar"),
     path("mantenimiento", views.mantenimiento, name="mantenimiento"),
+    path("enviar_email", views.enviar_email, name="enviar_email"),
     # cargar-pago
     # path("cargar-pago", views.cargar_pago, name="cargar_pago"),
     
+    # emails
+
     # Api Routes
     path("api/asistencias/<int:alumno_id>", views.api_asistencias, name="api_asistencias"), 
     path("api/asociar_representante/<int:alumno_id>/<int:representante_id>", views.api_asociar_representante, name="api_asociar_representante"), 
     path("api/inactivar_alumnos", views.api_inactivar_alumnos, name="api_inactivar_alumnos"),
     path("api/alumno_entry/<int:alumno_id>", views.api_alumno_entry, name="api_alumno_entry"), 
     path("api/pagos/<int:month>/<int:year>", views.api_pagos, name="api_pagos"),
+    path("api/pagos/<int:month>/<int:year>/<int:alumno_id>", views.api_pagos, name="api_pagos"),
+
 
 ]
 

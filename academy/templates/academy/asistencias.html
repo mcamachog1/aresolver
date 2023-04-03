@@ -71,9 +71,7 @@
       <p>Nombre: {{asistencia.alumno.nombre}}</p>
       <p>Fecha: {{ asistencia.fecha }}</p>
     {% else %}
-      <form action="{% url 'asistencia_new' %}" method="post">
         {% include "academy/asistencia_input_form.html" %}
-      </form>
     {% endif %}
     {% include "academy/tabla_asistencias.html" %}
 

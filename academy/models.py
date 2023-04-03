@@ -86,10 +86,11 @@ class Alumno(models.Model):
 
 
 class Asistencia(models.Model):
-	fecha = models.DateField(null=False, default=datetime.datetime.now())
+	fecha = models.DateField(null=False, default=django.utils.timezone.now)
 	alumno = models.ForeignKey(Alumno, on_delete=models.CASCADE, related_name="asistencias", null=False) 
 	academia = models.ForeignKey(Academia, on_delete=models.CASCADE, related_name="asistencias", null=True)
 	tutor = models.ForeignKey(Tutor, on_delete=models.CASCADE, related_name="asistencias", null=True)
+	cantidad_sesiones = models.DecimalField(max_digits=2, decimal_places=1, default=1.0)
 
 	def serialize(self):
 		return (f"id: {self.id} fecha: {self.fecha} - alumno: {self.alumno.nombre} - academia: {self.academia.nombre} - tutor: {self.tutor.nombre}")
@@ -97,7 +98,7 @@ class Asistencia(models.Model):
 class Pago(models.Model):
 	fecha_pago = models.DateField()
 	monto = models.DecimalField(max_digits=7, decimal_places=2)
-	total_clases = models.IntegerField()
+	total_clases = models.DecimalField(max_digits=2, decimal_places=1)
 	fecha_inicio = models.DateField()
 	alumno = models.ForeignKey(Alumno, on_delete=models.CASCADE, related_name="pagos_realizados", null=False) 
 	academia = models.ForeignKey(Academia, on_delete=models.CASCADE, related_name="pagos_realizados", null=True)

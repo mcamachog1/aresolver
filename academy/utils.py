@@ -1,7 +1,7 @@
 from datetime import datetime
 from .models import User, Alumno, Asistencia, Pago, Representante, Tutor, Academia
 
-# recibe: la academia que está consultando a sus alumnos
+# recibe: la academia que está consultando a sus alumnos y string de busqueda opcional
 # retorna: una lista de registros
 # registro = {
 #   alumno: objeto alumno,
@@ -11,9 +11,13 @@ from .models import User, Alumno, Asistencia, Pago, Representante, Tutor, Academ
 #   status: status del alumno 
 # }
 # Lista los alumnos por orden de asistencia de mas reciente a mas antiguo
-def listar_alumnos_por_fecha_de_asistencia(academia):
+def listar_alumnos_por_fecha_de_asistencia(academia, qstr=""):
     alumnos_fecha_mas_reciente = []
-    alumnos = Alumno.objects.filter(academias=academia)
+    if qstr:
+        alumnos = (Alumno.objects.filter(academias = academia,apellido__icontains = qstr) 
+        | Alumno.objects.filter(academias = academia, nombre__icontains = qstr))
+    else:
+        alumnos = Alumno.objects.filter(academias=academia)
     # Recorrer los alumnos y crear registro con alumno y fecha mas reciente de asistencia
     for alumno in alumnos:
         asistencia = Asistencia.objects.filter(
@@ -56,6 +60,8 @@ def ultimas_clases_pagadas(alumno_id):
     else:
        return ultimo_pago.total_clases
 
+# Tipo de dato que retorna: Fecha
+# Retorna la fecha de inicio de sesiones cubiertas con el ultimo pago
 def ultimo_inicio_de_clases(alumno_id):
     alumno = Alumno.objects.get(id=alumno_id)
     ultimo_pago = Pago.objects.filter(alumno=alumno).order_by("fecha_pago").last()
@@ -70,14 +76,17 @@ def fecha_ultima_asistencia(e):
     return datetime.strptime(e['fecha'], "%a %d-%m-%Y")
 
 # Tipo de dato que retorna: Numero
-# Retorna el total de clases vistas después del ultimo pago
+# Retorna el total de sesiones vistas después del ultimo pago
 def ultimas_asistencias(alumno_id):
     alumno = Alumno.objects.get(id=alumno_id)
     fecha_inicio_ultimo_ciclo = ultimo_inicio_de_clases(alumno_id)
     print(fecha_inicio_ultimo_ciclo)
     # sampledate__gte=datetime.date(2011, 1, 1)
     asistencias = Asistencia.objects.filter(fecha__gte=fecha_inicio_ultimo_ciclo, alumno=alumno)
-    return asistencias.count()
+    total = 0
+    for asistencia in asistencias:
+        total += asistencia.cantidad_sesiones
+    return total
 
 # Tipo de dato que retorna: Objeto Tutor de la ultima asistencia
 # Recibe: id del alumno
@@ -86,7 +95,9 @@ def tutor_ultima_asistencia(alumno_id):
     ultima_asistencia = Asistencia.objects.filter(alumno=alumno).order_by("-fecha").first()
     return ultima_asistencia.tutor    
 
-
+# Recibe el request
+# Devuelve la academia del usuario logueado
+# Ojo ¿Qué pasa si se loguea un alumno con 2 o mas academias?
 def obtener_academia(request):
     if request:
         if request.user.id is None:
@@ -162,12 +173,14 @@ def datos_tabla_asistencia(alumno, academia):
 def tabla_pagos(pagos):
     registros = []
     for pago in pagos:
+        print(type(pago.total_clases))
         registro = {
             "id": pago.id,
             "nombre": f"{Alumno.objects.get(id=pago.alumno.id).nombre} {Alumno.objects.get(id=pago.alumno.id).apellido}",
             "fecha_pago": pago.fecha_pago.strftime('%Y-%m-%d'),
             "monto": str(pago.monto),
-            "total_clases": pago.total_clases,
+            # "total_clases": pago.total_clases,
+            "total_clases": '{0:.2g}'.format(pago.total_clases),
             "fecha_inicio": pago.fecha_inicio.strftime("%a %d-%m-%Y")
         }
         registros.append(registro)

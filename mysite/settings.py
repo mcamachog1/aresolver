@@ -132,3 +132,10 @@ AUTH_USER_MODEL = 'academy.User'
 #
 # Para eliminar error 403 de CSRF no permitido
 CSRF_TRUSTED_ORIGINS = ['https://8000-mcamachog1-aresolver*.gitpod.io','https://*.gitpod.io','https://mcamachog.pythonanywhere.com/']
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'aresolveronline@gmail.com'
+# OJO el password no se debe ver
+EMAIL_HOST_PASSWORD = 'Qttm321#.'
+EMAIL_PORT = 587

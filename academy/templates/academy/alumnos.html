@@ -3,18 +3,51 @@
 
 {% block script %}
     <script>
+        // Ejecutar luego de cargar el documento
         document.addEventListener('DOMContentLoaded', function () {
         // Show compose view and hide other views
-            document.querySelector('#contenedor-editar-alumno').style.display = 'none';
-            var boton_editar = document.querySelector('#boton-editar-alumno');
-            var status_div = boton_editar.style.display;
-            boton_editar.addEventListener('click', () => {
-                if (document.querySelector('#contenedor-editar-alumno').style.display == 'none')
-                    document.querySelector('#contenedor-editar-alumno').style.display = 'block';
-                else 
-                    document.querySelector('#contenedor-editar-alumno').style.display = 'none';
-            });
+            if (document.querySelector('#contenedor-editar-alumno') !== null) {
+                document.querySelector('#contenedor-editar-alumno').style.display = 'none';
+                var boton_editar = document.querySelector('#boton-editar-alumno');
+                boton_editar.addEventListener('click', () => {
+                    if (document.querySelector('#contenedor-editar-alumno').style.display == 'none')
+                        document.querySelector('#contenedor-editar-alumno').style.display = 'block';
+                    else 
+                        document.querySelector('#contenedor-editar-alumno').style.display = 'none';
+                });
+                
+            }
+            else {
+
+                document.querySelector('#contenedor-crear-alumno').style.display = 'none'
+                document.querySelector('#contenedor-buscar-alumno').style.display = 'none'
+                document.querySelector('#boton-crear-alumno').addEventListener('click', (boton) => mostrar_ocultar(boton))
+                document.querySelector('#boton-buscar-alumno').addEventListener('click', (boton) => mostrar_ocultar(boton))
+            }
         })
+
+        // Evento: Al hacer click en el boton "Nuevo Alumno" o al hacer click en "Buscar Alumno"
+        // Que hace: Muestra u oculta la seccion para crar o buscar alumno
+        function mostrar_ocultar(boton) {
+            console.log(boton.target.id)
+            if (boton.target.id === "boton-crear-alumno")
+                if (document.querySelector("#contenedor-crear-alumno").style.display == 'none') {
+                    document.querySelector("#contenedor-crear-alumno").style.display = 'block'
+                    document.querySelector("#contenedor-buscar-alumno").style.display = 'none'
+                }
+                else
+                    document.querySelector("#contenedor-crear-alumno").style.display = 'none'            
+
+            else if (boton.target.id === 'boton-buscar-alumno')
+                if (document.querySelector("#contenedor-buscar-alumno").style.display === 'none'){
+                    document.querySelector("#contenedor-buscar-alumno").style.display = 'block'
+                    document.querySelector("#contenedor-crear-alumno").style.display = 'none'
+                }
+                else
+                    document.querySelector("#contenedor-buscar-alumno").style.display = 'none'
+        }
+        // Evento: Al hacer click en el boton buscar
+    
     </script>
 {% endblock %}
 {% block style %}
@@ -27,12 +60,13 @@
 {% endblock %}
 {% block body %}
     {% if user.is_authenticated %}
+    <a href="{% url 'enviar_email'  %}">Enviar Email</a>
     {% if alumno %}
         <div class="d-flex">
             <div class="titulo-alumno">{{ alumno.nombre }} {{ alumno.apellido }}</div>
             <button class="btn btn-outline-primary m-2" id="boton-editar-alumno">Editar</button>
         </div>
-        <div class="contenedor-editar-alumno" id="contenedor-editar-alumno">
+        <div id="contenedor-editar-alumno">
             <form action="{% url 'alumno_edit' alumno.id %}" method="post">
                 {% csrf_token %}
                     <input name="nombre" type="text" value="{{ alumno.nombre }}" >
@@ -53,85 +87,99 @@
                     <input type="submit" value="Eliminar" name="eliminar" id="boton-eliminar">
             </form>
         </div>
-        {% else %}
+    {% else %}
+        <div class="d-flex">
+            <!-- <div class="titulo-alumno">{{ alumno.nombre }} {{ alumno.apellido }}</div> -->
+            <button class="btn btn-outline-primary my-2 mr-2 " id="boton-crear-alumno">Nuevo Alumno</button>
+            <button class="btn btn-outline-primary my-2 mr-2" id="boton-buscar-alumno">Buscar Alumno</button>
+        </div>
+        <div id="contenedor-crear-alumno" class="contenedor-desplegar-ocultar">
             <form action="{% url 'alumno_new'  %}" method="post">
-            {% csrf_token %}
-            <input name="nombre" type="text" placeholder="Nombre" class="nombre-alumno">
-            <input name="apellido" type="text" placeholder="Apellido">
-            <input name="email" type="email" placeholder="Email">  
-            <input type="submit" value="Grabar">
+                {% csrf_token %}
+                <input name="nombre" type="text" placeholder="Nombre" class="nombre-alumno">
+                <input name="apellido" type="text" placeholder="Apellido">
+                <input name="email" type="email" placeholder="Email">  
+                <input type="submit" value="Grabar">
             </form>
-        {% endif %}
-        {% if ultimas_clases_pagadas or ultimas_asistencias %}
-            <div class="titulo-del-grafico">
-                <div>Sesiones vistas: {{ ultimas_asistencias }}</div> 
-                <div>Sesiones pagadas: {{ ultimas_clases_pagadas }}</div>
+        </div>
+        <div id="contenedor-buscar-alumno" class="contenedor-desplegar-ocultar">
+            <form action="{% url 'alumnos' %}" method="post">
+                {% csrf_token %}
+                <input name="qstr" type="text" placeholder="Buscar" class="buscar-alumno">
+                <input type="submit" value="Buscar">
+            </form>
+        </div>
+    {% endif %}
+    {% if ultimas_clases_pagadas or ultimas_asistencias %}
+        <div class="titulo-del-grafico">
+            <div>Sesiones vistas: {{ ultimas_asistencias }}</div> 
+            <div>Sesiones pagadas: {{ ultimas_clases_pagadas }}</div>
+        </div>
+        <div class="chart-wrap "> <!-- quitar el estilo "horizontal" para visualizar verticalmente -->       
+            <div class="grid">
+                <div class="bar" style="--bar-value:{{ porcentaje }}%;" title="Clases vistas {{ porcentaje }}%"></div>
             </div>
-            <div class="chart-wrap "> <!-- quitar el estilo "horizontal" para visualizar verticalmente -->       
-                <div class="grid">
-                    <div class="bar" style="--bar-value:{{ porcentaje }}%;" title="Clases vistas {{ porcentaje }}%"></div>
-                </div>
-              </div>
-        {% endif %}
-        <br>
-        {% if alumnos %}
-            {% include "academy/tabla_alumnos.html" %}    
-        {% endif %}
-
-        {% if asistencias and alumno %}
-            <div class="cargar-asistencia">
-                <div style="display: flex; justify-content: flex-start">
-                    <h2>Asistencias</h2>
-                    <nav aria-label="Page navigation example" class="mx-3">
-                        <ul class="pagination">
-                        {% if asistencias.has_previous %}
-                        <li class="page-item">
-                            <a class="page-link" href="?page=1">Primera</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="?page={{ asistencias.previous_page_number }}" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                        {% endif %}
-                        <li class="page-item"><span class="page-link">Página {{ asistencias.number }} de {{ asistencias.paginator.num_pages }}.</span>
-                        </li>
-                        {% if asistencias.has_next %}
-                        <li class="page-item">
-                            <a class="page-link" href="?page={{ asistencias.next_page_number }}" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" href="?page={{ asistencias.paginator.num_pages }}">Última</a>
-                        </li>
-                        {% endif %}
-                        </ul>
-                    </nav>
-                </div>
-                <div style="display: flex; justify-content: flex-end">
-                    <form class="mx-2" action="{% url 'asistencia_alumno' alumno.id %}" method="post">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-outline-primary">Asistencia Express</button>
-                    </form>
-                    <form class="mx-2" action="{% url 'asistencias' %}">
-                        <button type="submit" class="btn btn-outline-primary">Asistencia Manual</button>
-                    </form>
-                </div>
             </div>
-            {% include "academy/tabla_asistencias.html" %} 
+    {% endif %}
+    <br>
+    {% if alumnos %}
+        {% include "academy/tabla_alumnos.html" %}    
+    {% endif %}
 
-        {% endif %}
-
-        {% if pagos %}
-            <div class="cargar-pago">
-                <h2>Pagos</h2>
-                <a href="{% url 'pagos_alumno' alumno.id %}">
-                    <button class="btn btn-outline-primary">Cargar Pago</button>
-                </a>
+    {% if asistencias and alumno %}
+        <div class="cargar-asistencia">
+            <div style="display: flex; justify-content: flex-start">
+                <h2>Asistencias</h2>
+                <nav aria-label="Page navigation example" class="mx-3">
+                    <ul class="pagination">
+                    {% if asistencias.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1">Primera</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ asistencias.previous_page_number }}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                    <li class="page-item"><span class="page-link">Página {{ asistencias.number }} de {{ asistencias.paginator.num_pages }}.</span>
+                    </li>
+                    {% if asistencias.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ asistencias.next_page_number }}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ asistencias.paginator.num_pages }}">Última</a>
+                    </li>
+                    {% endif %}
+                    </ul>
+                </nav>
             </div>
-            {% include "academy/tabla_pagos.html" %}    
-        {% endif %}
+            <div style="display: flex; justify-content: flex-end">
+                <form class="mx-2" action="{% url 'asistencia_alumno' alumno.id %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-primary">Asistencia Express</button>
+                </form>
+                <form class="mx-2" action="{% url 'asistencias' %}">
+                    <button type="submit" class="btn btn-outline-primary">Asistencia Manual</button>
+                </form>
+            </div>
+        </div>
+        {% include "academy/tabla_asistencias.html" %} 
+
+    {% endif %}
+
+    {% if pagos %}
+        <div class="cargar-pago">
+            <h2>Pagos</h2>
+            <a href="{% url 'pagos_alumno' alumno.id %}">
+                <button class="btn btn-outline-primary">Cargar Pago</button>
+            </a>
+        </div>
+        {% include "academy/tabla_pagos.html" %}    
+    {% endif %}
 
 
     {% endif %}

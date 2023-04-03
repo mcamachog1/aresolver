@@ -30,7 +30,7 @@
                     {% endif %}
                     <input type="date" name="fecha_pago" >
                     <input type="number" name="monto" placeholder="Monto USD">
-                    <input type="number" name="total_clases" placeholder="8">
+                    <input type="number" name="total_clases" min=0 step=0.1 placeholder = "Num de Clases">
                     <input type="date" name="fecha_inicio" >
                     <input type="submit" name="grabar" value="Grabar">
                 </form>
@@ -48,6 +48,28 @@
     {% block script %}
         <script>
             document.addEventListener('DOMContentLoaded', function () {
+                let date = new Date();
+                let month = date.getMonth() + 1;
+                let year = date.getFullYear();
+                document.querySelector('#alumnos').addEventListener('change', (e) => {
+                    pintar_tabla(e.target.value)
+
+                })
+                function pintar_tabla(alumno_id) {
+                    console.log(document.querySelector('#datepicker'))
+                    if (alumno_id == -1)
+                        ruta = `api/pagos/${month}/${year}`
+                    else 
+                        ruta = `api/pagos/${month}/${year}/${alumno_id}`
+                    fetch(ruta)
+                        .then(response => response.json())
+                        .then(json => {
+                            const pagos = JSON.parse(json.pagos)
+                            addRows(pagos, json.total_monto_mes, json.total_clases_mes)
+                        })
+                }
+        
+
                 function addRows(pagos, total_monto_mes, total_clases_mes) {
                     // borrar body original
                     if (document.querySelector('#body-tabla-pagos'))
@@ -69,7 +91,7 @@
                     // Fila de totales
                     newTbody.innerHTML += 
                         `<tr>
-                            <td></td>
+                            <td>Total mes</td>
                             <td></td>
                             <td>${ total_monto_mes }</td>
                             <td>${ total_clases_mes }</td>
@@ -89,15 +111,17 @@
 
                 $('#datepicker').datepicker()
                     .on('hide', function(e) {
-                        console.log(e)
-                        let month = e.date.getMonth() + 1;
-                        let year = e.date.getFullYear();
-                        fetch(`api/pagos/${month}/${year}`)
+                        month = e.date.getMonth() + 1;
+                        year = e.date.getFullYear();
+                        if (document.querySelector('#alumnos').value == -1)
+                            ruta = `api/pagos/${month}/${year}`
+                        else 
+                            ruta = `api/pagos/${month}/${year}/${document.querySelector('#alumnos').value}`
+                        console.log(ruta)
+                        fetch(ruta)
                             .then(response => response.json())
                             .then(json => {
-                                console.log(json)
                                 const pagos = JSON.parse(json.pagos)
-                                // pagos.forEach(element => console.log(element.fields));
                                 addRows(pagos, json.total_monto_mes, json.total_clases_mes)
                             })
                         })

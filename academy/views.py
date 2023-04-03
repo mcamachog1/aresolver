@@ -14,6 +14,7 @@ from datetime import date
 
 import inspect
 import json
+import requests
 
 from datetime import datetime
 from .models import User, Alumno, Asistencia, Pago, Representante, Tutor, Academia
@@ -43,7 +44,9 @@ def asistencia_new(request):
         asistencia.alumno=alumno
         asistencia.fecha=request.POST['fecha']
         asistencia.tutor=Tutor.objects.get(id=request.POST['tutor_id'])
-        asistencia.academia=Academia.objects.get(id=request.POST['academia_id'])
+        asistencia.cantidad_sesiones=request.POST['cantidad_sesiones']
+        asistencia.academia= obtener_academia(request)
+        # Academia.objects.get(id=request.POST['academia_id'])
         asistencia.save()
         return HttpResponseRedirect(reverse("asistencias"))
 
@@ -155,15 +158,22 @@ def pago_delete(request, pago_id):
 
 # Alumnos
 
-# Listar los alumnos
+# Listar los alumnos. Si qstr es vacio, los lista todos
 def alumnos(request):
     academia = obtener_academia(request)
     if academia:
-        return render(request, "academy/alumnos.html", {
-            "alumnos": listar_alumnos_por_fecha_de_asistencia(academia),        
-        })  
+        if request.method == 'POST':
+            return render(request, "academy/alumnos.html", {
+                "alumnos": listar_alumnos_por_fecha_de_asistencia(academia, request.POST["qstr"]),        
+            })          
+        else:
+            return render(request, "academy/alumnos.html", {
+                "alumnos": listar_alumnos_por_fecha_de_asistencia(academia),        
+            })  
     else:
         return render(request, "academy/login.html")
+
+
 
 # Crear un nuevo alumno
 def alumno_new(request):
@@ -227,17 +237,21 @@ def alumno_edit(request, alumno_id):
 
 # Listar los representantes
 def representantes(request):
+    academia = obtener_academia(request)
+    print(academia)
     return render(request, "academy/representantes.html", {
-        "representantes": Representante.objects.all().order_by("nombre"),
+        "representantes": Representante.objects.filter(academia=academia).order_by("nombre"),
     })  
 
 # Crear un nuevo representante
 def representante_new(request):
+    academia = obtener_academia(request)
     if (request.method == 'POST'):
         representante = Representante()
         representante.nombre = request.POST['nombre']
         representante.apellido = request.POST['apellido']
         representante.email = request.POST['email']
+        representante.academia = academia
         representante.save()
         
         # Al crear el representante se asocia al alumno si se recibe el id
@@ -273,16 +287,19 @@ def representante_edit(request, representante_id):
 
 # Listar los tutores
 def tutores(request):
+    academia = obtener_academia(request)
     return render(request, "academy/tutores.html", {
-        "tutores": Tutor.objects.all().order_by("nombre"),
+        "tutores": Tutor.objects.filter(academia=academia).order_by("nombre"),
     })    
 
 # Crear un nuevo tutor
 def tutor_new(request):
+    academia = obtener_academia(request)
     if (request.method == 'POST'):
         tutor = Tutor()
         tutor.nombre = request.POST['nombre']
         tutor.apellido = request.POST['apellido']
+        tutor.academia = academia
         tutor.save()
         return HttpResponseRedirect(reverse("tutores"))    
 
@@ -336,6 +353,26 @@ def pagar(request):
         ['aresolveronline@gmail.com'],
         fail_silently=False,
     )
+
+
+# Enviar emails
+
+def enviar_email(request):
+    response = requests.post(
+        "https://api.mailgun.net/v3/sandbox2af4dcd6e41d4024a1522aa0a418be39.mailgun.org/messages",
+        auth=("api", MAILGUN_KEY),
+        data={"from": "Maryví <postmaster@aresolveronline.com>",
+              "to": ["mcamachog@hotmail.com","urribarriisabel@gmail.com"],
+              "subject": "Hello",
+              "text": "Hola Isabel"})
+    json = response.json()
+    print(json)
+    return HttpResponse('ok')
+
+
+
+
+
 
 # Autenticación
 
@@ -423,13 +460,17 @@ def api_inactivar_alumnos(request):
             "message": f"se inactivaron tanto alumnos"
         }, status=201)
 
-def api_pagos(request, month, year):
+def api_pagos(request, month, year, alumno_id=None):
     academia = obtener_academia(request)
     total_pagos_mes = total_pagos_por_mes(academia,year,month)
     total_clases_mes = total_clases_pagadas_por_mes(academia,year,month)
     total_monto_mes = total_montos_por_mes(academia,year,month)
-    pagos_pintar = tabla_pagos(Pago.objects.filter(academia=academia, fecha_pago__year=str(year), fecha_pago__month=str(month)).order_by("-fecha_pago"))
-    pagos = json.dumps(pagos_pintar)
+    if not alumno_id: 
+        pagos_pintar = tabla_pagos(Pago.objects.filter(academia=academia, fecha_pago__year=str(year), fecha_pago__month=str(month)).order_by("-fecha_pago"))
+        pagos = json.dumps(pagos_pintar)
+    else:
+        pagos_pintar = tabla_pagos(Pago.objects.filter(academia=academia, alumno=Alumno.objects.get(id=alumno_id), fecha_pago__year=str(year), fecha_pago__month=str(month)).order_by("-fecha_pago"))
+        pagos = json.dumps(pagos_pintar)
     return JsonResponse({
         "pagos": pagos,
         "total_pagos_mes": total_pagos_mes,
