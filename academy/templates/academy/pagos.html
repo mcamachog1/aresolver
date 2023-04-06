@@ -30,7 +30,13 @@
                     {% endif %}
                     <input type="date" name="fecha_pago" >
                     <input type="number" name="monto" placeholder="Monto USD">
-                    <input type="number" name="total_clases" min=0 step=0.1 placeholder = "Num de Clases">
+                    <select name="curso_id" id="cursos">
+                        <option value="-1">Seleccione un curso:</option>
+                        {% for curso in cursos%}
+                            <option value="{{ curso.id }}">{{ curso.nombre }}</option>
+                        {% endfor %}
+                    </select>
+                    <!-- <input type="number" name="total_clases" min=0 step=0.1 placeholder = "Num de Clases"> -->
                     <input type="date" name="fecha_inicio" >
                     <input type="submit" name="grabar" value="Grabar">
                 </form>

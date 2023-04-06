@@ -85,16 +85,6 @@ class Alumno(models.Model):
 		return (f"{self.nombre} {self.apellido} {self.representante.nombre}")
 
 
-class Asistencia(models.Model):
-	fecha = models.DateField(null=False, default=django.utils.timezone.now)
-	alumno = models.ForeignKey(Alumno, on_delete=models.CASCADE, related_name="asistencias", null=False) 
-	academia = models.ForeignKey(Academia, on_delete=models.CASCADE, related_name="asistencias", null=True)
-	tutor = models.ForeignKey(Tutor, on_delete=models.CASCADE, related_name="asistencias", null=True)
-	cantidad_sesiones = models.DecimalField(max_digits=2, decimal_places=1, default=1.0)
-
-	def serialize(self):
-		return (f"id: {self.id} fecha: {self.fecha} - alumno: {self.alumno.nombre} - academia: {self.academia.nombre} - tutor: {self.tutor.nombre}")
-
 class Pago(models.Model):
 	fecha_pago = models.DateField()
 	monto = models.DecimalField(max_digits=7, decimal_places=2)
@@ -102,3 +92,31 @@ class Pago(models.Model):
 	fecha_inicio = models.DateField()
 	alumno = models.ForeignKey(Alumno, on_delete=models.CASCADE, related_name="pagos_realizados", null=False) 
 	academia = models.ForeignKey(Academia, on_delete=models.CASCADE, related_name="pagos_realizados", null=True)
+
+class Curso(models.Model):
+	CONTINUO = 'C'
+	FIJO = 'F'
+	STATUS_CHOICES = [
+			(CONTINUO, 'Continuo'),
+			(FIJO, 'Fijo'),
+	]
+	nombre = models.CharField(max_length=50)
+	costo_por_sesion = models.DecimalField(max_digits=4, decimal_places=2, null=True)
+	tipo_de_curso = models.CharField(max_length=1, choices=STATUS_CHOICES, default=CONTINUO)
+	cantidad_de_sesiones = models.PositiveSmallIntegerField(null=True)
+	costo_curso_fijo = models.DecimalField(max_digits=4, decimal_places=2, null=True)
+	tiempo_de_sesion = models.PositiveSmallIntegerField(null=True)
+
+	def serialize(self):
+		return (f" nombre: {self.nombre} - costo por sesion: {self.costo_por_sesion} - cantidad de sesiones: {self.cantidad_de_sesiones} - tipo de curso: {self.tipo_de_curso} - costo de curso fijo: {self.costo_curso_fijo}")
+
+class Asistencia(models.Model):
+	fecha = models.DateField(null=False, default=django.utils.timezone.now)
+	alumno = models.ForeignKey(Alumno, on_delete=models.CASCADE, related_name="asistencias", null=False) 
+	academia = models.ForeignKey(Academia, on_delete=models.CASCADE, related_name="asistencias", null=True)
+	tutor = models.ForeignKey(Tutor, on_delete=models.CASCADE, related_name="asistencias", null=True)
+	cantidad_sesiones = models.DecimalField(max_digits=2, decimal_places=1, default=1.0)
+	curso = models.ForeignKey(Curso, on_delete=models.CASCADE, related_name="asistencias", null=True)
+
+	def serialize(self):
+		return (f"id: {self.id} fecha: {self.fecha} - alumno: {self.alumno.nombre} - academia: {self.academia.nombre} - tutor: {self.tutor.nombre}")

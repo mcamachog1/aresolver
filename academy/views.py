@@ -15,10 +15,13 @@ from datetime import date
 import inspect
 import json
 import requests
+# import decimal
+import csv
 
 from datetime import datetime
-from .models import User, Alumno, Asistencia, Pago, Representante, Tutor, Academia
+from .models import User, Alumno, Asistencia, Pago, Representante, Tutor, Academia, Curso
 from .utils import *
+from .secret_settings import MAILGUN_KEY
 
 # Asistencias
 
@@ -122,7 +125,8 @@ def pagos(request):
         "alumnos": Alumno.objects.filter(academias=academia),
         "total_pagos": total_pagos,
         "total_clases": total_clases,
-
+        "cursos": Curso.objects.all()
+        
         # .order_by('-fecha_pago')
     })
 
@@ -132,6 +136,7 @@ def pagos_alumno(request, alumno_id):
         "pagos": Pago.objects.filter(alumno=Alumno.objects.get(id=alumno_id)).order_by("-fecha_pago"),
         "alumno": Alumno.objects.get(id=alumno_id),
         "alumnos": Alumno.objects.all(),
+        "cursos": Curso.objects.all()
     })    
 
 # Crear nuevo pago  
@@ -139,12 +144,19 @@ def pago_new(request):
     academia = obtener_academia(request)
     if (request.method == 'POST'):
         alumno = Alumno.objects.get(id=request.POST["alumno_id"])
+        curso = Curso.objects.get(id=request.POST["curso_id"])
+        costo = float(curso.costo_por_sesion)
         pago = Pago()
         pago.alumno = alumno
         pago.fecha_pago = request.POST["fecha_pago"]
-        pago.total_clases = request.POST["total_clases"]
+        # pago.total_clases = request.POST["total_clases"]
         pago.fecha_inicio = request.POST["fecha_inicio"]
-        pago.monto = request.POST["monto"]
+        pago.monto = float(request.POST["monto"])
+        print(type(pago.monto))
+        print(type(costo))
+        pago.curso = curso
+        print(type(pago.monto/costo))
+        pago.total_clases = '{0:.3g}'.format(pago.monto/costo)
         pago.save()
         pago.academia = academia
         pago.save()
@@ -358,15 +370,31 @@ def pagar(request):
 # Enviar emails
 
 def enviar_email(request):
+    # # Cree el objeto HttpResponse con el encabezado CSV apropiado.
+    # response = HttpResponse(
+    #     content_type='text/csv',
+    #     headers={'Content-Disposition': 'attachment; filename="correos.csv"'},
+    # )
+
+    # writer = csv.writer(response)
+    # writer.writerow(['correo','nombre','mensaje_1','mensaje_2','mensaje_3'])
+
+    # for r in Representante.objects.filter(academia=obtener_academia(request)):
+    #     mensaje_1 = 'He guardado tu email porque en algun momento fuiste cliente de mis clases de matematica.'
+    #     mensaje_2='Estoy creando una lista de suscriptores para enviar informacion frecuente acerca de los cursos de matematica, de programacion y otros servicios que estoy ofreciendo.'
+    #     mensaje_3=''
+    #     writer.writerow([f'{r.email}', f'{r.nombre}', mensaje_1, mensaje_2, mensaje_3])
+
+    # return response
+
     response = requests.post(
         "https://api.mailgun.net/v3/sandbox2af4dcd6e41d4024a1522aa0a418be39.mailgun.org/messages",
         auth=("api", MAILGUN_KEY),
         data={"from": "Maryví <postmaster@aresolveronline.com>",
-              "to": ["mcamachog@hotmail.com","urribarriisabel@gmail.com"],
+              "to": ["mcamachog@hotmail.com"],
               "subject": "Hello",
-              "text": "Hola Isabel"})
+              "text": "Ocultando Clave MAILGUN"})
     json = response.json()
-    print(json)
     return HttpResponse('ok')
 
 
