@@ -21,7 +21,7 @@ import csv
 from datetime import datetime
 from .models import User, Alumno, Asistencia, Pago, Representante, Tutor, Academia, Curso
 from .utils import *
-from .secret_settings import MAILGUN_KEY
+from mysite.secret_settings import MAILGUN_KEY
 
 # Asistencias
 
@@ -387,14 +387,15 @@ def enviar_email(request):
 
     # return response
 
-    response = requests.post(
-        "https://api.mailgun.net/v3/sandbox2af4dcd6e41d4024a1522aa0a418be39.mailgun.org/messages",
-        auth=("api", MAILGUN_KEY),
-        data={"from": "Maryví <postmaster@aresolveronline.com>",
-              "to": ["mcamachog@hotmail.com"],
-              "subject": "Hello",
-              "text": "Ocultando Clave MAILGUN"})
-    json = response.json()
+    # response = requests.post(
+    #     "https://api.mailgun.net/v3/sandbox2af4dcd6e41d4024a1522aa0a418be39.mailgun.org/messages",
+    #     auth=("api", MAILGUN_KEY),
+    #     data={"from": "Maryví <postmaster@aresolveronline.com>",
+    #           "to": ["mcamachog@hotmail.com"],
+    #           "subject": "Hello",
+    #           "text": "Ocultando Clave MAILGUN"})
+    # json = response.json()
+    print(MAILGUN_KEY)
     return HttpResponse('ok')
 
 
