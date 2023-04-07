@@ -130,3 +130,4 @@ dmypy.json
 
 # Secret Keys
 secret_settings.py
+replacements.txt
