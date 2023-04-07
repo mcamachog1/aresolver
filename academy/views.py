@@ -370,22 +370,24 @@ def pagar(request):
 # Enviar emails
 
 def enviar_email(request):
-    # # Cree el objeto HttpResponse con el encabezado CSV apropiado.
-    # response = HttpResponse(
-    #     content_type='text/csv',
-    #     headers={'Content-Disposition': 'attachment; filename="correos.csv"'},
-    # )
+    # Cree el objeto HttpResponse con el encabezado CSV apropiado.
+    response = HttpResponse(
+        content_type='text/csv',
+        headers={'Content-Disposition': 'attachment; filename="correos.csv"'},
+    )
 
-    # writer = csv.writer(response)
-    # writer.writerow(['correo','nombre','mensaje_1','mensaje_2','mensaje_3'])
+    writer = csv.writer(response)
+    writer.writerow(['correo','nombre','mensaje_1','mensaje_2','mensaje_3'])
 
-    # for r in Representante.objects.filter(academia=obtener_academia(request)):
-    #     mensaje_1 = 'He guardado tu email porque en algun momento fuiste cliente de mis clases de matematica.'
-    #     mensaje_2='Estoy creando una lista de suscriptores para enviar informacion frecuente acerca de los cursos de matematica, de programacion y otros servicios que estoy ofreciendo.'
-    #     mensaje_3=''
-    #     writer.writerow([f'{r.email}', f'{r.nombre}', mensaje_1, mensaje_2, mensaje_3])
+    for r in Representante.objects.filter(academia=obtener_academia(request)):
+        saludo = "Bienvenid@ " #actualmente el campo es NULL, valor por defecto
+        saludo = "Bienvenida " if r.sexo == r.FEMENINO else "Bienvenido "
+        mensaje_1 = saludo + 'a la comunidad de AResolver.'
+        mensaje_2='Por este canal recibiras contenidos relacionados con matematica y programacion.'
+        mensaje_3=''
+        writer.writerow([f'{r.email}', f'{r.nombre}', mensaje_1, mensaje_2, mensaje_3])
 
-    # return response
+    return response
 
     # response = requests.post(
     #     "https://api.mailgun.net/v3/sandbox2af4dcd6e41d4024a1522aa0a418be39.mailgun.org/messages",

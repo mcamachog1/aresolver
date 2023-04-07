@@ -45,12 +45,19 @@ class Tutor(models.Model):
 
 # Clase Representantes
 class Representante(models.Model):
+	MASCULINO = 'M'
+	FEMENINO = 'F'
+	SEXO_CHOICES = [
+			(MASCULINO, 'Masculino'),
+			(FEMENINO, 'Femenino'),
+	]	
 	nombre = models.CharField(max_length=30, blank=False)
 	apellido = models.CharField(max_length=30)
 	email = models.EmailField(max_length=254, null=True)
 	fecha_creacion = models.DateTimeField(auto_now_add=True)
 	fecha_cambio = models.DateTimeField(auto_now=True)
 	celular = models.CharField(max_length=15, null=True)
+	sexo = models.CharField(max_length=1, choices=SEXO_CHOICES, null=True)
 	academia = models.ForeignKey(Academia, on_delete=models.CASCADE, related_name="representantes", null=True)
 	def serialize(self):
 			return (f"{self.nombre} {self.apellido}")
