@@ -18,6 +18,8 @@ class User(AbstractUser):
 		(VISITANTE, 'Visitante')
 	]
 	tipo_de_usuario = models.CharField(max_length=1, choices=USER_TYPE_CHOICES, default=VISITANTE)
+	def __str__(self):
+		return (f"{self.email} {self.username}")
 
 
 class Academia(models.Model):
@@ -28,6 +30,7 @@ class Academia(models.Model):
 		related_name="academia",
 		null=True
 	)
+	url_imagen = models.URLField(max_length=200, null=True)
 
 	def __str__(self):
 		return self.nombre

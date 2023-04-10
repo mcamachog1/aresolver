@@ -14,12 +14,12 @@
     {% endfor %}
 </select>
 
-<!-- Cambiar a futuro dependiendo del tipo de usuario (selleccionar academia) -->
+<!-- Cambiar a futuro dependiendo del tipo de usuario (seleccionar academia) -->
 <!-- Al grabar la asistencia por parte del director, se toma su propia academia -->
 <!-- <select name="academia_id" id="academias">
     <option value="{{ academia.id }}">{{ academia.nombre }}</option>
 </select> -->
-<input name="cantidad_sesiones" type="number" step="0.1">
 <input name="fecha" type="date" id="fecha-asistencia">
+<input name="cantidad_sesiones" title="cantidad de sesiones"  value="1" width="2" type="number" step="0.1">
 <input type="submit">
 </form>

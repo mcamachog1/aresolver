@@ -125,7 +125,8 @@ def pagos(request):
         "alumnos": Alumno.objects.filter(academias=academia),
         "total_pagos": total_pagos,
         "total_clases": total_clases,
-        "cursos": Curso.objects.all()
+        "cursos": Curso.objects.all(),
+        "academia": academia  
         
         # .order_by('-fecha_pago')
     })
@@ -176,11 +177,13 @@ def alumnos(request):
     if academia:
         if request.method == 'POST':
             return render(request, "academy/alumnos.html", {
-                "alumnos": listar_alumnos_por_fecha_de_asistencia(academia, request.POST["qstr"]),        
+                "alumnos": listar_alumnos_por_fecha_de_asistencia(academia, request.POST["qstr"]),
+                "academia": academia        
             })          
         else:
             return render(request, "academy/alumnos.html", {
-                "alumnos": listar_alumnos_por_fecha_de_asistencia(academia),        
+                "alumnos": listar_alumnos_por_fecha_de_asistencia(academia),   
+                "academia": academia       
             })  
     else:
         return render(request, "academy/login.html")
@@ -253,7 +256,8 @@ def representantes(request):
     print(academia)
     return render(request, "academy/representantes.html", {
         "representantes": Representante.objects.filter(academia=academia).order_by("nombre"),
-        "sexo_opciones": Representante.SEXO_CHOICES
+        "sexo_opciones": Representante.SEXO_CHOICES,
+        "academia": academia,
     })  
 
 # Crear un nuevo representante
@@ -285,7 +289,8 @@ def representante_delete(request, representante_id):
 def representante_entry(request, representante_id):
     return render(request, "academy/representantes.html", {
         "representante": Representante.objects.get(id=representante_id),
-        "sexo_opciones": Representante.SEXO_CHOICES        
+        "sexo_opciones": Representante.SEXO_CHOICES,
+        "academia": academia,        
     })  
 
 # Actualizar un representante
@@ -306,6 +311,7 @@ def tutores(request):
     academia = obtener_academia(request)
     return render(request, "academy/tutores.html", {
         "tutores": Tutor.objects.filter(academia=academia).order_by("nombre"),
+        "academia": academia,
     })    
 
 # Crear un nuevo tutor
@@ -329,6 +335,7 @@ def tutor_delete(request, tutor_id):
 def tutor_entry(request, tutor_id):
     return render(request, "academy/tutores.html", {
         "tutor": Tutor.objects.get(id=tutor_id),
+        "academia": academia,
     })    
 
 # Actualizar un tutor

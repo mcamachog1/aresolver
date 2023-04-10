@@ -1,6 +1,8 @@
 {% extends "academy/layout.html" %}
 {% load static %}
-
+{% block imagen %}
+<img src="{{academia.url_imagen}}" alt="Logo-Corto-Cuadrado" width="60px">
+{% endblock %}
 {% block script %}
     <script>
         // Ejecutar luego de cargar el documento
@@ -60,7 +62,7 @@
 {% endblock %}
 {% block body %}
     {% if user.is_authenticated %}
-    <a href="{% url 'enviar_email'  %}">Enviar Email</a>
+    <!-- <a href="{% url 'enviar_email'  %}">Enviar Email</a> -->
     {% if alumno %}
         <div class="d-flex">
             <div class="titulo-alumno">{{ alumno.nombre }} {{ alumno.apellido }}</div>

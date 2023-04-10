@@ -1,6 +1,8 @@
 {% extends "academy/layout.html" %}
 {% load static %}
-
+{% block imagen %}
+<img src="{{ academia.url_imagen }}" alt="Logo-de-la-academia" width="60px">
+{% endblock %}
 {% block body %}
     {% if user.is_authenticated %}
         <div class="contenedor-principal">
