@@ -45,11 +45,11 @@ class Tutor(models.Model):
 
 # Clase Representantes
 class Representante(models.Model):
-	MASCULINO = 'M'
 	FEMENINO = 'F'
+	MASCULINO = 'M'
 	SEXO_CHOICES = [
-			(MASCULINO, 'Masculino'),
 			(FEMENINO, 'Femenino'),
+			(MASCULINO, 'Masculino'),
 	]	
 	nombre = models.CharField(max_length=30, blank=False)
 	apellido = models.CharField(max_length=30)

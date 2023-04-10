@@ -253,6 +253,7 @@ def representantes(request):
     print(academia)
     return render(request, "academy/representantes.html", {
         "representantes": Representante.objects.filter(academia=academia).order_by("nombre"),
+        "sexo_opciones": Representante.SEXO_CHOICES
     })  
 
 # Crear un nuevo representante
@@ -264,6 +265,7 @@ def representante_new(request):
         representante.apellido = request.POST['apellido']
         representante.email = request.POST['email']
         representante.academia = academia
+        representante.sexo = request.POST['sexo']
         representante.save()
         
         # Al crear el representante se asocia al alumno si se recibe el id
@@ -283,6 +285,7 @@ def representante_delete(request, representante_id):
 def representante_entry(request, representante_id):
     return render(request, "academy/representantes.html", {
         "representante": Representante.objects.get(id=representante_id),
+        "sexo_opciones": Representante.SEXO_CHOICES        
     })  
 
 # Actualizar un representante
@@ -292,6 +295,7 @@ def representante_edit(request, representante_id):
         representante.nombre = request.POST['nombre']
         representante.apellido = request.POST['apellido']
         representante.email = request.POST['email']
+        representante.sexo = request.POST['sexo']        
         representante.save()
         return HttpResponseRedirect(reverse("representantes"))     
 
@@ -382,8 +386,8 @@ def enviar_email(request):
     for r in Representante.objects.filter(academia=obtener_academia(request)):
         saludo = "Bienvenid@ " #actualmente el campo es NULL, valor por defecto
         saludo = "Bienvenida " if r.sexo == r.FEMENINO else "Bienvenido "
-        mensaje_1 = saludo + 'a la comunidad de AResolver.'
-        mensaje_2='Por este canal recibiras contenidos relacionados con matematica y programacion.'
+        mensaje_1 = saludo + 'a la comunidad de AResolver. Por este canal recibiras contenidos relacionados con matematica y programacion.'
+        mensaje_2='He guardado tu email porque has sido cliente de mis clases de matematica o de programacion.'
         mensaje_3=''
         writer.writerow([f'{r.email}', f'{r.nombre}', mensaje_1, mensaje_2, mensaje_3])
 

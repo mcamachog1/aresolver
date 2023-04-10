@@ -35,6 +35,11 @@
   <input name="nombre" type="text" value="{{ representante.nombre }}" class="nombre-representante">
   <input name="apellido" type="text" value="{{ representante.apellido }}">
   <input name="email" type="email" value="{{ representante.email }}" placeholder="Email">
+  <select name="sexo">
+    {% for opcion in sexo_opciones%}
+        <option value="{{ opcion.0 }}">{{ opcion.1 }}</option>
+    {% endfor %}
+  </select>
   <input type="submit" value="Salvar" name="salvar" class="accion-representante" disabled>
   <input type="submit" value="Eliminar" name="eliminar" class="accion-representante" id="boton-eliminar">
 </form>
@@ -43,7 +48,12 @@
   {% csrf_token %}
   <input name="nombre" type="text" placeholder="Nombre" class="nombre-representante">
   <input name="apellido" type="text" placeholder="Apellido">
-  <input name="email" type="email" placeholder="Email">  
+  <input name="email" type="email" placeholder="Email">
+  <select name="sexo">
+    {% for opcion in sexo_opciones%}
+        <option value="{{ opcion.0 }}">{{ opcion.1 }}</option>
+    {% endfor %}
+  </select>
   <input type="submit" value="Crear" class="accion-representante" disabled>
 </form>
 {% endif %}
