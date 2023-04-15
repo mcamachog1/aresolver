@@ -1,11 +1,29 @@
 <form action="{% url 'asistencia_new' %}" method="post">
 {% csrf_token %}
-<select name="alumno_id" id="alumnos">
-    <option value="-1">Seleccione un alumno:</option>
-    {% for alumno in alumnos%}
-    <option value="{{ alumno.id }}">{{ alumno.nombre }} {{ alumno.apellido }}</option>
-    {% endfor %}
-</select>
+
+{% if alumno %}
+    <select name="alumno_id" id="alumnos">
+        <option value="-1">Seleccione un alumno:</option>
+        <!-- alumno que recorre el conjunto de alumnos para llenar el select -->
+        {% if not alumnos %}
+            <option value="{{ alumno.id }}" selected>{{ alumno.nombre }} {{ alumno.apellido }}</option>
+        {% endif %}
+        {% for objeto in alumnos%}
+            {% if objeto.id != alumno.id %}
+                <option value="{{ alumno.id }}">{{ alumno.nombre }} {{ alumno.apellido }}</option>
+            {% else %}
+                <option value="{{ alumno.id }}" selected>{{ alumno.nombre }} {{ alumno.apellido }}</option>
+            {% endif %}
+        {% endfor %}
+    </select>
+{% else %}
+    <select name="alumno_id" id="alumnos">
+        <option value="-1">Seleccione un alumno:</option>
+        {% for alumno in alumnos%}
+            <option value="{{ alumno.id }}">{{ alumno.nombre }} {{ alumno.apellido }}</option>
+        {% endfor %}
+    </select>
+{% endif %}
 
 <select name="tutor_id" id="tutores">
     <option value="-1">Seleccione un tutor:</option>

@@ -93,6 +93,7 @@ def asistencia_entry(request, asistencia_id):
         "asistencias": Asistencia.objects.filter(alumno=alumno).order_by("-fecha"),
      })  
 
+
 # Eliminar asistencia
 def asistencia_delete(request, asistencia_id):
     asistencia = Asistencia.objects.get(id=asistencia_id)
@@ -173,6 +174,7 @@ def pago_delete(request, pago_id):
 
 # Listar los alumnos. Si qstr es vacio, los lista todos
 def alumnos(request):
+    print(request.user)
     academia = obtener_academia(request)
     if academia:
         if request.method == 'POST':
@@ -186,7 +188,9 @@ def alumnos(request):
                 "academia": academia       
             })  
     else:
+        print("SALIENDO POR AQUI")
         return render(request, "academy/login.html")
+      
 
 
 
@@ -228,7 +232,8 @@ def alumno_entry(request, alumno_id):
         "pagos": Pago.objects.filter(alumno=Alumno.objects.get(id=alumno_id)).order_by("-fecha_pago"),
         "ultimas_clases_pagadas": ultimas_clases_pagadas(alumno_id),
         "ultimas_asistencias": ultimas_asistencias(alumno_id),
-        "porcentaje": porcentaje
+        "porcentaje": porcentaje,
+        "academia": obtener_academia(request)
 
     })  
 
@@ -290,7 +295,7 @@ def representante_entry(request, representante_id):
     return render(request, "academy/representantes.html", {
         "representante": Representante.objects.get(id=representante_id),
         "sexo_opciones": Representante.SEXO_CHOICES,
-        "academia": academia,        
+        "academia": obtener_academia(request),        
     })  
 
 # Actualizar un representante
@@ -335,7 +340,7 @@ def tutor_delete(request, tutor_id):
 def tutor_entry(request, tutor_id):
     return render(request, "academy/tutores.html", {
         "tutor": Tutor.objects.get(id=tutor_id),
-        "academia": academia,
+        "academia": obtener_academia(request),
     })    
 
 # Actualizar un tutor

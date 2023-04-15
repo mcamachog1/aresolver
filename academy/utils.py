@@ -80,7 +80,6 @@ def fecha_ultima_asistencia(e):
 def ultimas_asistencias(alumno_id):
     alumno = Alumno.objects.get(id=alumno_id)
     fecha_inicio_ultimo_ciclo = ultimo_inicio_de_clases(alumno_id)
-    print(fecha_inicio_ultimo_ciclo)
     # sampledate__gte=datetime.date(2011, 1, 1)
     asistencias = Asistencia.objects.filter(fecha__gte=fecha_inicio_ultimo_ciclo, alumno=alumno)
     total = 0
@@ -173,7 +172,6 @@ def datos_tabla_asistencia(alumno, academia):
 def tabla_pagos(pagos):
     registros = []
     for pago in pagos:
-        print(type(pago.total_clases))
         registro = {
             "id": pago.id,
             "nombre": f"{Alumno.objects.get(id=pago.alumno.id).nombre} {Alumno.objects.get(id=pago.alumno.id).apellido}",

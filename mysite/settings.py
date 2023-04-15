@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://mcamachog.pythonanywhere.com/','mcamachog.pythonanywhere.com',"mcamachog.pythonanywhere.com", "127.0.0.1","localhost"]
+ALLOWED_HOSTS = ['https://mcamachog.pythonanywhere.com/','mcamachog.pythonanywhere.com',"mcamachog.pythonanywhere.com", "127.0.0.1","localhost","testserver"]
 
 
 # Application definition

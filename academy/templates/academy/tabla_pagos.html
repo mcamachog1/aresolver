@@ -14,7 +14,7 @@
         <tr>
           {% if alumno %}
             {% if alumno == pago.alumno %}
-              <td>{{ pago.alumno.nombre }} {{ pago.alumno.apellido }}</td>
+              <td><a href="{% url 'alumno_entry' pago.alumno.id %}">{{ pago.alumno.nombre }} {{ pago.alumno.apellido }}</a></td>
               <td>{{ pago.fecha_pago }}</td>
               <td>{{ pago.monto }}</td>
               <td>{{ pago.total_clases }}</td>
@@ -22,7 +22,7 @@
               <td><a href="{% url 'pago_delete' pago.id %}">Eliminar</a></td>
             {% endif %}
           {% else %}
-            <td>{{ pago.alumno.nombre }} {{ pago.alumno.apellido }}</td>
+            <td><a href="{% url 'alumno_entry' pago.alumno.id %}">{{ pago.alumno.nombre }} {{ pago.alumno.apellido }}</a></td>
             <td>{{ pago.fecha_pago }}</td>
             <td>{{ pago.monto }}</td>
             <td>{{ pago.total_clases }}</td>

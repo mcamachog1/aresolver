@@ -47,10 +47,11 @@
                 }
                 else
                     document.querySelector("#contenedor-buscar-alumno").style.display = 'none'
-        }
+        } 
         // Evento: Al hacer click en el boton buscar
     
     </script>
+    <script src="{% static 'academy/js/tabla_asistencias1.js' %}" rel="stylesheet"></script>
 {% endblock %}
 {% block style %}
     <style>
@@ -64,6 +65,7 @@
     {% if user.is_authenticated %}
     <!-- <a href="{% url 'enviar_email'  %}">Enviar Email</a> -->
     {% if alumno %}
+        <input type="hidden" id="alumno-id" value="{{ alumno.id }}">
         <div class="d-flex">
             <div class="titulo-alumno">{{ alumno.nombre }} {{ alumno.apellido }}</div>
             <button class="btn btn-outline-primary m-2" id="boton-editar-alumno">Editar</button>
@@ -164,9 +166,9 @@
                     {% csrf_token %}
                     <button type="submit" class="btn btn-outline-primary">Asistencia Express</button>
                 </form>
-                <form class="mx-2" action="{% url 'asistencias' %}">
-                    <button type="submit" class="btn btn-outline-primary">Asistencia Manual</button>
-                </form>
+                <a href="{% url 'asistencia_manual_alumno' alumno.id %}">
+                    <button class="btn btn-outline-primary">Asistencia Manual</button>
+                </a>
             </div>
         </div>
         {% include "academy/tabla_asistencias.html" %} 

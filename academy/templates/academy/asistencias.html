@@ -4,67 +4,7 @@
 <img src="{{ academia.url_imagen }}" alt="Logo-de-la-academia" width="60px">
 {% endblock %}
 {% block script %}
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    if (document.querySelector('#fecha-asistencia')) {
-      const dt = new Date();
-      console.log(dt)
-      const dateFormat = dt.getFullYear() + "-" +((dt.getMonth()+1).length != 2 ? "0" + (dt.getMonth() + 1) : (dt.getMonth()+1)) + "-" + (dt.getDate()< 10 ?"0" + dt.getDate() : dt.getDate());
-      console.log(dateFormat)
-      document.getElementById('fecha-asistencia').value = dateFormat  
-    
-      const alumnos = document.querySelector('#alumnos');
-      alumnos.addEventListener('change', (event) => asistencias_alumno(event.target.value))
-  
-      // fetch con get
-      function asistencias_alumno(id) {
-        // funciones auxiliares
-        function addTable() {
-            // create a new table element
-            const newTable = document.createElement("table");
-            newTable.innerHTML = `
-              <table>
-                <thead>
-                  <tr>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Fecha de asistencia</th>
-                    <th scope="col">Tutor</th>
-                    <th scope="col">Academia</th>
-                    <th scope="col">Acción</th>
-                  </tr>
-                </thead>
-                <tbody id='table-body'>
-                </tbody>                
-              </table>
-              `
-            newTable.classList.add("table")
-            // add the newly created element and its content into the DOM
-            // const currentDiv = document.getElementById("titulo");
-            document.body.appendChild(newTable)
-        }
-          
-        document.querySelector('table').remove();
-        addTable()
-
-        tableBody = document.querySelector('#table-body')
-        fetch(`api/asistencias/${id}`)
-        .then(response => response.json())
-        .then(json => {
-          json.asistencias.forEach((asistencia) => {
-            tableBody.innerHTML += 
-            `<tr>
-              <td>${ asistencia.nombre }</td>
-              <td>${ asistencia.fecha }</td>
-              <td>${ asistencia.tutor }</td>
-              <td>${ asistencia.academia }</td>
-              <td><a href='asistencia_delete/${ asistencia.id }'>Eliminar</a></td>
-            </tr>`
-          })
-        })
-      };
-    }
-  });
-</script>
+<script src="{% static 'academy/js/tabla_asistencias1.js' %}" rel="stylesheet"></script>
 {% endblock %}
 
 {% block body %}
@@ -74,6 +14,8 @@
       <p>Fecha: {{ asistencia.fecha }}</p>
     {% else %}
         {% include "academy/asistencia_input_form.html" %}
+    {% endif %}
+    {% if alumno %}
     {% endif %}
     {% include "academy/tabla_asistencias.html" %}
 
