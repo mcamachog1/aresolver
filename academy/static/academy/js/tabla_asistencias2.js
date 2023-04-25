@@ -59,7 +59,7 @@
         json.asistencias.forEach((asistencia) => {
           tableBody.innerHTML += 
           `<tr>
-            <td>${ asistencia.nombre }</td>
+            <td><a href='alumno_entry/${id}'>${asistencia.nombre}</a></td>
             <td>${ asistencia.fecha }</td>
             <td>${ asistencia.tutor }</td>
             <td>${ asistencia.academia }</td>

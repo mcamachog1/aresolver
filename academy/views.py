@@ -8,6 +8,8 @@ from django.http import JsonResponse
 from django.core.paginator import Paginator
 from django.core import serializers
 from django.core.mail import send_mail
+from django import forms
+
 
 from pprint import pprint
 from datetime import date
@@ -23,7 +25,36 @@ from .models import User, Alumno, Asistencia, Pago, Representante, Tutor, Academ
 from .utils import *
 from mysite.secret_settings import MAILGUN_KEY
 
+# Variables Globales
+
+ACADEMIA = -1
+
 # Asistencias
+
+#Formularios
+class NuevaAsistenciaForm(forms.Form):
+    # Lista desplegable Alumnos
+    alumnos = Alumno.objects.filter(academias=3)
+    opciones_alumno = []
+    opciones_alumno.append(("-1", "Seleccione un alumno:"))
+    for alumno in alumnos:
+        opcion = (alumno.id, alumno.nombre + " " + alumno.apellido)
+        opciones_alumno.append(opcion)
+
+    # Lista desplegable Tutores
+    tutores = Tutor.objects.all()
+    opciones_tutor = []
+    opciones_tutor.append(("-1", "Seleccione un tutor:"))
+    for tutor in tutores:
+        opcion = (tutor.id, tutor.nombre)
+        opciones_tutor.append(opcion)
+
+    # Campos de formulario
+    cantidad_sesiones = forms.DecimalField(label="")
+    tutor = forms.ChoiceField(choices = opciones_tutor, label="")
+    alumno_id = forms.ChoiceField(choices = opciones_alumno, label="")
+
+
 
 # Listar asistencias
 def asistencias(request):
@@ -34,7 +65,9 @@ def asistencias(request):
             "tutores": Tutor.objects.filter(academia=academia).order_by("nombre"),
             "academias": Academia.objects.all(),
             "asistencias": Asistencia.objects.filter(academia=academia).order_by("-fecha"),
-            "academia": academia
+            "academia": academia,
+            "form": NuevaAsistenciaForm
+            
         })
 
 # Crear una nueva asistencia
@@ -46,7 +79,9 @@ def asistencia_new(request):
         asistencia = Asistencia()
         asistencia.alumno=alumno
         asistencia.fecha=request.POST['fecha']
-        asistencia.tutor=Tutor.objects.get(id=request.POST['tutor_id'])
+        if int(request.POST['tutor']) < 0:
+            return HttpResponseRedirect(reverse("asistencias"))
+        asistencia.tutor=Tutor.objects.get(id=request.POST['tutor'])
         asistencia.cantidad_sesiones=request.POST['cantidad_sesiones']
         asistencia.academia= obtener_academia(request)
         # Academia.objects.get(id=request.POST['academia_id'])
@@ -82,7 +117,9 @@ def asistencia_manual_alumno(request, alumno_id):
             "tutor": tutor_ultima_asistencia(alumno_id),
             "academias": Academia.objects.all(),
             "asistencias": Asistencia.objects.filter(academia=academia, alumno=alumno).order_by("-fecha"),
-            "academia": academia
+            "academia": academia,
+            "tutores": Tutor.objects.all(),
+            "form": NuevaAsistenciaForm(initial={'alumno_id': alumno.id})
         })        
         
 # Ver una asistencia
@@ -134,11 +171,14 @@ def pagos(request):
 
 # Listar los pagos de un alumno 
 def pagos_alumno(request, alumno_id):
+    month = date.today().month 
+    year = date.today().year
     return render(request, f"academy/pagos.html", {
-        "pagos": Pago.objects.filter(alumno=Alumno.objects.get(id=alumno_id)).order_by("-fecha_pago"),
+        "pagos": Pago.objects.filter(alumno=Alumno.objects.get(id=alumno_id), fecha_pago__year=str(year), fecha_pago__month=str(month)).order_by("-fecha_pago"),
         "alumno": Alumno.objects.get(id=alumno_id),
-        "alumnos": Alumno.objects.all(),
-        "cursos": Curso.objects.all()
+        # "alumnos": Alumno.objects.all(),
+        "cursos": Curso.objects.all(),
+        "academia": obtener_academia(request)
     })    
 
 # Crear nuevo pago  
@@ -173,8 +213,9 @@ def pago_delete(request, pago_id):
 # Alumnos
 
 # Listar los alumnos. Si qstr es vacio, los lista todos
+# Esta pagina es la equivalente a index
 def alumnos(request):
-    print(request.user)
+
     academia = obtener_academia(request)
     if academia:
         if request.method == 'POST':
@@ -435,6 +476,7 @@ def login_view(request):
         # Check if authentication successful
         if user is not None:
             login(request, user)
+            ACADEMIA = obtener_academia(request)
             return HttpResponseRedirect(reverse("alumnos"))
         else:
             return render(request, "academy/login.html", {
@@ -518,8 +560,10 @@ def api_pagos(request, month, year, alumno_id=None):
     else:
         pagos_pintar = tabla_pagos(Pago.objects.filter(academia=academia, alumno=Alumno.objects.get(id=alumno_id), fecha_pago__year=str(year), fecha_pago__month=str(month)).order_by("-fecha_pago"))
         pagos = json.dumps(pagos_pintar)
+    print(alumno_id)
     return JsonResponse({
         "pagos": pagos,
+        "alumno": alumno_id,
         "total_pagos_mes": total_pagos_mes,
         "total_clases_mes": total_clases_mes,
         "total_monto_mes": total_monto_mes,

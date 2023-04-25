@@ -1,140 +1,141 @@
-{% extends "academy/layout.html" %}
-{% load static %}
-{% block imagen %}
-<img src="{{ academia.url_imagen }}" alt="Logo-de-la-academia" width="60px">
-{% endblock %}
-{% block body %}
-    {% if user.is_authenticated %}
-        <div class="contenedor-principal">
-            <div class="contenedor-entrada-de-datos">
-                <!-- alumno que hace el pago -->
-                <form action="{% url 'pago_new' %}" method="post">
-                    {% csrf_token %}
-                    {% if alumno %}
-                        <select name="alumno_id" id="alumnos">
-                            <option value="-1">Seleccione un alumno:</option>
-                            <!-- alumno que recorre el conjunto de alumnos para llenar el select -->
-                            {% for objeto in alumnos%}
-                                {% if objeto.id != alumno.id %}
-                                    <option value="{{ alumno.id }}">{{ alumno.nombre }} {{ alumno.apellido }}</option>
-                                {% else %}
-                                    <option value="{{ alumno.id }}" selected>{{ alumno.nombre }} {{ alumno.apellido }}</option>
-                                {% endif %}
-                            {% endfor %}
-                        </select>
-                    {% else %}
-                        <select name="alumno_id" id="alumnos">
-                            <option value="-1">Seleccione un alumno:</option>
-                            {% for alumno in alumnos%}
-                                <option value="{{ alumno.id }}">{{ alumno.nombre }} {{ alumno.apellido }}</option>
-                            {% endfor %}
-                        </select>
-                    {% endif %}
-                    <input type="date" name="fecha_pago" >
-                    <input type="number" name="monto" placeholder="Monto USD">
-                    <select name="curso_id" id="cursos">
-                        <option value="-1">Seleccione un curso:</option>
-                        {% for curso in cursos%}
-                            <option value="{{ curso.id }}">{{ curso.nombre }}</option>
-                        {% endfor %}
-                    </select>
-                    <!-- <input type="number" name="total_clases" min=0 step=0.1 placeholder = "Num de Clases"> -->
-                    <input type="date" name="fecha_inicio" >
-                    <input type="submit" name="grabar" value="Grabar">
-                </form>
-            </div>   
-            <br><br>     
-            <div>
-                <label for="datepicker">Mes:</label>
-                <input type="text" onkeydown="return false" name="datepicker" id="datepicker" width="100px"/>
-            </div>
-            <div>
-                {% include "academy/tabla_pagos.html" %}            
-            </div>        
-        </div>
-    {% endif %}
-    {% block script %}
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                let date = new Date();
-                let month = date.getMonth() + 1;
-                let year = date.getFullYear();
-                document.querySelector('#alumnos').addEventListener('change', (e) => {
-                    pintar_tabla(e.target.value)
+{% extends "academy/layout.html" %} {% load static %} {% block imagen %}
+<img src="{{ academia.url_imagen }}" alt="Logo-de-la-academia" width="60px"/>
+{% endblock %} {% block body %} {% if user.is_authenticated %}
+<div class="contenedor-principal">
+  <div class="contenedor-entrada-de-datos">
+    <!-- alumno que hace el pago -->
+    <form action="{% url 'pago_new' %}" method="post">
+      {% csrf_token %} {% if alumno %}
+      <select name="alumno_id" id="alumnos">
+        <option value="-1">Seleccione un alumno:</option>
+        <!-- alumno que recorre el conjunto de alumnos para llenar el select -->
+        {% if not alumnos %}
+        <option value="{{ alumno.id }}" selected>
+          {{ alumno.nombre }} {{ alumno.apellido }}
+        </option>
+        {% endif %} {% for objeto in alumnos%} {% if objeto.id != alumno.id %}
+        <option value="{{ alumno.id }}">
+          {{ alumno.nombre }} {{ alumno.apellido }}
+        </option>
+        {% else %}
+        <option value="{{ alumno.id }}" selected>
+          {{ alumno.nombre }} {{ alumno.apellido }}
+        </option>
+        {% endif %} {% endfor %}
+      </select>
+      {% else %}
+      <select name="alumno_id" id="alumnos">
+        <option value="-1">Seleccione un alumno:</option>
+        {% for alumno in alumnos%}
+        <option value="{{ alumno.id }}">
+          {{ alumno.nombre }} {{ alumno.apellido }}
+        </option>
+        {% endfor %}
+      </select>
+      {% endif %}
+      <input type="date" name="fecha_pago" />
+      <input type="number" name="monto" placeholder="Monto USD" />
+      <select name="curso_id" id="cursos">
+        <option value="-1">Seleccione un curso:</option>
+        {% for curso in cursos%}
+        <option value="{{ curso.id }}">{{ curso.nombre }}</option>
+        {% endfor %}
+      </select>
+      <!-- <input type="number" name="total_clases" min=0 step=0.1 placeholder = "Num de Clases"> -->
+      <input type="date" name="fecha_inicio" />
+      <input type="submit" name="grabar" value="Grabar" />
+    </form>
+  </div>
+  <br /><br />
+  <div>
+    <label for="datepicker">Mes:</label>
+    <input
+      type="text"
+      onkeydown="return false"
+      name="datepicker"
+      id="datepicker"
+      width="100px"
+    />
+  </div>
+  <div>{% include "academy/tabla_pagos.html" %}</div>
+</div>
+{% endif %} {% block script %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    let date = new Date();
+    let month = date.getMonth() + 1;
+    let year = date.getFullYear();
+    document.querySelector("#alumnos").addEventListener("change", (e) => {
+      pintar_tabla(e.target.value);
+    });
+    function pintar_tabla(alumno_id) {
+      console.log(document.querySelector("#datepicker"));
+      if (alumno_id == -1) ruta = `../api/pagos/${month}/${year}`;
+      else ruta = `../api/pagos/${month}/${year}/${alumno_id}`;
+      fetch(ruta)
+        .then((response) => response.json())
+        .then((json) => {
+          const pagos = JSON.parse(json.pagos);
+          addRows(pagos, json.total_monto_mes, json.total_clases_mes, alumno_id);
+        });
+    }
 
-                })
-                function pintar_tabla(alumno_id) {
-                    console.log(document.querySelector('#datepicker'))
-                    if (alumno_id == -1)
-                        ruta = `api/pagos/${month}/${year}`
-                    else 
-                        ruta = `api/pagos/${month}/${year}/${alumno_id}`
-                    fetch(ruta)
-                        .then(response => response.json())
-                        .then(json => {
-                            const pagos = JSON.parse(json.pagos)
-                            addRows(pagos, json.total_monto_mes, json.total_clases_mes)
-                        })
-                }
-        
+    function addRows(pagos, total_monto_mes, total_clases_mes, alumno_id) {
+      // borrar body original
+      if (document.querySelector("#body-tabla-pagos"))
+        document.querySelector("#body-tabla-pagos").remove();
+      const newTbody = document.createElement("tbody");
+      newTbody.setAttribute("id", "body-tabla-pagos");
+      pagos.forEach((pago) => {
+        newTbody.innerHTML += `<tr>
+                            <td><a href='../alumno_entry/${alumno_id}'>${pago.nombre}</a></td>
+                            <td>${pago.fecha_pago}</td>
+                            <td>${pago.monto}</td>
+                            <td>${pago.total_clases}</td>
+                            <td>${pago.fecha_inicio}</td>
+                            <td><a href='pago_delete/${pago.id}'>Eliminar</a></td>
+                        </tr>`;
+      });
 
-                function addRows(pagos, total_monto_mes, total_clases_mes) {
-                    // borrar body original
-                    if (document.querySelector('#body-tabla-pagos'))
-                        document.querySelector('#body-tabla-pagos').remove();
-                    const newTbody = document.createElement("tbody");
-                    newTbody.setAttribute("id","body-tabla-pagos");
-                    pagos.forEach(pago => {
-                        newTbody.innerHTML += 
-                        `<tr>
-                            <td>${ pago.nombre }</td>
-                            <td>${ pago.fecha_pago }</td>
-                            <td>${ pago.monto }</td>
-                            <td>${ pago.total_clases }</td>
-                            <td>${ pago.fecha_inicio }</td>
-                            <td><a href='pago_delete/${ pago.id }'>Eliminar</a></td>
-                        </tr>`
-                        })
-                    
-                    // Fila de totales
-                    newTbody.innerHTML += 
-                        `<tr>
+      // Fila de totales
+      newTbody.innerHTML += `<tr>
                             <td>Total mes</td>
                             <td></td>
-                            <td>${ total_monto_mes }</td>
-                            <td>${ total_clases_mes }</td>
+                            <td>${total_monto_mes}</td>
+                            <td>${total_clases_mes}</td>
                             <td></td>
                             <td></td>
-                        </tr>`
-                    
-                    document.querySelector('#tabla-pagos').appendChild(newTbody)
-                }        
+                        </tr>`;
 
-                $("#datepicker").datepicker({
-                    format: "mm-yyyy",
-                    startView: "months",
-                    minViewMode: "months",
-                    autoclose: true 
-                });
+      document.querySelector("#tabla-pagos").appendChild(newTbody);
+    }
 
-                $('#datepicker').datepicker()
-                    .on('hide', function(e) {
-                        month = e.date.getMonth() + 1;
-                        year = e.date.getFullYear();
-                        if (document.querySelector('#alumnos').value == -1)
-                            ruta = `api/pagos/${month}/${year}`
-                        else 
-                            ruta = `api/pagos/${month}/${year}/${document.querySelector('#alumnos').value}`
-                        console.log(ruta)
-                        fetch(ruta)
-                            .then(response => response.json())
-                            .then(json => {
-                                const pagos = JSON.parse(json.pagos)
-                                addRows(pagos, json.total_monto_mes, json.total_clases_mes)
-                            })
-                        })
-                });
+    $("#datepicker").datepicker({
+      format: "mm-yyyy",
+      startView: "months",
+      minViewMode: "months",
+      autoclose: true,
+    });
 
-        </script>
-    {% endblock %}
-{% endblock %}
+    $("#datepicker")
+      .datepicker()
+      .on("hide", function (e) {
+        let alumno_id = document.querySelector("#alumnos").value
+        month = e.date.getMonth() + 1;
+        year = e.date.getFullYear();
+        if (document.querySelector("#alumnos").value == -1)
+          ruta = `api/pagos/${month}/${year}`;
+        else
+          ruta = `../api/pagos/${month}/${year}/${
+            document.querySelector("#alumnos").value
+          }`;
+        fetch(ruta)
+          .then((response) => response.json())
+          .then((json) => {
+            const pagos = JSON.parse(json.pagos);
+            addRows(pagos, json.total_monto_mes, json.total_clases_mes, alumno_id);
+          });
+      });
+  });
+</script>
+{% endblock %} {% endblock %}

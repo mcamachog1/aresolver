@@ -35,11 +35,6 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav mr-auto">
                 {% if user.is_authenticated %}
-                    <li class="nav-item {% if request.resolver_match.url_name == 'asistencias' %} active {% endif %}">
-                        <a class="nav-link" 
-                           href="{% url 'asistencias' %}">Asistencias
-                        </a>
-                    </li>
                     <li class="nav-item {% if request.resolver_match.url_name == 'pagos' %} active {% endif %}">
                         <a class="nav-link" href="{% url 'pagos' %}">Pagos</a>
                     </li>
