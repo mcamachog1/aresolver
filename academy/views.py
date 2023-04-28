@@ -16,8 +16,8 @@ from datetime import date
 
 import inspect
 import json
-import requests
-# import decimal
+# import requests
+from decimal import Decimal
 import csv
 
 from datetime import datetime
@@ -153,10 +153,7 @@ def pagos(request):
     academia = obtener_academia(request)
     total_pagos = total_montos_por_mes(academia,year,month)
     total_clases = total_clases_pagadas_por_mes(academia,year,month)
-    # mes = Pago.objects.filter(date__year='2020', 
-    #                   date__month='01')
-    # month = datetime.now().month
-    # year = datetime.now().year
+    
 
     return render(request, "academy/pagos.html", {
         "pagos": Pago.objects.filter(academia=academia, fecha_pago__year=str(year), fecha_pago__month=str(month)).order_by("-fecha_pago"),
@@ -165,8 +162,6 @@ def pagos(request):
         "total_clases": total_clases,
         "cursos": Curso.objects.all(),
         "academia": academia  
-        
-        # .order_by('-fecha_pago')
     })
 
 # Listar los pagos de un alumno 
@@ -198,7 +193,8 @@ def pago_new(request):
         print(type(costo))
         pago.curso = curso
         print(type(pago.monto/costo))
-        pago.total_clases = '{0:.3g}'.format(pago.monto/costo)
+        # pago.total_clases = '{0:.3g}'.format(pago.monto/costo)
+        pago.total_clases = pago.monto/costo
         pago.save()
         pago.academia = academia
         pago.save()
