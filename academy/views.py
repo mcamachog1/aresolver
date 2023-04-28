@@ -17,7 +17,11 @@ from datetime import date
 import inspect
 import json
 # import requests
+<<<<<<< Updated upstream
 from decimal import Decimal
+=======
+# import decimal
+>>>>>>> Stashed changes
 import csv
 
 from datetime import datetime
