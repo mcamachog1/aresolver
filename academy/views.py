@@ -31,11 +31,14 @@ ACADEMIA = -1
 # Asistencias
 
 #Formularios
+class DateInput(forms.DateInput):
+    input_type = 'date'
+
 class NuevaAsistenciaForm(forms.Form):
     # Lista desplegable Alumnos
-    alumnos = Alumno.objects.filter(academias=3)
+    alumnos = Alumno.objects.filter(academias=1)
     opciones_alumno = []
-    opciones_alumno.append(("-1", "Seleccione un alumno:"))
+    # opciones_alumno.append(("-1", "Seleccione un alumno:"))
     for alumno in alumnos:
         opcion = (alumno.id, alumno.nombre + " " + alumno.apellido)
         opciones_alumno.append(opcion)
@@ -43,16 +46,16 @@ class NuevaAsistenciaForm(forms.Form):
     # Lista desplegable Tutores
     tutores = Tutor.objects.all()
     opciones_tutor = []
-    opciones_tutor.append(("-1", "Seleccione un tutor:"))
+    # opciones_tutor.append(("-1", "Seleccione un tutor:"))
     for tutor in tutores:
         opcion = (tutor.id, tutor.nombre)
         opciones_tutor.append(opcion)
 
     # Campos de formulario
-    cantidad_sesiones = forms.DecimalField(label="")
-    tutor = forms.ChoiceField(choices = opciones_tutor, label="")
     alumno_id = forms.ChoiceField(choices = opciones_alumno, label="")
-
+    tutor_id = forms.ChoiceField(choices = opciones_tutor, label="")
+    fecha = forms.DateField(widget=DateInput, label="")
+    cantidad_sesiones = forms.DecimalField(label="", widget=forms.NumberInput(attrs={'value': 1, 'title': 'Cantidad de Sesiones', 'width': '50px'}))
 
 
 # Listar asistencias
@@ -78,14 +81,12 @@ def asistencia_new(request):
         asistencia = Asistencia()
         asistencia.alumno=alumno
         asistencia.fecha=request.POST['fecha']
-        if int(request.POST['tutor']) < 0:
-            return HttpResponseRedirect(reverse("asistencias"))
-        asistencia.tutor=Tutor.objects.get(id=request.POST['tutor'])
+        asistencia.tutor=Tutor.objects.get(id=request.POST['tutor_id'])
         asistencia.cantidad_sesiones=request.POST['cantidad_sesiones']
         asistencia.academia= obtener_academia(request)
         # Academia.objects.get(id=request.POST['academia_id'])
         asistencia.save()
-        return HttpResponseRedirect(reverse("asistencias"))
+        return HttpResponseRedirect(reverse("asistencia_alumno", kwargs={"alumno_id":alumno.id}))
 
 # Crear una nueva asistencia express conociendo al alumno
 # manteniendo sus ultimos valores (academia y tutor)

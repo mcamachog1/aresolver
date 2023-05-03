@@ -1,7 +1,7 @@
 <form action="{% url 'asistencia_new' %}" method="post">
 {% csrf_token %}
 {{ form }}
-{% if alumno %}
+<!-- {% if alumno %} -->
     <!-- <select name="alumno_id" id="alumnos">
         <option value="-1">Seleccione un alumno:</option>
          alumno que recorre el conjunto de alumnos para llenar el select -->
@@ -16,14 +16,14 @@
             {% endif %}
         {% endfor %}
     </select>  -->
-{% else %}
+<!-- {% else %}
     <select name="alumno_id" id="alumnos">
         <option value="-1">Seleccione un alumno:</option>
         {% for alumno in alumnos%}
             <option value="{{ alumno.id }}">{{ alumno.nombre }} {{ alumno.apellido }}</option>
         {% endfor %}
     </select>
-{% endif %}
+{% endif %} -->
 
 
 <!-- Cambiar a futuro dependiendo del tipo de usuario (seleccionar academia) -->
@@ -31,6 +31,6 @@
 <!-- <select name="academia_id" id="academias">
     <option value="{{ academia.id }}">{{ academia.nombre }}</option>
 </select> -->
-<input name="fecha" type="date" id="fecha-asistencia">
+<!-- <input name="fecha" type="date" id="fecha-asistencia"> -->
 <input type="submit">
 </form>
