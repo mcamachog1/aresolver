@@ -185,6 +185,10 @@
         {% include "academy/tabla_pagos.html" %}    
     {% endif %}
 
+    {% if alumno %}
+        <h2>Saldo</h2>
+        {% include "academy/tabla_saldos.html" %} 
+    {% endif %}
 
     {% endif %}
 {% endblock %}

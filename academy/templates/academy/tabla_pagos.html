@@ -31,24 +31,5 @@
           {% endif %}
         </tr>
     {% endfor %}
-    {% if alumno %}
-      <tr>
-        <td>Saldo</td>
-        <td></td>
-        <td>{{ total_pagos }}</td>
-        <td>{{ total_clases }}</td>
-        <td></td>
-        <td></td>
-      </tr>
-    {% else %}
-        <tr>
-          <td>Total mes</td>
-          <td></td>
-          <td>{{ total_pagos }}</td>
-          <td>{{ total_clases }}</td>
-          <td></td>
-          <td></td>
-        </tr>
-    {% endif %}
   </tbody>
 </table>

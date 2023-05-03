@@ -1,0 +1,18 @@
+<table class="table" id="tabla-saldos">
+  <thead>
+    <tr>
+      <th scope="col">Alumno</th>
+      <th scope="col">Total Clases Pagadas</th>
+      <th scope="col">Total Clases Vistas</th>
+      <th scope="col">Saldo</th>                   
+    </tr>
+  </thead>
+  <tbody id="body-tabla-saldos">
+        <tr>
+          <td><a href="{% url 'alumno_entry' alumno.id %}">{{ alumno.nombre }} {{ alumno.apellido }}</a></td>
+          <td>{{ total_monto_pagado }}</td>
+          <td>{{ total_monto_clases_vistas }}</td>
+          <td>{{ saldo }}</td>
+        </tr>
+  </tbody>
+</table>

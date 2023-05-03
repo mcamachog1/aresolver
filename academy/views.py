@@ -100,6 +100,8 @@ def asistencia_alumno(request, alumno_id):
         asistencia.fecha= now.date()
         asistencia.tutor=Asistencia.objects.filter(alumno=alumno).order_by("-fecha").first().tutor
         asistencia.academia=Asistencia.objects.filter(alumno=alumno).order_by("-fecha").first().academia
+        asistencia.curso=Asistencia.objects.filter(alumno=alumno).order_by("-fecha").first().curso
+        asistencia.cantidad_sesiones = 1
         asistencia.save()
         #  reverse("admin:app_list", kwargs={"app_label": "auth"})
         return HttpResponseRedirect(reverse("alumno_entry", kwargs={"alumno_id":alumno_id}))
@@ -153,7 +155,6 @@ def pagos(request):
     total_pagos = total_montos_por_mes(academia,year,month)
     total_clases = total_clases_pagadas_por_mes(academia,year,month)
     
-
     return render(request, "academy/pagos.html", {
         "pagos": Pago.objects.filter(academia=academia, fecha_pago__year=str(year), fecha_pago__month=str(month)).order_by("-fecha_pago"),
         "alumnos": Alumno.objects.filter(academias=academia),
@@ -185,14 +186,12 @@ def pago_new(request):
         pago = Pago()
         pago.alumno = alumno
         pago.fecha_pago = request.POST["fecha_pago"]
-        # pago.total_clases = request.POST["total_clases"]
         pago.fecha_inicio = request.POST["fecha_inicio"]
         pago.monto = float(request.POST["monto"])
         print(type(pago.monto))
         print(type(costo))
         pago.curso = curso
         print(type(pago.monto/costo))
-        # pago.total_clases = '{0:.3g}'.format(pago.monto/costo)
         pago.total_clases = pago.monto/costo
         pago.save()
         pago.academia = academia
@@ -258,9 +257,17 @@ def alumno_entry(request, alumno_id):
         else:
             porcentaje = 0
     asistencias = Asistencia.objects.filter(alumno=Alumno.objects.get(id=alumno_id)).order_by("-fecha")
-    paginator = Paginator(asistencias, 5)
+    paginator = Paginator(asistencias, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+    pagos = Pago.objects.filter(alumno=Alumno.objects.get(id=alumno_id))
+    total_monto_pagado = 0
+    total_monto_clases_vistas = 0
+    for pago in pagos:
+        total_monto_pagado += pago.monto
+    asistencias = Asistencia.objects.filter(alumno=Alumno.objects.get(id=alumno_id))
+    for asistencia in asistencias:
+        total_monto_clases_vistas += asistencia.cantidad_sesiones * asistencia.curso.costo_por_sesion
     return render(request, "academy/alumnos.html", {
         "alumno": Alumno.objects.get(id=alumno_id),
         "representantes": Representante.objects.all().order_by("nombre"),
@@ -269,7 +276,10 @@ def alumno_entry(request, alumno_id):
         "ultimas_clases_pagadas": ultimas_clases_pagadas(alumno_id),
         "ultimas_asistencias": ultimas_asistencias(alumno_id),
         "porcentaje": porcentaje,
-        "academia": obtener_academia(request)
+        "academia": obtener_academia(request),
+        "total_monto_pagado": total_monto_pagado,
+        "total_monto_clases_vistas": total_monto_clases_vistas,
+        "saldo": total_monto_pagado - total_monto_clases_vistas,
 
     })  
 
