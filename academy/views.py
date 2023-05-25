@@ -8,7 +8,7 @@ from django.http import JsonResponse
 from django.core.paginator import Paginator
 from django.core import serializers
 from django.core.mail import send_mail
-from django import forms
+# from django import forms
 
 
 from pprint import pprint
@@ -24,39 +24,13 @@ from .models import User, Alumno, Asistencia, Pago, Representante, Tutor, Academ
 from .utils import *
 from mysite.secret_settings import MAILGUN_KEY
 
+from .forms import NuevaAsistenciaForm
+
 # Variables Globales
 
 ACADEMIA = -1
 
 # Asistencias
-
-#Formularios
-class DateInput(forms.DateInput):
-    input_type = 'date'
-
-class NuevaAsistenciaForm(forms.Form):
-    # Lista desplegable Alumnos
-    alumnos = Alumno.objects.filter(academias=1)
-    opciones_alumno = []
-    # opciones_alumno.append(("-1", "Seleccione un alumno:"))
-    for alumno in alumnos:
-        opcion = (alumno.id, alumno.nombre + " " + alumno.apellido)
-        opciones_alumno.append(opcion)
-
-    # Lista desplegable Tutores
-    tutores = Tutor.objects.all()
-    opciones_tutor = []
-    # opciones_tutor.append(("-1", "Seleccione un tutor:"))
-    for tutor in tutores:
-        opcion = (tutor.id, tutor.nombre)
-        opciones_tutor.append(opcion)
-
-    # Campos de formulario
-    alumno_id = forms.ChoiceField(choices = opciones_alumno, label="")
-    tutor_id = forms.ChoiceField(choices = opciones_tutor, label="")
-    fecha = forms.DateField(widget=DateInput, label="")
-    cantidad_sesiones = forms.DecimalField(label="", widget=forms.NumberInput(attrs={'value': 1, 'title': 'Cantidad de Sesiones', 'width': '50px'}))
-
 
 # Listar asistencias
 def asistencias(request):
@@ -82,14 +56,15 @@ def asistencia_new(request):
         asistencia.alumno=alumno
         asistencia.fecha=request.POST['fecha']
         asistencia.tutor=Tutor.objects.get(id=request.POST['tutor_id'])
+        asistencia.curso=Curso.objects.get(id=request.POST['curso_id'])
         asistencia.cantidad_sesiones=request.POST['cantidad_sesiones']
         asistencia.academia= obtener_academia(request)
         # Academia.objects.get(id=request.POST['academia_id'])
         asistencia.save()
-        return HttpResponseRedirect(reverse("asistencia_alumno", kwargs={"alumno_id":alumno.id}))
+        return HttpResponseRedirect(reverse("alumno_entry", kwargs={"alumno_id":alumno.id}))
 
 # Crear una nueva asistencia express conociendo al alumno
-# manteniendo sus ultimos valores (academia y tutor)
+# manteniendo sus ultimos valores (academia, tutor y curso)
 def asistencia_alumno(request, alumno_id):
     if (request.method == 'POST'):
         alumno = Alumno.objects.get(id=alumno_id)
@@ -104,7 +79,6 @@ def asistencia_alumno(request, alumno_id):
         asistencia.curso=Asistencia.objects.filter(alumno=alumno).order_by("-fecha").first().curso
         asistencia.cantidad_sesiones = 1
         asistencia.save()
-        #  reverse("admin:app_list", kwargs={"app_label": "auth"})
         return HttpResponseRedirect(reverse("alumno_entry", kwargs={"alumno_id":alumno_id}))
 
 # Crear una nueva asistencia manual conociendo al alumno
@@ -268,7 +242,7 @@ def alumno_entry(request, alumno_id):
         total_monto_pagado += pago.monto
     asistencias = Asistencia.objects.filter(alumno=Alumno.objects.get(id=alumno_id))
     for asistencia in asistencias:
-        total_monto_clases_vistas += asistencia.cantidad_sesiones * asistencia.curso.costo_por_sesion
+        total_monto_clases_vistas += asistencia.cantidad_sesiones * 1  if asistencia.curso is None  else asistencia.curso.costo_por_sesion
     return render(request, "academy/alumnos.html", {
         "alumno": Alumno.objects.get(id=alumno_id),
         "representantes": Representante.objects.all().order_by("nombre"),

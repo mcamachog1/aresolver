@@ -5,7 +5,7 @@
         <th scope="col">Nombre</th>
         <th scope="col">Fecha de asistencia</th>
         <th scope="col">Tutor</th>
-        <th scope="col">Academia</th>
+        <th scope="col">Curso</th>
         <th scope="col">Sesiones</th>
         <th scope="col">Acción</th>
       </tr>
@@ -16,7 +16,7 @@
           <td><a href="{% url 'alumno_entry' asistencia.alumno.id %}">{{ asistencia.alumno.nombre }} {{asistencia.alumno.apellido}}</a></td>
           <td>{{ asistencia.fecha }}</td>
           <td>{{ asistencia.tutor.nombre }}</td>
-          <td>{{ asistencia.academia.nombre }}</td>
+          <td>{{ asistencia.curso.nombre }}</td>
           <td>{{ asistencia.cantidad_sesiones }}</td>          
           <td><a href="{% url 'asistencia_delete' asistencia.id %}">Eliminar</a></td>
         </tr>
