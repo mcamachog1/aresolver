@@ -123,7 +123,7 @@ class Pago(models.Model):
 
 class Asistencia(models.Model):
 	fecha = models.DateField(null=False, default=django.utils.timezone.now)
-	alumno = models.ForeignKey(Alumno, on_delete=models.CASCADE, related_name="asistencias", null=False) 
+	alumno = models.ForeignKey(Alumno, on_delete=models.CASCADE, related_name="asistencias") 
 	academia = models.ForeignKey(Academia, on_delete=models.CASCADE, related_name="asistencias", null=True)
 	tutor = models.ForeignKey(Tutor, on_delete=models.CASCADE, related_name="asistencias", null=True)
 	cantidad_sesiones = models.IntegerField()

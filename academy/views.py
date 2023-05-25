@@ -8,7 +8,7 @@ from django.http import JsonResponse
 from django.core.paginator import Paginator
 from django.core import serializers
 from django.core.mail import send_mail
-from django import forms
+# from django import forms
 
 
 from pprint import pprint
@@ -17,17 +17,8 @@ from datetime import date
 import inspect
 import json
 # import requests
-<<<<<<< HEAD
-=======
-<<<<<<< Updated upstream
-<<<<<<< Updated upstream
 from decimal import Decimal
-=======
-=======
->>>>>>> Stashed changes
->>>>>>> 75b14f78ba22d8f6e54ffb435b5671177bf1023f
 # import decimal
->>>>>>> Stashed changes
 import csv
 
 from datetime import datetime
@@ -35,36 +26,13 @@ from .models import User, Alumno, Asistencia, Pago, Representante, Tutor, Academ
 from .utils import *
 from mysite.secret_settings import MAILGUN_KEY
 
+from .forms import NuevaAsistenciaForm
+
 # Variables Globales
 
 ACADEMIA = -1
 
 # Asistencias
-
-#Formularios
-class NuevaAsistenciaForm(forms.Form):
-    # Lista desplegable Alumnos
-    alumnos = Alumno.objects.filter(academias=3)
-    opciones_alumno = []
-    opciones_alumno.append(("-1", "Seleccione un alumno:"))
-    for alumno in alumnos:
-        opcion = (alumno.id, alumno.nombre + " " + alumno.apellido)
-        opciones_alumno.append(opcion)
-
-    # Lista desplegable Tutores
-    tutores = Tutor.objects.all()
-    opciones_tutor = []
-    opciones_tutor.append(("-1", "Seleccione un tutor:"))
-    for tutor in tutores:
-        opcion = (tutor.id, tutor.nombre)
-        opciones_tutor.append(opcion)
-
-    # Campos de formulario
-    cantidad_sesiones = forms.DecimalField(label="")
-    tutor = forms.ChoiceField(choices = opciones_tutor, label="")
-    alumno_id = forms.ChoiceField(choices = opciones_alumno, label="")
-
-
 
 # Listar asistencias
 def asistencias(request):
@@ -89,17 +57,16 @@ def asistencia_new(request):
         asistencia = Asistencia()
         asistencia.alumno=alumno
         asistencia.fecha=request.POST['fecha']
-        if int(request.POST['tutor']) < 0:
-            return HttpResponseRedirect(reverse("asistencias"))
-        asistencia.tutor=Tutor.objects.get(id=request.POST['tutor'])
+        asistencia.tutor=Tutor.objects.get(id=request.POST['tutor_id'])
+        asistencia.curso=Curso.objects.get(id=request.POST['curso_id'])
         asistencia.cantidad_sesiones=request.POST['cantidad_sesiones']
         asistencia.academia= obtener_academia(request)
         # Academia.objects.get(id=request.POST['academia_id'])
         asistencia.save()
-        return HttpResponseRedirect(reverse("asistencias"))
+        return HttpResponseRedirect(reverse("alumno_entry", kwargs={"alumno_id":alumno.id}))
 
 # Crear una nueva asistencia express conociendo al alumno
-# manteniendo sus ultimos valores (academia y tutor)
+# manteniendo sus ultimos valores (academia, tutor y curso)
 def asistencia_alumno(request, alumno_id):
     if (request.method == 'POST'):
         alumno = Alumno.objects.get(id=alumno_id)
@@ -111,8 +78,9 @@ def asistencia_alumno(request, alumno_id):
         asistencia.fecha= now.date()
         asistencia.tutor=Asistencia.objects.filter(alumno=alumno).order_by("-fecha").first().tutor
         asistencia.academia=Asistencia.objects.filter(alumno=alumno).order_by("-fecha").first().academia
+        asistencia.curso=Asistencia.objects.filter(alumno=alumno).order_by("-fecha").first().curso
+        asistencia.cantidad_sesiones = 1
         asistencia.save()
-        #  reverse("admin:app_list", kwargs={"app_label": "auth"})
         return HttpResponseRedirect(reverse("alumno_entry", kwargs={"alumno_id":alumno_id}))
 
 # Crear una nueva asistencia manual conociendo al alumno
@@ -164,7 +132,6 @@ def pagos(request):
     total_pagos = total_montos_por_mes(academia,year,month)
     total_clases = total_clases_pagadas_por_mes(academia,year,month)
     
-
     return render(request, "academy/pagos.html", {
         "pagos": Pago.objects.filter(academia=academia, fecha_pago__year=str(year), fecha_pago__month=str(month)).order_by("-fecha_pago"),
         "alumnos": Alumno.objects.filter(academias=academia),
@@ -196,14 +163,12 @@ def pago_new(request):
         pago = Pago()
         pago.alumno = alumno
         pago.fecha_pago = request.POST["fecha_pago"]
-        # pago.total_clases = request.POST["total_clases"]
         pago.fecha_inicio = request.POST["fecha_inicio"]
         pago.monto = float(request.POST["monto"])
         print(type(pago.monto))
         print(type(costo))
         pago.curso = curso
         print(type(pago.monto/costo))
-        # pago.total_clases = '{0:.3g}'.format(pago.monto/costo)
         pago.total_clases = pago.monto/costo
         pago.save()
         pago.academia = academia
@@ -269,9 +234,17 @@ def alumno_entry(request, alumno_id):
         else:
             porcentaje = 0
     asistencias = Asistencia.objects.filter(alumno=Alumno.objects.get(id=alumno_id)).order_by("-fecha")
-    paginator = Paginator(asistencias, 5)
+    paginator = Paginator(asistencias, 10)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
+    pagos = Pago.objects.filter(alumno=Alumno.objects.get(id=alumno_id))
+    total_monto_pagado = 0
+    total_monto_clases_vistas = 0
+    for pago in pagos:
+        total_monto_pagado += pago.monto
+    asistencias = Asistencia.objects.filter(alumno=Alumno.objects.get(id=alumno_id))
+    for asistencia in asistencias:
+        total_monto_clases_vistas += asistencia.cantidad_sesiones * 1  if asistencia.curso is None  else asistencia.curso.costo_por_sesion
     return render(request, "academy/alumnos.html", {
         "alumno": Alumno.objects.get(id=alumno_id),
         "representantes": Representante.objects.all().order_by("nombre"),
@@ -280,7 +253,10 @@ def alumno_entry(request, alumno_id):
         "ultimas_clases_pagadas": ultimas_clases_pagadas(alumno_id),
         "ultimas_asistencias": ultimas_asistencias(alumno_id),
         "porcentaje": porcentaje,
-        "academia": obtener_academia(request)
+        "academia": obtener_academia(request),
+        "total_monto_pagado": total_monto_pagado,
+        "total_monto_clases_vistas": total_monto_clases_vistas,
+        "saldo": total_monto_pagado - total_monto_clases_vistas,
 
     })  
 

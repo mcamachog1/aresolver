@@ -51,7 +51,7 @@
         // Evento: Al hacer click en el boton buscar
     
     </script>
-    <script src="{% static 'academy/js/tabla_asistencias1.js' %}" rel="stylesheet"></script>
+    <script src="{% static 'academy/js/tabla_asistencias.js' %}" rel="stylesheet"></script>
 {% endblock %}
 {% block style %}
     <style>
@@ -61,6 +61,7 @@
         }
     </style>
 {% endblock %}
+
 {% block body %}
     {% if user.is_authenticated %}
     <!-- <a href="{% url 'enviar_email'  %}">Enviar Email</a> -->
@@ -130,7 +131,7 @@
         {% include "academy/tabla_alumnos.html" %}    
     {% endif %}
 
-    {% if asistencias and alumno %}
+    {% if alumno %}
         <div class="cargar-asistencia">
             <div style="display: flex; justify-content: flex-start">
                 <h2>Asistencias</h2>
@@ -164,7 +165,11 @@
             <div style="display: flex; justify-content: flex-end">
                 <form class="mx-2" action="{% url 'asistencia_alumno' alumno.id %}" method="post">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-outline-primary">Asistencia Express</button>
+                    {% if asistencias %}
+                        <button type="submit" class="btn btn-outline-primary">Asistencia Express</button>
+                    {% else %}
+                        <button disabled type="submit" class="btn btn-outline-primary">Asistencia Express</button>                        
+                    {% endif %}
                 </form>
                 <a href="{% url 'asistencia_manual_alumno' alumno.id %}">
                     <button class="btn btn-outline-primary">Asistencia Manual</button>
@@ -172,10 +177,9 @@
             </div>
         </div>
         {% include "academy/tabla_asistencias.html" %} 
-
     {% endif %}
 
-    {% if pagos %}
+        {% if alumno %}
         <div class="cargar-pago">
             <h2>Pagos</h2>
             <a href="{% url 'pagos_alumno' alumno.id %}">
@@ -183,8 +187,12 @@
             </a>
         </div>
         {% include "academy/tabla_pagos.html" %}    
-    {% endif %}
+        {% endif %}
 
+    {% if alumno %}
+        <h2>Saldo</h2>
+        {% include "academy/tabla_saldos.html" %} 
+    {% endif %}
 
     {% endif %}
 {% endblock %}

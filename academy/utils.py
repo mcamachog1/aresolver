@@ -92,7 +92,10 @@ def ultimas_asistencias(alumno_id):
 def tutor_ultima_asistencia(alumno_id):
     alumno = Alumno.objects.get(id=alumno_id)
     ultima_asistencia = Asistencia.objects.filter(alumno=alumno).order_by("-fecha").first()
-    return ultima_asistencia.tutor    
+    if ultima_asistencia:
+        return ultima_asistencia.tutor
+    else:
+        return Tutor.objects.all().first()
 
 # Recibe el request
 # Devuelve la academia del usuario logueado
