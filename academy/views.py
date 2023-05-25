@@ -16,7 +16,7 @@ from datetime import date
 
 import inspect
 import json
-import requests
+# import requests
 # import decimal
 import csv
 
