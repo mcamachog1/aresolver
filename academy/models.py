@@ -95,14 +95,6 @@ class Alumno(models.Model):
 		return (f"{self.nombre} {self.apellido} {self.representante.nombre}")
 
 
-class Pago(models.Model):
-	fecha_pago = models.DateField()
-	monto = models.DecimalField(max_digits=7, decimal_places=2)
-	total_clases = models.DecimalField(max_digits=2, decimal_places=1)
-	fecha_inicio = models.DateField()
-	alumno = models.ForeignKey(Alumno, on_delete=models.CASCADE, related_name="pagos_realizados", null=False) 
-	academia = models.ForeignKey(Academia, on_delete=models.CASCADE, related_name="pagos_realizados", null=True)
-
 class Curso(models.Model):
 	CONTINUO = 'C'
 	FIJO = 'F'
@@ -120,12 +112,21 @@ class Curso(models.Model):
 	def serialize(self):
 		return (f" nombre: {self.nombre} - costo por sesion: {self.costo_por_sesion} - cantidad de sesiones: {self.cantidad_de_sesiones} - tipo de curso: {self.tipo_de_curso} - costo de curso fijo: {self.costo_curso_fijo}")
 
+class Pago(models.Model):
+	fecha_pago = models.DateField()
+	monto = models.DecimalField(max_digits=7, decimal_places=2)
+	total_clases = models.IntegerField()
+	fecha_inicio = models.DateField()
+	alumno = models.ForeignKey(Alumno, on_delete=models.CASCADE, related_name="pagos_realizados", null=False) 
+	academia = models.ForeignKey(Academia, on_delete=models.CASCADE, related_name="pagos_realizados", null=True)
+	curso = models.ForeignKey(Curso,on_delete=models.CASCADE, related_name="pagos_realizados", null=True)
+
 class Asistencia(models.Model):
 	fecha = models.DateField(null=False, default=django.utils.timezone.now)
 	alumno = models.ForeignKey(Alumno, on_delete=models.CASCADE, related_name="asistencias", null=False) 
 	academia = models.ForeignKey(Academia, on_delete=models.CASCADE, related_name="asistencias", null=True)
 	tutor = models.ForeignKey(Tutor, on_delete=models.CASCADE, related_name="asistencias", null=True)
-	cantidad_sesiones = models.DecimalField(max_digits=2, decimal_places=1, default=1.0)
+	cantidad_sesiones = models.IntegerField()
 	curso = models.ForeignKey(Curso, on_delete=models.CASCADE, related_name="asistencias", null=True)
 
 	def serialize(self):
