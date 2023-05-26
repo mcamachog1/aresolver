@@ -1,36 +1,33 @@
 <form action="{% url 'asistencia_new' %}" method="post">
 {% csrf_token %}
-{{ form }}
-<!-- {% if alumno %} -->
-    <!-- <select name="alumno_id" id="alumnos">
-        <option value="-1">Seleccione un alumno:</option>
-         alumno que recorre el conjunto de alumnos para llenar el select -->
-        <!-- {% if not alumnos %}
-            <option value="{{ alumno.id }}" selected>{{ alumno.nombre }} {{ alumno.apellido }}</option>
+<!-- {{ form }} -->
+<select name="alumno_id" id="alumnos">
+    <option value="-1">Seleccione un alumno:</option>
+    {% for a in alumnos%}
+        {% if alumno == a %}
+            <option selected value="{{ alumno.id }}">{{ alumno.nombre }} {{ alumno.apellido }}</option>
+        {% else %}
+            <option value="{{ alumno.id }}">{{ a.nombre }} {{ a.apellido }}</option>
         {% endif %}
-        {% for objeto in alumnos%}
-            {% if objeto.id != alumno.id %}
-                <option value="{{ alumno.id }}">{{ alumno.nombre }} {{ alumno.apellido }}</option>
-            {% else %}
-                <option value="{{ alumno.id }}" selected>{{ alumno.nombre }} {{ alumno.apellido }}</option>
-            {% endif %}
-        {% endfor %}
-    </select>  -->
-<!-- {% else %}
-    <select name="alumno_id" id="alumnos">
-        <option value="-1">Seleccione un alumno:</option>
-        {% for alumno in alumnos%}
-            <option value="{{ alumno.id }}">{{ alumno.nombre }} {{ alumno.apellido }}</option>
-        {% endfor %}
-    </select>
-{% endif %} -->
-
+    {% endfor %}
+</select>
+<select name="tutor_id" id="tutores">
+    <option value="-1">Seleccione un tutor:</option>
+    {% for tutor in tutores%}
+        <option value="{{ tutor.id }}">{{ tutor.nombre }} {{ tutor.apellido }}</option>
+    {% endfor %}
+</select>
+<select name="curso_id" id="cursos">
+    <option value="-1">Seleccione un curso:</option>
+    {% for curso in cursos%}
+        <option value="{{ curso.id }}">{{ curso.nombre }} {{ curso.apellido }}</option>
+    {% endfor %}
+</select>
+<input type="number" title="cantidad de sesiones" valor="1" name="cantidad_sesiones">
 
 <!-- Cambiar a futuro dependiendo del tipo de usuario (seleccionar academia) -->
 <!-- Al grabar la asistencia por parte del director, se toma su propia academia -->
-<!-- <select name="academia_id" id="academias">
-    <option value="{{ academia.id }}">{{ academia.nombre }}</option>
-</select> -->
-<!-- <input name="fecha" type="date" id="fecha-asistencia"> -->
+
+<input name="fecha" type="date" id="fecha-asistencia">
 <input type="submit">
 </form>

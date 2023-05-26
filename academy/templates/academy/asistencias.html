@@ -4,20 +4,12 @@
 <img src="{{ academia.url_imagen }}" alt="Logo-de-la-academia" width="60px">
 {% endblock %}
 {% block script %}
-<script src="{% static 'academy/js/tabla_asistencias2.js' %}" rel="stylesheet"></script>
+<!-- <script src="{% static 'academy/js/tabla_asistencias2.js' %}" rel="stylesheet"></script> -->
 {% endblock %}
 
 {% block body %}
-  {% if user.is_authenticated %}
-    {% if asistencia %}
-      <p>Nombre: {{asistencia.alumno.nombre}}</p>
-      <p>Fecha: {{ asistencia.fecha }}</p>
-    {% else %}
-        {% include "academy/asistencia_input_form.html" %}
-    {% endif %}
-    {% if alumno %}
-    {% endif %}
-    {% include "academy/tabla_asistencias.html" %}
-
-  {% endif %}
+{% if user.is_authenticated %}
+  {% include "academy/asistencia_input_form.html" %}    
+  {% include "academy/tabla_asistencias.html" %}      
+{% endif %}
 {% endblock %}

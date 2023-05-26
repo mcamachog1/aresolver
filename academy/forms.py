@@ -24,6 +24,7 @@ class NuevaAsistenciaForm(forms.Form):
     
     # Lista desplegable Cursos
     cursos = Curso.objects.all()
+    print(cursos)
     opciones_curso = []
     for curso in cursos:
         opcion = (curso.id, curso.nombre)

@@ -1,0 +1,13 @@
+[
+    {
+        "model": "academy.curso",
+        "pk": 20,  
+        "fields": {
+          "nombre": "SAT",
+          "costo_por_sesion":20.00,
+          "tipo_de_curso": "C",
+          "tiempo_de_sesion":90
+        }
+      }
+]
+  

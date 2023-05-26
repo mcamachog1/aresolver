@@ -90,14 +90,18 @@ def asistencia_manual_alumno(request, alumno_id):
     if (request.method == 'GET'):
         alumno = Alumno.objects.get(id=alumno_id)
         academia = obtener_academia(request)
+        asistencias = Asistencia.objects.filter(alumno=alumno, academia=academia).order_by("-fecha"),
         return render(request, "academy/asistencias.html", {
             "alumno": alumno,
+            "alumnos": Alumno.objects.filter(academias=academia),
             "tutor": tutor_ultima_asistencia(alumno_id),
             "academias": Academia.objects.all(),
-            "asistencias": Asistencia.objects.filter(academia=academia, alumno=alumno).order_by("-fecha"),
+            "asistencias": asistencias[0],
+            "asistencia": Asistencia.objects.filter(academia=academia, alumno=alumno).order_by("-fecha").first(),
             "academia": academia,
             "tutores": Tutor.objects.all(),
-            "form": NuevaAsistenciaForm(initial={'alumno_id': alumno.id})
+            "cursos": Curso.objects.all(),
+            # "form": NuevaAsistenciaForm(initial={'alumno_id': alumno.id})
         })        
         
 # Ver una asistencia
@@ -131,13 +135,13 @@ def pagos(request):
     academia = obtener_academia(request)
     total_pagos = total_montos_por_mes(academia,year,month)
     total_clases = total_clases_pagadas_por_mes(academia,year,month)
-    
+    cursos = Curso.objects.all()
     return render(request, "academy/pagos.html", {
         "pagos": Pago.objects.filter(academia=academia, fecha_pago__year=str(year), fecha_pago__month=str(month)).order_by("-fecha_pago"),
         "alumnos": Alumno.objects.filter(academias=academia),
         "total_pagos": total_pagos,
         "total_clases": total_clases,
-        "cursos": Curso.objects.all(),
+        "cursos": cursos,
         "academia": academia  
     })
 
@@ -145,11 +149,12 @@ def pagos(request):
 def pagos_alumno(request, alumno_id):
     month = date.today().month 
     year = date.today().year
+    cursos = Curso.objects.all()
     return render(request, f"academy/pagos.html", {
         "pagos": Pago.objects.filter(alumno=Alumno.objects.get(id=alumno_id), fecha_pago__year=str(year), fecha_pago__month=str(month)).order_by("-fecha_pago"),
         "alumno": Alumno.objects.get(id=alumno_id),
         # "alumnos": Alumno.objects.all(),
-        "cursos": Curso.objects.all(),
+        "cursos": cursos,
         "academia": obtener_academia(request)
     })    
 
