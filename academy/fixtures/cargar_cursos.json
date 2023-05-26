@@ -1,13 +1,35 @@
 [
     {
-        "model": "academy.curso",
-        "pk": 20,  
-        "fields": {
-          "nombre": "SAT",
-          "costo_por_sesion":20.00,
-          "tipo_de_curso": "C",
-          "tiempo_de_sesion":90
-        }
+      "model": "academy.curso",
+      "pk": 20,  
+      "fields": {
+        "nombre": "SAT",
+        "costo_por_sesion":20.00,
+        "tipo_de_curso": "C",
+        "tiempo_de_sesion":60
       }
+     },
+     {
+      "model": "academy.curso",
+      "pk": 21,  
+      "fields": {
+        "nombre": "Mate 8",
+        "costo_por_sesion":8.00,
+        "tipo_de_curso": "C",
+        "tiempo_de_sesion":60
+      }
+     },
+     {
+      "model": "academy.curso",
+      "pk": 22,  
+      "fields": {
+        "nombre": "Mate 10",
+        "costo_por_sesion":10.00,
+        "tipo_de_curso": "C",
+        "tiempo_de_sesion":60
+      }
+     }     
+
 ]
+
   
