@@ -99,18 +99,20 @@ class Curso(models.Model):
 	CONTINUO = 'C'
 	FIJO = 'F'
 	STATUS_CHOICES = [
-			(CONTINUO, 'Continuo'),
-			(FIJO, 'Fijo'),
+			(CONTINUO, 'Por paquete'),
+			(FIJO, 'Por sesión'),
 	]
 	nombre = models.CharField(max_length=50)
 	costo_por_sesion = models.DecimalField(max_digits=4, decimal_places=2, null=True)
 	tipo_de_curso = models.CharField(max_length=1, choices=STATUS_CHOICES, default=CONTINUO)
 	cantidad_de_sesiones = models.PositiveSmallIntegerField(null=True)
 	costo_curso_fijo = models.DecimalField(max_digits=4, decimal_places=2, null=True)
+	academia = models.ForeignKey(Academia, on_delete=models.CASCADE, related_name="cursos_ofertados", null=True, default=1)	
 	tiempo_de_sesion = models.PositiveSmallIntegerField(null=True)
 
 	def serialize(self):
 		return (f" nombre: {self.nombre} - costo por sesion: {self.costo_por_sesion} - cantidad de sesiones: {self.cantidad_de_sesiones} - tipo de curso: {self.tipo_de_curso} - costo de curso fijo: {self.costo_curso_fijo}")
+
 
 class Pago(models.Model):
 	fecha_pago = models.DateField()

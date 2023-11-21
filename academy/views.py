@@ -32,6 +32,13 @@ from .forms import NuevaAsistenciaForm
 
 ACADEMIA = -1
 
+
+def index(request):
+    return render(request, "academy/index.html")          
+      
+
+
+
 # Asistencias
 
 # Listar asistencias
@@ -379,6 +386,52 @@ def tutor_edit(request, tutor_id):
         tutor.apellido = request.POST['apellido']
         tutor.save()
         return HttpResponseRedirect(reverse("tutores"))
+
+
+# Cursos
+
+# Listar los cursos
+def cursos(request):
+    academia = obtener_academia(request)
+    return render(request, "academy/cursos.html", {
+        "cursos": Curso.objects.filter(academia=academia).order_by("nombre"),
+        "academia": academia,
+    })    
+
+# Crear un nuevo curso
+def curso_new(request):
+    academia = obtener_academia(request)
+    if (request.method == 'POST'):
+        curso = Curso()
+        curso.nombre = request.POST['nombre']
+        curso.costo_por_sesion = request.POST['costo_por_sesion']
+        # curso.apellido = request.POST['apellido']
+        # curso.academia = academia
+        curso.save()
+        return HttpResponseRedirect(reverse("cursos"))    
+
+# Eliminar un curso
+def curso_delete(request, curso_id):
+    curso = Curso.objects.get(id=curso_id)
+    curso.delete()
+    return HttpResponseRedirect(reverse("cursos"))    
+
+# Ver un curso
+def curso_entry(request, curso_id):
+    return render(request, "academy/cursoes.html", {
+        "curso": Curso.objects.get(id=curso_id),
+        "academia": obtener_academia(request),
+    })    
+
+# Actualizar un curso
+def curso_edit(request, curso_id):
+    if (request.method == 'POST'):
+        curso = Curso.objects.get(id=curso_id)
+        curso.nombre = request.POST['nombre']
+        curso.costo_por_sesion = request.POST['costo_por_sesion']
+        curso.save()
+        return HttpResponseRedirect(reverse("cursos"))
+
 
 
 def actualizar_perfil(perfil):

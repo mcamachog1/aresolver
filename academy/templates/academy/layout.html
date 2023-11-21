@@ -41,6 +41,9 @@
                     <li class="nav-item {% if request.resolver_match.url_name == 'representantes' %} active {% endif %}">
                         <a class="nav-link" href="{% url 'representantes' %}">Representantes</a>
                     </li>
+                    <li class="nav-item {% if request.resolver_match.url_name == 'cursos' %} active {% endif %}">
+                        <a class="nav-link" href="{% url 'cursos' %}">Cursos</a>
+                    </li>
                     <li class="nav-item {% if request.resolver_match.url_name == 'tutores' %} active {% endif %}">
                         <a class="nav-link" href="{% url 'tutores' %}">Tutores</a>
                     </li>

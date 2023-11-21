@@ -1,0 +1,24 @@
+{% if cursos %}
+<table class="table" id="table-cursos">
+    <thead>
+      <tr>
+        <th scope="col">Nombre</th>
+        <th scope="col">Costo</th>
+        <th scope="col">Acción</th>                  
+      </tr>
+    </thead>
+  <!-- <ul> -->
+    {% for curso in cursos %}
+
+      <tbody>
+        <tr>
+          <td><a href="{% url 'curso_entry' curso.id %}">{{ curso.nombre }}</a></td>
+          <td>{{ curso.costo_por_sesion }}</td>
+          <td><a href="{% url 'curso_delete' curso.id %}"><span class="m-1">Eliminar</span></a></td>
+          
+        </tr>
+      </tbody>
+
+      {% endfor %}
+</table>
+{% endif %}

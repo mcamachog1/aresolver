@@ -4,7 +4,8 @@ from . import views
 
 urlpatterns = [
     # index es alumnos.html
-    path("", views.alumnos, name="alumnos"),
+    path("", views.index, name="index"),
+    path("alumnos", views.alumnos, name="alumnos"),
 
     # autenticación
     path("login", views.login_view, name="login"),    
@@ -33,6 +34,13 @@ urlpatterns = [
     path("representante_entry/<int:representante_id>", views.representante_entry, name="representante_entry"),
     path("representante_edit/<int:representante_id>", views.representante_edit, name="representante_edit"),    
     path("representante_delete/<int:representante_id>", views.representante_delete, name="representante_delete"),
+
+    # cursos
+    path("cursos", views.cursos, name="cursos"),
+    path("curso_entry/<int:curso_id>", views.curso_entry, name="curso_entry"),
+    path("curso_new", views.curso_new, name="curso_new"),
+    path("curso_edit/<int:curso_id>", views.curso_edit, name="curso_edit"),
+    path("curso_delete/<int:curso_id>", views.curso_delete, name="curso_delete"),
 
     # tutores
     path("tutores", views.tutores, name="tutores"),

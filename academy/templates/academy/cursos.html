@@ -1,0 +1,36 @@
+{% extends "academy/layout.html" %}
+{% load static %}
+{% block imagen %}
+<img src="{{ academia.url_imagen }}" alt="Logo-de-la-academia" width="60px">
+{% endblock %}
+{% block script %}
+{% endblock %}
+
+{% block body %}
+    {% if user.is_authenticated %}
+    <div class="contenedor-principal">
+        <div class="contenedor-entrada-de-datos">
+        {% if curso %}
+            <form action="{% url 'curso_edit' curso.id %}" method="post">
+                {% csrf_token %}
+                <input type="text" name="nombre" value="{{ curso.nombre }}">
+                <input type="text" name="apellido" value="{{ curso.apellido }}">
+                <input type="submit" name="grabar" value="Grabar">
+            </form>
+        {% else %}
+            <form action="{% url 'curso_new' %}" method="post">
+                {% csrf_token %}
+                <input type="text" name="nombre" placeholder="Nombre">
+                <input type="text" name="apellido" placeholder="Apellido">
+                <input type="submit" name="grabar" value="Grabar">
+            </form>
+        {% endif %}
+        </div>        
+        <div class="contenedor-lista-items">
+
+            {% include "academy/tabla_cursos.html" %}            
+
+        </div>
+    </div>
+    {% endif %}
+{% endblock %}
