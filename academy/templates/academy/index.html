@@ -16,6 +16,30 @@
     />
 
     <style>
+      @media (min-width: 768px) {
+        .div-direccion-telefono-rs {
+          font-family: "Spartan", Helvetica, Arial, Lucida, sans-serif;
+          font-weight: 600;
+          font-size: 70%;
+          color: #191c51 !important;
+          line-height: 1.5em;
+        }
+        .div-end {
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+        }
+      }
+
+      @media (max-width: 767px) {
+        .div-direccion-telefono-rs {
+          display: none;
+        }
+        .div-end {
+          display: none;
+        }
+      }
+
       .div-centrar {
         display: flex;
         justify-content: center;
@@ -26,23 +50,12 @@
         justify-content: flex-start;
         align-items: center;
       }
-      .div-end {
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-      }
+
       .material-symbols-outlined {
         font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
       }
       #div-con-link-a-google-map:hover {
         cursor: pointer;
-      }
-      .div-direccion-telefono-rs {
-        font-family: "Spartan", Helvetica, Arial, Lucida, sans-serif;
-        font-weight: 600;
-        font-size: 70%;
-        color: #191c51 !important;
-        line-height: 1.5em;
       }
       a.no-style {
         color: inherit; /* Elimina el color del enlace */
@@ -158,7 +171,7 @@
       <!-- Inicio div de Menu -->
       <div class="container text-center">
         <div class="row">
-          <div class="col-9">
+          <div class="col-12 col-sm-9">
             <!-- Inicio Navbar -->
             <nav class="navbar navbar-expand-lg">
               <div class="container-fluid">
@@ -256,17 +269,29 @@
       <div class="container-flex div-contenido">
         <h1 class="heading-1">¿Qué quieres aprender?</h1>
         <div class="div-areas">
-          <img src="../static/academy/images/matematica.jpg" alt="" class="div-img" />
+          <img
+            src="../static/academy/images/matematica.jpg"
+            alt=""
+            class="div-img"
+          />
           <h1 class="heading-2">Matemática</h1>
         </div>
 
         <div class="div-areas">
-          <img src="../static/academy/images/programacion html.jpg" alt="" class="div-img" />
+          <img
+            src="../static/academy/images/programacion html.jpg"
+            alt=""
+            class="div-img"
+          />
           <h1 class="heading-2">Programación</h1>
         </div>
 
         <div class="div-areas">
-          <img src="../static/academy/images/Excel.jpg" alt="" class="div-img" />
+          <img
+            src="../static/academy/images/Excel.jpg"
+            alt=""
+            class="div-img"
+          />
           <h1 class="heading-2">Excel</h1>
         </div>
         <div class="div-areas mt-4">
@@ -317,7 +342,6 @@
         var x = document.getElementsByTagName("script")[0];
         x.parentNode.insertBefore(s, x);
       </script>
-      0
     </footer>
 
     <script
