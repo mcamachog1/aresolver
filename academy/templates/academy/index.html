@@ -29,6 +29,14 @@
           justify-content: flex-end;
           align-items: center;
         }
+        .sobre-nosotros {
+          font-family: "Tahoma", Helvetica, Arial, Lucida, sans-serif;
+          font-weight: bold;
+          font-size: 24px;
+          color: gray !important;
+          line-height: 1.2em;
+          /* text-align: center; */
+        }
         .heading-1 {
           font-family: "Sora", Helvetica, Arial, Lucida, sans-serif;
           font-weight: 600;
@@ -44,7 +52,7 @@
           font-size: 48px;
           color: #ffffff !important;
           line-height: 1.2em;
-          text-align: center;
+          /* text-align: center; */
         }
         .heading-3 {
           font-family: "Tahoma", "Sora", Helvetica, Arial, Lucida, sans-serif;
@@ -52,7 +60,7 @@
           font-size: 24px;
           color: #ffffff !important;
           line-height: 1.2em;
-          text-align: center;
+          /* text-align: center; */
         }
         .div-img {
           width: 400px;
@@ -66,6 +74,14 @@
         }
         .div-end {
           display: none;
+        }
+        .sobre-nosotros {
+          font-family: "Tahoma", Helvetica, Arial, Lucida, sans-serif;
+          font-weight: bold;
+          font-size: 18px;
+          color: gray !important;
+          line-height: 1.2em;
+          /* text-align: center; */
         }
         .heading-1 {
           font-family: "Sora", Helvetica, Arial, Lucida, sans-serif;
@@ -82,7 +98,7 @@
           font-size: 24px;
           color: #ffffff !important;
           line-height: 1.2em;
-          text-align: center;
+          /* text-align: center; */
         }
         .heading-3 {
           font-family: "Tahoma", "Sora", Helvetica, Arial, Lucida, sans-serif;
@@ -90,11 +106,14 @@
           font-size: 18px;
           color: #ffffff !important;
           line-height: 1.2em;
-          text-align: center;
+          /* text-align: center; */
         }
         .div-img {
           width: 230px;
           border-radius: 15px;
+        }
+        .botones-leer-mas-contactanos {
+          font-size: 0.8em;
         }
       }
 
@@ -143,6 +162,11 @@
       .div-boton-leer-mas {
         display: flex;
         justify-content: center;
+      }
+      .texto-largo {
+        font: "Spartan", Helvetica, Arial, Lucida, sans-serif;
+        font-weight: 500;
+        font-size: 20px;
       }
       /* * {
         border: #191c51 solid 1px;
@@ -332,48 +356,79 @@
 
         <div class="div-boton-leer-mas mt-5">
           <a href="#"
-            ><button type="button" class="btn btn-success btn-lg">
-              Leer más
+            ><button
+              type="button"
+              class="btn btn-success btn-lg botones-leer-mas-contactanos"
+            >
+              <i class="fa-solid fa-arrow-down"></i>&nbsp;Leer más
             </button></a
           >
           <a href="#"
-            ><button type="button" class="btn btn-outline-light btn-lg">
-              Contáctanos
-            </button></a
-          >
+            ><button
+              type="button"
+              class="btn btn-outline-light btn-lg botones-leer-mas-contactanos"
+            >
+              Contáctanos&nbsp;<i class="fa-solid fa-arrow-right"></i></button
+          ></a>
         </div>
+        <br /><br /><br />
+        <!-- Inicio Sobre Nosotros ... -->
+        <div class="container">
+          <div class="row">
+            <div class="col-sm text-center">
+              <img
+                src="../../static/academy/images/nina-sujetando-ordenador-sus-amigos.jpg"
+                alt=""
+                class="div-img"
+              />
+            </div>
+            <div class="col-sm mt-2 pt-2">
+              <p class="sobre-nosotros">SOBRE NOSOTROS</p>
+              <h2 class="heading-2 text-left">Academia AResolver</h2>
+              <p class="texto-largo">
+                Es una academia dedicada a la enseñanza de la matemática, la
+                programación y el uso de herramientas profesionales como Excel,
+                enfocada principalmente a la población hispana, con un método
+                único creado por
+                <a href="https://www.linkedin.com/in/maryvicamacho/">Maryví</a>
+                donde aprenderás haciendo.
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- Fin Sobre Nosotros ... -->
       </div>
       <!-- Fin del contenido de la página -->
     </div>
 
-    <footer>
-      <script type="text/javascript">
-        var config = {
-          phone: " 584248822350",
-          call: "Escríbenos",
-          position: "ww-right",
-          size: "ww-big",
-          text: "",
-          type: "ww-standard",
-          brand: "AResolver",
-          subtitle: "",
-          welcome: "¡Hola!¿En qué puedo ayudarte?",
-        };
-        var proto = document.location.protocol,
-          host = "cloudfront.net",
-          url = proto + "//d3kzab8jj16n2f." + host;
-        var s = document.createElement("script");
-        s.type = "text/javascript";
-        s.async = true;
-        s.src = url + "/v2/main.js";
-        s.onload = function () {
-          tmWidgetInit(config);
-        };
-        var x = document.getElementsByTagName("script")[0];
-        x.parentNode.insertBefore(s, x);
-      </script>
-    </footer>
-
+    <footer></footer>
+    <!-- Inicio Call Out de Whatsapp -->
+    <script type="text/javascript">
+      var config = {
+        phone: " 584248822350",
+        call: "Escríbenos",
+        position: "ww-right",
+        size: "ww-big",
+        text: "",
+        type: "ww-standard",
+        brand: "AResolver",
+        subtitle: "",
+        welcome: "¡Hola!¿En qué puedo ayudarte?",
+      };
+      var proto = document.location.protocol,
+        host = "cloudfront.net",
+        url = proto + "//d3kzab8jj16n2f." + host;
+      var s = document.createElement("script");
+      s.type = "text/javascript";
+      s.async = true;
+      s.src = url + "/v2/main.js";
+      s.onload = function () {
+        tmWidgetInit(config);
+      };
+      var x = document.getElementsByTagName("script")[0];
+      x.parentNode.insertBefore(s, x);
+    </script>
+    <!-- Fin Call Out de Whatsapp -->
     <script
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"

@@ -30,6 +30,7 @@ ALLOWED_HOSTS = ['8000-mcamachog1-aresolver-ibkw0xggl7q.ws-us106.gitpod.io','800
 
 INSTALLED_APPS = [
     'academy',
+    'landing_page',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

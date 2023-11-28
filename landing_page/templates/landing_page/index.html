@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Academia AResolver | Aprende haciendo</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
+    />
+
+    <style>
+      @media (min-width: 768px) {
+        .div-direccion-telefono-rs {
+          font-family: "Spartan", Helvetica, Arial, Lucida, sans-serif;
+          font-weight: 600;
+          font-size: 70%;
+          color: #191c51 !important;
+          line-height: 1.5em;
+        }
+        .div-end {
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+        }
+        .sobre-nosotros {
+          font-family: "Tahoma", Helvetica, Arial, Lucida, sans-serif;
+          font-weight: bold;
+          font-size: 24px;
+          color: gray !important;
+          line-height: 1.2em;
+          /* text-align: center; */
+        }
+        .heading-1 {
+          font-family: "Sora", Helvetica, Arial, Lucida, sans-serif;
+          font-weight: 600;
+          font-size: 56px;
+          /* color: #ffffff !important; */
+          line-height: 1.2em;
+          text-align: center;
+          /* text-shadow: 0em 0em 0.3em rgba(0, 0, 0, 0.4); */
+        }
+        .heading-2 {
+          font-family: "Sora", Helvetica, Arial, Lucida, sans-serif;
+          font-weight: 600;
+          font-size: 48px;
+          /* color: #ffffff !important; */
+          line-height: 1.2em;
+          /* text-align: center; */
+        }
+        .heading-3 {
+          font-family: "Tahoma", "Sora", Helvetica, Arial, Lucida, sans-serif;
+          font-weight: 550;
+          font-size: 24px;
+          /* color: #ffffff !important; */
+          line-height: 1.2em;
+          /* text-align: center; */
+        }
+        .div-img {
+          width: 400px;
+          border-radius: 15px;
+        }
+      }
+
+      @media (max-width: 767px) {
+        .div-direccion-telefono-rs {
+          display: none;
+        }
+        .div-end {
+          display: none;
+        }
+        .sobre-nosotros {
+          font-family: "Tahoma", Helvetica, Arial, Lucida, sans-serif;
+          font-weight: bold;
+          font-size: 18px;
+          color: gray !important;
+          line-height: 1.2em;
+          /* text-align: center; */
+        }
+        .heading-1 {
+          font-family: "Sora", Helvetica, Arial, Lucida, sans-serif;
+          font-weight: bold;
+          font-size: 36px;
+          /* color: #ffffff !important; */
+          line-height: 1.2em;
+          text-align: center;
+          /* text-shadow: 0em 0em 0.3em rgba(0, 0, 0, 0.4); */
+        }
+        .heading-2 {
+          font-family: "Sora", Helvetica, Arial, Lucida, sans-serif;
+          font-weight: bold;
+          font-size: 24px;
+          /* color: #ffffff !important; */
+          line-height: 1.2em;
+          /* text-align: center; */
+        }
+        .heading-3 {
+          font-family: "Tahoma", "Sora", Helvetica, Arial, Lucida, sans-serif;
+          font-weight: bold;
+          font-size: 18px;
+          /* color: #ffffff !important; */
+          line-height: 1.2em;
+          /* text-align: center; */
+        }
+        .div-img {
+          width: 230px;
+          border-radius: 15px;
+        }
+        .botones-leer-mas-contactanos {
+          font-size: 0.8em;
+        }
+      }
+
+      .div-centrar {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .div-start {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+      }
+
+      .material-symbols-outlined {
+        font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
+      }
+      #div-con-link-a-google-map:hover {
+        cursor: pointer;
+      }
+      a.no-style {
+        color: inherit; /* Elimina el color del enlace */
+        text-decoration: none; /* Elimina subrayado */
+        cursor: pointer; /* Cambia el cursor al hacer clic en el enlace */
+        margin-right: 15px;
+      }
+      .div-contenido-1 {
+        background-color: orange;
+        color: white;
+        padding: 10px;
+      }
+      .div-contenido-2 {
+        background-color: white;
+        color: orange;
+        padding: 10px;
+      }
+
+      .div-areas {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding-top: 25px;
+      }
+
+      .div-areas p {
+        font-size: large;
+        color: red;
+      }
+
+      .div-boton-leer-mas {
+        display: flex;
+        justify-content: center;
+      }
+      .texto-largo {
+        font: "Spartan", Helvetica, Arial, Lucida, sans-serif;
+        font-weight: 500;
+        font-size: 20px;
+      }
+      /* * {
+        border: #191c51 solid 1px;
+      } */
+    </style>
+  </head>
+  <body>
+    <div class="mt-1">
+      <!-- Inicio Encabezado con direccion, telefono y redes sociales -->
+      <div class="container text-center div-direccion-telefono-rs">
+        <div class="row pt-2">
+          <div id="div-con-link-a-google-map" class="col div-centrar">
+            <span class="material-symbols-outlined"> location_on </span>
+            Dirección: CC Virgen Del Valle, Local M66-A
+          </div>
+          <div class="col div-centrar">
+            <span class="material-symbols-outlined"> phone_android </span>+58
+            424 8822350
+          </div>
+          <div class="col div-centrar">
+            <a
+              class="no-style"
+              target="_blank"
+              href="https://www.youtube.com/c/aresolveronline"
+              ><i class="fa-brands fa-youtube fa-xl"></i
+            ></a>
+            <a
+              class="no-style"
+              target="_blank"
+              href="https://www.instagram.com/aresolver/"
+              ><i class="fa-brands fa-instagram fa-xl"></i
+            ></a>
+            <a
+              class="no-style"
+              target="_blank"
+              href="https://www.facebook.com/aresolver/"
+              ><i class="fa-brands fa-square-facebook fa-xl"></i
+            ></a>
+            <a
+              class="no-style"
+              target="_blank"
+              href="https://twitter.com/aresolver"
+              ><i class="fa-brands fa-square-x-twitter fa-xl"></i
+            ></a>
+            <a
+              class="no-style"
+              target="_blank"
+              href="https://aresolver.wordpress.com/"
+              ><i class="fa-brands fa-wordpress fa-xl"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      <!-- Fin Encabezado con direccion, telefono y redes sociales -->
+      <hr class="mt-1 mb-1" />
+      <!-- Inicio div de Menu -->
+      <div class="container text-center">
+        <div class="row">
+          <div class="col-12 col-sm-9">
+            <!-- Inicio Navbar -->
+            <nav class="navbar navbar-expand-lg">
+              <div class="container-fluid">
+                <a class="navbar-brand" href="#">
+                  <img
+                    src="..\static\landing_page\logos\LogoLargo.jpeg"
+                    alt="logo de la academia A Resolver"
+                    width="100px"
+                /></a>
+                <button
+                  class="navbar-toggler"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#navbarSupportedContent"
+                  aria-controls="navbarSupportedContent"
+                  aria-expanded="false"
+                  aria-label="Toggle navigation"
+                >
+                  <span class="navbar-toggler-icon"></span>
+                </button>
+                <div
+                  class="collapse navbar-collapse"
+                  id="navbarSupportedContent"
+                >
+                  <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                      <a class="nav-link active" aria-current="page" href="#"
+                        >Inicio</a
+                      >
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">Sobre nosotros</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                      <a
+                        class="nav-link dropdown-toggle"
+                        href="#"
+                        role="button"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                      >
+                        Nuestros Servicios
+                      </a>
+                      <ul class="dropdown-menu">
+                        <li>
+                          <a class="dropdown-item" href="#"
+                            >Clases presenciales</a
+                          >
+                        </li>
+                        <li>
+                          <a class="dropdown-item" href="#">Clases online</a>
+                        </li>
+                        <li><hr class="dropdown-divider" /></li>
+                        <li>
+                          <a class="dropdown-item" href="#">Cursos Grabados</a>
+                        </li>
+                      </ul>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link" href="#">Comentarios</a>
+                    </li>
+                    <li class="nav-item">
+                      <a class="nav-link disabled" aria-disabled="true"
+                        >Mi cuenta</a
+                      >
+                    </li>
+                  </ul>
+                  <!-- <form class="d-flex" role="search">
+                    <input
+                      class="form-control me-2"
+                      type="search"
+                      placeholder="Search"
+                      aria-label="Search"
+                    />
+                    <button class="btn btn-outline-success" type="submit">
+                      Search
+                    </button>
+                  </form> -->
+                </div>
+              </div>
+            </nav>
+            <!-- Fin Navbar -->
+          </div>
+          <div class="col div-end">
+            <a href="#"
+              ><button type="button" class="btn btn-success btn-lg">
+                Contáctanos
+              </button></a
+            >
+          </div>
+        </div>
+      </div>
+      <!-- Fin div de Menu -->
+      <!-- Inicio del contenido-1 de la página -->
+      <div class="container-flex div-contenido-1">
+        <h1 class="heading-1">¿Qué quieres aprender?</h1>
+        <div class="div-areas">
+          <img
+            src="../static/landing_page/images/matematica.jpg"
+            alt=""
+            class="div-img"
+          />
+          <h1 class="heading-2">Matemática</h1>
+        </div>
+
+        <div class="div-areas">
+          <img
+            src="../static/landing_page/images/programacion html.jpg"
+            alt=""
+            class="div-img"
+          />
+          <h1 class="heading-2">Programación</h1>
+        </div>
+
+        <div class="div-areas">
+          <img
+            src="../static/landing_page/images/Excel.jpg"
+            alt=""
+            class="div-img"
+          />
+          <h1 class="heading-2">Excel</h1>
+        </div>
+        <div class="div-areas mt-4">
+          <h2 class="heading-3">Aprende con nosotros</h2>
+          <h2 class="heading-3">Nuestro sistema es único</h2>
+          <h2 class="heading-3">Aprende haciendo</h2>
+        </div>
+
+        <div class="div-boton-leer-mas mt-5">
+          <a href="#"
+            ><button
+              type="button"
+              class="btn btn-success btn-lg botones-leer-mas-contactanos"
+            >
+              <i class="fa-solid fa-arrow-down"></i>&nbsp;Leer más
+            </button></a
+          >
+          <a href="#"
+            ><button
+              type="button"
+              class="btn btn-outline-light btn-lg botones-leer-mas-contactanos"
+            >
+              Contáctanos&nbsp;<i class="fa-solid fa-arrow-right"></i></button
+          ></a>
+        </div>
+        <br /><br /><br />
+        <!-- Inicio Sobre Nosotros ... -->
+        <div class="container">
+          <div class="row">
+            <div class="col-sm text-center">
+              <img
+                src="../../static/landing_page/images/nina-sujetando-ordenador-sus-amigos.jpg"
+                alt=""
+                class="div-img"
+              />
+            </div>
+            <div class="col-sm mt-2 pt-2">
+              <p class="sobre-nosotros">SOBRE NOSOTROS</p>
+              <h2 class="heading-2 text-left">Academia AResolver</h2>
+              <p class="texto-largo">
+                Es una academia dedicada a la enseñanza de la matemática, la
+                programación y el uso de herramientas profesionales como Excel,
+                enfocada principalmente a la población hispana, con un método
+                único creado por
+                <a href="https://www.linkedin.com/in/maryvicamacho/">Maryví</a>
+                donde aprenderás haciendo.
+              </p>
+            </div>
+          </div>
+        </div>
+        <!-- Fin Sobre Nosotros ... -->
+      </div>
+      <!-- Fin del contenido-1 de la página -->
+      <!-- Inicio del contenido-2 de la página -->
+      <div class="container-flex div-contenido-2">
+        <h1 class="heading-1">Nuestros Servicios</h1>
+      </div>
+      <!-- Fin del contenido-2 de la página -->
+    </div>
+
+    <footer></footer>
+    <!-- Inicio Call Out de Whatsapp -->
+    <script type="text/javascript">
+      var config = {
+        phone: " 584248822350",
+        call: "Escríbenos",
+        position: "ww-right",
+        size: "ww-big",
+        text: "",
+        type: "ww-standard",
+        brand: "AResolver",
+        subtitle: "",
+        welcome: "¡Hola!¿En qué puedo ayudarte?",
+      };
+      var proto = document.location.protocol,
+        host = "cloudfront.net",
+        url = proto + "//d3kzab8jj16n2f." + host;
+      var s = document.createElement("script");
+      s.type = "text/javascript";
+      s.async = true;
+      s.src = url + "/v2/main.js";
+      s.onload = function () {
+        tmWidgetInit(config);
+      };
+      var x = document.getElementsByTagName("script")[0];
+      x.parentNode.insertBefore(s, x);
+    </script>
+    <!-- Fin Call Out de Whatsapp -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
+    <script>
+      let div_con_link_a_google_map = document.querySelector(
+        "#div-con-link-a-google-map"
+      );
+      div_con_link_a_google_map.addEventListener("click", () => {
+        if (window.open) {
+          window.open(
+            "https://www.google.com/maps?daddr=QRH3+VM8,+Maturín+6201,+Monagas",
+            "_blank"
+          );
+        } else {
+          alert("El navegador no soporta window.open()");
+        }
+      });
+    </script>
+    <script
+      src="https://kit.fontawesome.com/a4cacdbc0d.js"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>

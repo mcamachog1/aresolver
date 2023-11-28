@@ -1,0 +1,34 @@
+{% load static %}
+
+    {% block footer %}
+
+
+    {% endblock %}
+
+        <!-- Inicio Call Out de Whatsapp -->
+        <script type="text/javascript">
+            var config = {
+              phone: " 584248822350",
+              call: "Escríbenos",
+              position: "ww-right",
+              size: "ww-big",
+              text: "",
+              type: "ww-standard",
+              brand: "AResolver",
+              subtitle: "",
+              welcome: "¡Hola!¿En qué puedo ayudarte?",
+            };
+            var proto = document.location.protocol,
+              host = "cloudfront.net",
+              url = proto + "//d3kzab8jj16n2f." + host;
+            var s = document.createElement("script");
+            s.type = "text/javascript";
+            s.async = true;
+            s.src = url + "/v2/main.js";
+            s.onload = function () {
+              tmWidgetInit(config);
+            };
+            var x = document.getElementsByTagName("script")[0];
+            x.parentNode.insertBefore(s, x);
+          </script>
+          <!-- Fin Call Out de Whatsapp -->
