@@ -23,6 +23,7 @@
           font-size: 70%;
           color: #191c51 !important;
           line-height: 1.5em;
+          background-color: white;
         }
         .div-end {
           display: flex;
@@ -173,13 +174,22 @@
         font-weight: 500;
         font-size: 20px;
       }
+      .header {
+        position: sticky;
+        top: 0;
+        background-color: white;
+      }
+      .div-menu {
+        background-color: white;
+      }
+
       /* * {
         border: #191c51 solid 1px;
       } */
     </style>
   </head>
   <body>
-    <div class="mt-1">
+    <header class="header">
       <!-- Inicio Encabezado con direccion, telefono y redes sociales -->
       <div class="container text-center div-direccion-telefono-rs">
         <div class="row pt-2">
@@ -228,7 +238,7 @@
       <!-- Fin Encabezado con direccion, telefono y redes sociales -->
       <hr class="mt-1 mb-1" />
       <!-- Inicio div de Menu -->
-      <div class="container text-center">
+      <div class="container text-center div-menu">
         <div class="row">
           <div class="col-12 col-sm-9">
             <!-- Inicio Navbar -->
@@ -324,6 +334,9 @@
         </div>
       </div>
       <!-- Fin div de Menu -->
+    </header>
+
+    <div class="mt-1">
       <!-- Inicio del contenido-1 de la página -->
       <div class="container-flex div-contenido-1">
         <h1 class="heading-1">¿Qué quieres aprender?</h1>
