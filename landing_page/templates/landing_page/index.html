@@ -63,6 +63,16 @@
           line-height: 1.2em;
           /* text-align: center; */
         }
+        .heading-3-centrado {
+          font-family: "Tahoma", "Sora", Helvetica, Arial, Lucida, sans-serif;
+          font-weight: 550;
+          font-size: 24px;
+          /* color: #ffffff !important; */
+          line-height: 1.2em;
+          text-align: center;
+          padding-top: 2px;
+          padding-bottom: 2px;
+        }
         .div-img {
           width: 400px;
           border-radius: 15px;
@@ -109,6 +119,16 @@
           line-height: 1.2em;
           /* text-align: center; */
         }
+        .heading-3-centrado {
+          font-family: "Tahoma", "Sora", Helvetica, Arial, Lucida, sans-serif;
+          font-weight: bold;
+          font-size: 18px;
+          /* color: #ffffff !important; */
+          line-height: 1.2em;
+          text-align: center;
+          padding-top: 2px;
+          padding-bottom: 2px;
+        }
         .div-img {
           width: 230px;
           border-radius: 15px;
@@ -150,6 +170,7 @@
         background-color: white;
         color: orange;
         padding: 10px;
+        justify-content: center;
       }
 
       .div-areas {
@@ -178,11 +199,43 @@
         position: sticky;
         top: 0;
         background-color: white;
+        border-bottom: rgba(175, 173, 173, 50%) solid 1px;
       }
       .div-menu {
         background-color: white;
       }
-
+      .div-cards-servicios {
+        flex-direction: column;
+        align-items: center;
+      }
+      .div-card {
+        /* width: 250px;
+        height: 500px; */
+        margin-right: 18px;
+        margin-bottom: 18px;
+        /* border: solid 1px black; */
+        background-color: whitesmoke;
+        border-radius: 5%;
+        text-align: center;
+      }
+      .img-card {
+        /* width: 250px; */
+        max-width: 100%;
+        margin-bottom: 5px;
+        border-top-right-radius: 10%;
+        border-top-left-radius: 10%;
+      }
+      .div-leer-mas-card {
+        max-width: 100%;
+        background-color: orange;
+      }
+      .color-blanco {
+        color: white;
+        font-weight: bold;
+      }
+      .col-sm {
+        padding: 0px 0px;
+      }
       /* * {
         border: #191c51 solid 1px;
       } */
@@ -373,7 +426,7 @@
         </div>
 
         <div class="div-boton-leer-mas mt-5">
-          <a href="#"
+          <a href="#leer-mas"
             ><button
               type="button"
               class="btn btn-success btn-lg botones-leer-mas-contactanos"
@@ -391,7 +444,7 @@
         </div>
         <br /><br /><br />
         <!-- Inicio Sobre Nosotros ... -->
-        <div class="container">
+        <div class="container" id="leer-mas">
           <div class="row">
             <div class="col-sm text-center">
               <img
@@ -418,13 +471,94 @@
       </div>
       <!-- Fin del contenido-1 de la página -->
       <!-- Inicio del contenido-2 de la página -->
-      <div class="container-flex div-contenido-2">
+      <!-- <div class="d-flex p-2 div-contenido-2 div-cards-servicios">
+        <div class="d-md-flex ">
+          
+          <div class="div-card">Clases Online</div>
+          <div class="div-card">Cursos Grabados</div>
+        </div>
+      </div> -->
+
+      <div class="container div-contenido-2">
         <h1 class="heading-1">Nuestros Servicios</h1>
+        <div class="row">
+          <div class="div-card col-sm">
+            <div>
+              <img
+                class="img-card"
+                src="../../static/landing_page/images/felicidades-hiciste-muy-bien-prueba.jpg"
+                alt=""
+              />
+            </div>
+            <div class="heading-3-centrado">Clases Presenciales</div>
+            <p>
+              En la escuela utilizamos el método Justilanguage que consiste en
+              enseñar el idioma inglés al igual que usted aprendió su lengua
+              materna, es decir, escuchando y repitiendo, sin necesidad de
+              estudiar gramática, pues le enseñamos a entender primero y a
+              hablar después.
+            </p>
+            <div
+              class="div-leer-mas-card color-blanco"
+              style="align-self: flex-end"
+            >
+              Leer más
+            </div>
+          </div>
+          <div class="div-card col-sm">
+            <div>
+              <img
+                class="img-card"
+                src="../../static/landing_page/images/mujer-asistiendo-clases-online.jpg"
+                alt=""
+              />
+            </div>
+            <div class="heading-3-centrado">Cursos Online</div>
+            <p>
+              En la escuela utilizamos el método Justilanguage que consiste en
+              enseñar el idioma inglés al igual que usted aprendió su lengua
+              materna, es decir, escuchando y repitiendo, sin necesidad de
+              estudiar gramática, pues le enseñamos a entender primero y a
+              hablar después.
+            </p>
+            <div
+              class="div-leer-mas-card color-blanco"
+              style="align-self: flex-end"
+            >
+              Leer más
+            </div>
+          </div>
+          <div class="div-card col-sm">
+            <div>
+              <img
+                class="img-card"
+                src="../../static/landing_page/images/vista-trasera-joven-estudiante-universitaria-prestando-atencion-escuchando-su-profesor-linea-computadora-portatil-casa.jpg"
+                alt=""
+              />
+            </div>
+            <div class="heading-3-centrado">Cursos Grabados</div>
+            <p>
+              En la escuela utilizamos el método Justilanguage que consiste en
+              enseñar el idioma inglés al igual que usted aprendió su lengua
+              materna, es decir, escuchando y repitiendo, sin necesidad de
+              estudiar gramática, pues le enseñamos a entender primero y a
+              hablar después.
+            </p>
+            <div class="div-leer-mas-card color-blanco">Leer más</div>
+          </div>
+        </div>
       </div>
+
       <!-- Fin del contenido-2 de la página -->
     </div>
 
-    <footer></footer>
+    <footer>
+      Imagen de
+      <a
+        href="https://www.freepik.es/foto-gratis/mujer-asistiendo-clases-online_12457479.htm#query=curso%20online&position=13&from_view=search&track=ais&uuid=0bc99c52-4247-4d87-9cc1-cafa7861fc9c"
+        >Freepik</a
+      >
+    </footer>
     <!-- Inicio Call Out de Whatsapp -->
     <script type="text/javascript">
       var config = {
