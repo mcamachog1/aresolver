@@ -216,7 +216,7 @@
         /* border: solid 1px black; */
         background-color: whitesmoke;
         border-radius: 5%;
-        text-align: center;
+        display: grid;
       }
       .img-card {
         /* width: 250px; */
@@ -228,6 +228,8 @@
       .div-leer-mas-card {
         max-width: 100%;
         background-color: orange;
+        align-self: flex-end;
+        text-align: center;
       }
       .color-blanco {
         color: white;
@@ -345,6 +347,9 @@
                         </li>
                         <li>
                           <a class="dropdown-item" href="#">Clases online</a>
+                        </li>
+                        <li>
+                          <a class="dropdown-item" href="#">Tutorías SAT</a>
                         </li>
                         <li><hr class="dropdown-divider" /></li>
                         <li>
@@ -471,13 +476,6 @@
       </div>
       <!-- Fin del contenido-1 de la página -->
       <!-- Inicio del contenido-2 de la página -->
-      <!-- <div class="d-flex p-2 div-contenido-2 div-cards-servicios">
-        <div class="d-md-flex ">
-          
-          <div class="div-card">Clases Online</div>
-          <div class="div-card">Cursos Grabados</div>
-        </div>
-      </div> -->
 
       <div class="container div-contenido-2">
         <h1 class="heading-1">Nuestros Servicios</h1>
@@ -486,24 +484,18 @@
             <div>
               <img
                 class="img-card"
-                src="../../static/landing_page/images/felicidades-hiciste-muy-bien-prueba.jpg"
+                src="../../static/landing_page/images/ponente-reunion-negocios-sala-conferencias.jpg"
                 alt=""
               />
             </div>
             <div class="heading-3-centrado">Clases Presenciales</div>
-            <p>
-              En la escuela utilizamos el método Justilanguage que consiste en
-              enseñar el idioma inglés al igual que usted aprendió su lengua
-              materna, es decir, escuchando y repitiendo, sin necesidad de
-              estudiar gramática, pues le enseñamos a entender primero y a
-              hablar después.
+            <p class="px-2">
+              En la academia dictamos clases presenciales a los estudiantes
+              cercanos a nuestra ubicación física, utilizamos el método de 'A
+              Resolver' que consiste en aprender resolviendo ejercicios, para
+              entender la teoría con ejemplos.
             </p>
-            <div
-              class="div-leer-mas-card color-blanco"
-              style="align-self: flex-end"
-            >
-              Leer más
-            </div>
+            <div class="div-leer-mas-card color-blanco">Leer más</div>
           </div>
           <div class="div-card col-sm">
             <div>
@@ -513,20 +505,31 @@
                 alt=""
               />
             </div>
-            <div class="heading-3-centrado">Cursos Online</div>
-            <p>
-              En la escuela utilizamos el método Justilanguage que consiste en
-              enseñar el idioma inglés al igual que usted aprendió su lengua
-              materna, es decir, escuchando y repitiendo, sin necesidad de
-              estudiar gramática, pues le enseñamos a entender primero y a
-              hablar después.
+            <div class="heading-3-centrado">Clases Online</div>
+            <p class="px-2">
+              Con nuestras clases Online, desde la comodidad de tu hogar, puedes
+              recibir las clases junto a otros estudiantes con un profesor
+              altamente calificado y con un método de enseñanza enfocado en la
+              práctica.
             </p>
-            <div
-              class="div-leer-mas-card color-blanco"
-              style="align-self: flex-end"
-            >
-              Leer más
+            <div class="div-leer-mas-card color-blanco">Leer más</div>
+          </div>
+          <div class="div-card col-sm">
+            <div>
+              <img
+                class="img-card"
+                src="../../static/landing_page/images/concepto-preparacion-examen-publico.jpg"
+                alt=""
+              />
             </div>
+            <div class="heading-3-centrado">Tutoría SAT</div>
+            <p class="px-2">
+              Te acompañamos en tu entrenamiento para la presentación del SAT,
+              tenemos varios años de experiencia con jóvenes que han logrado
+              obtener los puntajes requeridos para el ingreso a universidades
+              americanas.
+            </p>
+            <div class="div-leer-mas-card color-blanco">Leer más</div>
           </div>
           <div class="div-card col-sm">
             <div>
@@ -537,12 +540,10 @@
               />
             </div>
             <div class="heading-3-centrado">Cursos Grabados</div>
-            <p>
-              En la escuela utilizamos el método Justilanguage que consiste en
-              enseñar el idioma inglés al igual que usted aprendió su lengua
-              materna, es decir, escuchando y repitiendo, sin necesidad de
-              estudiar gramática, pues le enseñamos a entender primero y a
-              hablar después.
+            <p class="px-2">
+              Con nuestros cursos grabados, puedes avanzar a tu ritmo, contando
+              siempre con el acompañamiento de nuestros profesores para corregir
+              tus actividades y aclarar tus dudas.
             </p>
             <div class="div-leer-mas-card color-blanco">Leer más</div>
           </div>
@@ -551,7 +552,44 @@
 
       <!-- Fin del contenido-2 de la página -->
     </div>
+    <!-- Inicio Visita nuestro canal de YouTube -->
+    <div class="container">
+      <div class="row">
+        <div class="col-md div-contenido-1">
+          <h2 class="heading-2 text-left">Visita nuestro</h2>
+          <p class="sobre-nosotros">Canal de YouTube</p>
+          <div style="display: flex; justify-content: center">
+            <iframe
+              width="560"
+              height="315"
+              src="https://www.youtube.com/embed/_Oom-5UIVms?si=f0ROMVTDvhTZFPNy"
+              title="YouTube video player"
+              frameborder="0"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+              allowfullscreen
+            ></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Fin Visita nuestro canal de YouTube -->
 
+    <!-- Inicio Testimonio de nuestros clientes -->
+
+    <div class="container mt-4 pt-4">
+      <div class="row">
+        <div class="col-sm div-contenido-2">
+          <div
+            style="display: flex; align-items: center; flex-direction: column"
+          >
+            <h1 class="heading-2">Testimonios de</h1>
+            <h1 class="heading-2">Nuestros Clientes</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fin Testimonio de nuestros clientes -->
     <footer>
       Imagen de
       <a
