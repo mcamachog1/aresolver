@@ -16,7 +16,14 @@
     />
 
     <style>
+      /* Para laptops */
       @media (min-width: 768px) {
+        .div-que-quieres-aprender {
+          display: flex;
+          align-items: self-start;
+          justify-content: space-around;
+          padding: 0px 5px;
+        }
         .div-direccion-telefono-rs {
           font-family: "Spartan", Helvetica, Arial, Lucida, sans-serif;
           font-weight: 600;
@@ -67,7 +74,7 @@
           font-family: "Tahoma", "Sora", Helvetica, Arial, Lucida, sans-serif;
           font-weight: 550;
           font-size: 24px;
-          /* color: #ffffff !important; */
+          color: #169979;
           line-height: 1.2em;
           text-align: center;
           padding-top: 2px;
@@ -77,9 +84,32 @@
           width: 400px;
           border-radius: 15px;
         }
+
+        /* Formato de la tarjeta de ranking */
+        .tarjeta-ranking
+         {
+          width: 400px;
+          min-height: 250px;
+          border-radius: 7%;
+          /* border: 1px solid black; */
+          background-color: whitesmoke;
+          padding: 2%;
+          margin: 2%;
+        }
       }
 
+      /* Para celulares */
       @media (max-width: 767px) {
+        /* Formato de la tarjeta de ranking */
+        .tarjeta-ranking {
+          width: 235px;
+          min-height: 260px;
+          border-radius: 7%;
+          /* border: 1px solid black; */
+          background-color: whitesmoke;
+          padding: 2%;
+          margin: 2%;
+        }
         .div-direccion-telefono-rs {
           display: none;
         }
@@ -123,7 +153,7 @@
           font-family: "Tahoma", "Sora", Helvetica, Arial, Lucida, sans-serif;
           font-weight: bold;
           font-size: 18px;
-          /* color: #ffffff !important; */
+          color: #169979;
           line-height: 1.2em;
           text-align: center;
           padding-top: 2px;
@@ -239,8 +269,42 @@
         padding: 0px 0px;
       }
       .letra-parrafos {
-        font-family: 'Spartan',Helvetica,Arial,Lucida,sans-serif!important;
+        font-family: "Spartan", Helvetica, Arial, Lucida, sans-serif !important;
+        color: #169979;
       }
+      /* Caja para dar tamaño al carrusel */
+      .caja-carrusel {
+        width: 80%;
+        /* border: 2px black solid; */
+        background-color: orange;
+      }
+
+      .carousel-control-next,
+      .carousel-control-prev {
+        color: white;
+      }
+      .fondo-naranja {
+        background-color: orange;
+      }
+      .fa-star {
+        color: #f0b823;
+      }
+      .fa-quote-right {
+        color: #c20000;
+      }
+      .firma-alumno {
+        color: #15297c;
+        text-align: center;
+        font-weight: bold;
+        font-size: large;
+      }
+      .comentario-alumno {
+        font-size: small;
+        font-family: "Spartan", Helvetica, Arial, Lucida, sans-serif;
+        color: #7a7a7a;
+
+      }
+
       /* * {
         border: #191c51 solid 1px;
       } */
@@ -401,31 +465,33 @@
       <!-- Inicio del contenido-1 de la página -->
       <div class="container-flex div-contenido-1">
         <h1 class="heading-1">¿Qué quieres aprender?</h1>
-        <div class="div-areas">
-          <img
-            src="../static/landing_page/images/matematica.jpg"
-            alt=""
-            class="div-img"
-          />
-          <h1 class="heading-2">Matemática</h1>
-        </div>
+        <div class="div-que-quieres-aprender">
+          <div class="div-areas">
+            <img
+              src="../static/landing_page/images/matematica.jpg"
+              alt=""
+              class="div-img"
+            />
+            <h1 class="heading-2">Matemática</h1>
+          </div>
 
-        <div class="div-areas">
-          <img
-            src="../static/landing_page/images/programacion html.jpg"
-            alt=""
-            class="div-img"
-          />
-          <h1 class="heading-2">Programación</h1>
-        </div>
+          <div class="div-areas">
+            <img
+              src="../static/landing_page/images/programacion html.jpg"
+              alt=""
+              class="div-img"
+            />
+            <h1 class="heading-2">Programación</h1>
+          </div>
 
-        <div class="div-areas">
-          <img
-            src="../static/landing_page/images/Excel.jpg"
-            alt=""
-            class="div-img"
-          />
-          <h1 class="heading-2">Excel</h1>
+          <div class="div-areas">
+            <img
+              src="../static/landing_page/images/Excel.jpg"
+              alt=""
+              class="div-img"
+            />
+            <h1 class="heading-2">Excel</h1>
+          </div>
         </div>
         <div class="div-areas mt-4">
           <h2 class="heading-3">Aprende con nosotros</h2>
@@ -591,7 +657,99 @@
         </div>
       </div>
     </div>
-
+    <!-- Inicio Carrusel -->
+    <div class="container-flex fondo-naranja">
+      <div class="d-flex justify-content-center w-100">
+        <div class="caja-carrusel">
+          <div
+            id="carouselExample"
+            class="carousel slide"
+            data-bs-ride="carousel"
+            data-bs-interval="4000"
+            data-bs-autoplay="true"
+          >
+            <div class="carousel-inner">
+              <div class="carousel-item active">
+                <div class="d-flex justify-content-center">
+                  <div class="tarjeta-ranking">
+                    <p><i class="fa-solid fa-quote-right fa-2x"></i></p>
+                    <p class="comentario-alumno">
+                      La clase es muy interesante. Mi profesor es muy didáctico,
+                      tiene mucha paciencia y es muy educado.
+                    </p>
+                    <p class="firma-alumno">Sofía</p>
+                    <div class="d-flex justify-content-center">
+                      <i class="fa-solid fa-star"></i>
+                      <i class="fa-solid fa-star"></i>
+                      <i class="fa-solid fa-star"></i>
+                      <i class="fa-solid fa-star"></i>
+                      <i class="fa-solid fa-star"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div class="d-flex justify-content-center">
+                  <div class="tarjeta-ranking">
+                    <p><i class="fa-solid fa-quote-right fa-2x"></i></p>
+                    <p class="comentario-alumno">
+                      Aprendí cómo programar en python con ejercicios sencillos al principio y de mayor dificultad después.
+                    </p>
+                    <p class="firma-alumno">Jesús Azuaje</p>
+                    <div class="d-flex justify-content-center">
+                      <i class="fa-solid fa-star"></i>
+                      <i class="fa-solid fa-star"></i>
+                      <i class="fa-solid fa-star"></i>
+                      <i class="fa-solid fa-star"></i>
+                      <i class="fa-solid fa-star"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="carousel-item">
+                <div class="d-flex justify-content-center">
+                  <div class="tarjeta-ranking">
+                    <p><i class="fa-solid fa-quote-right fa-2x"></i></p>
+                    <p class="comentario-alumno">
+                      La profe me explicó las propiedades de las potencias, reforzamos con muchos ejercicios. Siempre está pendiente de mi actividad y de interpretar mis errores para no volverlos a cometer.
+                    </p>
+                    <p class="firma-alumno">Alejandro Alcalá</p>
+                    <div class="d-flex justify-content-center">
+                      <i class="fa-solid fa-star"></i>
+                      <i class="fa-solid fa-star"></i>
+                      <i class="fa-solid fa-star"></i>
+                      <i class="fa-solid fa-star"></i>
+                      <i class="fa-solid fa-star"></i>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <button
+              class="carousel-control-prev"
+              type="button"
+              data-bs-target="#carouselExample"
+              data-bs-slide="prev"
+            >
+              <!-- <span
+                class="carousel-control-prev-icon"
+                aria-hidden="true"
+              ></span> -->
+              <i class="fa-solid fa-circle-chevron-left fa-3x"></i>
+            </button>
+            <button
+              class="carousel-control-next"
+              type="button"
+              data-bs-target="#carouselExample"
+              data-bs-slide="next"
+            >
+              <i class="fa-solid fa-circle-chevron-right fa-3x"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Fin Carrusel -->
     <!-- Fin Testimonio de nuestros clientes -->
     <footer>
       Imagen de
