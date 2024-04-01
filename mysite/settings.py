@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['8000-mcamachog1-aresolver-ibkw0xggl7q.ws-us108.gitpod.io','8000-mcamachog1-aresolver-ibkw0xggl7q.ws-us107.gitpod.io','8000-mcamachog1-aresolver-ibkw0xggl7q.ws-us106.gitpod.io','8000-mcamachog1-aresolver-ibkw0xggl7q.ws-us102.gitpod.io','8000-mcamachog1-aresolver-ibkw0xggl7q.ws-us101.gitpod.io','https://mcamachog.pythonanywhere.com/','mcamachog.pythonanywhere.com',"mcamachog.pythonanywhere.com", "127.0.0.1","localhost","testserver"]
+ALLOWED_HOSTS = ['8000-mcamachog1-aresolver-ibkw0xggl7q.ws-us110.gitpod.io','https://mcamachog.pythonanywhere.com/','mcamachog.pythonanywhere.com',"mcamachog.pythonanywhere.com", "127.0.0.1","localhost","testserver"]
 
 
 # Application definition
