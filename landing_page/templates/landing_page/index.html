@@ -289,7 +289,7 @@ background-color: var( --aresolver-blanco-verdoso);
       font-variation-settings: "FILL" 0, "wght" 400, "GRAD" 0, "opsz" 24;
     }
 
-    #div-con-link-a-google-map:hover {
+    .link_a_google_map:hover {
       cursor: pointer;
     }
 
@@ -532,7 +532,7 @@ list-style-type: none;
                     <a class="nav-link active" aria-current="page" href="#">Inicio</a>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">Sobre nosotros</a>
+                    <a class="nav-link" href="#section-sobre-nosotros">Sobre nosotros</a>
                   </li>
                   <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
@@ -541,24 +541,24 @@ list-style-type: none;
                     </a>
                     <ul class="dropdown-menu">
                       <li>
-                        <a class="dropdown-item" href="#">Clases presenciales</a>
+                        <a class="dropdown-item" href="#section-nuestros-servicios">Clases presenciales</a>
                       </li>
                       <li>
-                        <a class="dropdown-item" href="#">Clases online</a>
+                        <a class="dropdown-item" href="#section-nuestros-servicios">Clases online</a>
                       </li>
                       <li>
-                        <a class="dropdown-item" href="#">Tutorías SAT</a>
+                        <a class="dropdown-item" href="#section-nuestros-servicios">Tutorías SAT</a>
                       </li>
                       <li>
                         <hr class="dropdown-divider" />
                       </li>
                       <li>
-                        <a class="dropdown-item" href="#">Cursos Grabados</a>
+                        <a class="dropdown-item" href="#section-nuestros-servicios">Cursos Grabados</a>
                       </li>
                     </ul>
                   </li>
                   <li class="nav-item">
-                    <a class="nav-link" href="#">Comentarios</a>
+                    <a class="nav-link" href="#section_testimonio">Comentarios</a>
                   </li>
                   <li class="nav-item">
                     <a class="nav-link disabled" aria-disabled="true">Mi cuenta</a>
@@ -581,7 +581,7 @@ list-style-type: none;
           <!-- Fin Navbar -->
         </div>
         <div class="col div-end">
-          <a href="https://wa.me/+584147672952"><button type="button" class="btn btn-success btn-lg">
+          <a href="https://wa.me/+584147672952" target="_blank"><button type="button" class="btn btn-success btn-lg">
               Contáctanos
             </button></a>
         </div>
@@ -616,11 +616,15 @@ list-style-type: none;
         <h2 class="heading-3">Aprende haciendo</h2>
       </div>
 
+
+
       <div class="div-boton-leer-mas mt-5">
-        <a href="#leer-mas"><button type="button" class="btn btn-success btn-lg botones-leer-mas-contactanos">
+        <a href="#section-sobre-nosotros"><button type="button"
+            class="btn btn-success btn-lg botones-leer-mas-contactanos">
             <i class="fa-solid fa-arrow-down"></i>&nbsp;Leer más
           </button></a>
-        <a href="#"><button type="button" class="btn btn-outline-light btn-lg botones-leer-mas-contactanos">
+        <a href="https://wa.me/+584147672952" target="_blank"><button type="button"
+            class="btn btn-outline-light btn-lg botones-leer-mas-contactanos">
             Contáctanos&nbsp;<i class="fa-solid fa-arrow-right"></i></button></a>
       </div>
       <br /><br /><br />
@@ -631,18 +635,20 @@ list-style-type: none;
             <img src="../../static/landing_page/images/nina-sujetando-ordenador-sus-amigos.jpg" alt=""
               class="div-img" />
           </div>
-          <div class="col-sm mt-2 pt-2">
-            <p class="sobre-nosotros">SOBRE NOSOTROS</p>
-            <h2 class="heading-2 text-left">Academia AResolver</h2>
-            <p class="texto-largo">
-              Es una academia dedicada a la enseñanza de la matemática, la
-              programación y el uso de herramientas profesionales como Excel,
-              enfocada principalmente a la población hispana, con un método de
-              acompañamiento diseñado por
-              <a href="https://www.linkedin.com/in/maryvicamacho/">Maryví</a>
-              donde aprenderás haciendo y con el apoyo que necesitas.
-            </p>
-          </div>
+          <section id="section-sobre-nosotros" class="mt-4 pt-5">
+            <div class="col-sm mt-2 pt-2">
+              <p class="sobre-nosotros">SOBRE NOSOTROS</p>
+              <h2 class="heading-2 text-left">Academia AResolver</h2>
+              <p class="texto-largo">
+                Es una academia dedicada a la enseñanza de la matemática, la
+                programación y el uso de herramientas profesionales como Excel,
+                enfocada principalmente a la población hispana, con un método de
+                acompañamiento diseñado por
+                <a href="https://www.linkedin.com/in/maryvicamacho/">Maryví</a>
+                donde aprenderás haciendo y con el apoyo que necesitas.
+              </p>
+            </div>
+          </section>
         </div>
       </div>
       <!-- Fin Sobre Nosotros ... -->
@@ -650,67 +656,68 @@ list-style-type: none;
     <!-- Fin del contenido-1 de la página -->
     <!-- Inicio del contenido-2 de la página -->
 
-    <div class="container div-contenido-2">
-      <h1 class="heading-1">Nuestros Servicios</h1>
-      <div class="row">
-        <div class="div-card col-sm">
-          <div>
-            <img class="img-card" src="../../static/landing_page/images/ponente-reunion-negocios-sala-conferencias.jpg"
-              alt="" />
+    <section id="section-nuestros-servicios">
+      <div class="container div-contenido-2">
+        <h1 class="heading-1">Nuestros Servicios</h1>
+        <div class="row">
+          <div class="div-card col-sm">
+            <div>
+              <img class="img-card"
+                src="../../static/landing_page/images/ponente-reunion-negocios-sala-conferencias.jpg" alt="" />
+            </div>
+            <div class="heading-3-centrado">Clases Presenciales</div>
+            <p class="px-2 letra-parrafos">
+              En la academia dictamos clases presenciales a los estudiantes
+              cercanos a nuestra <a class="link_a_google_map">ubicación física</a>, utilizamos el método de 'A
+              Resolver' que consiste en aprender resolviendo ejercicios, para
+              entender la teoría con ejemplos.
+            </p>
+            <div class="div-leer-mas-card color-blanco">Contáctanos por Whatsapp</div>
           </div>
-          <div class="heading-3-centrado">Clases Presenciales</div>
-          <p class="px-2 letra-parrafos">
-            En la academia dictamos clases presenciales a los estudiantes
-            cercanos a nuestra ubicación física, utilizamos el método de 'A
-            Resolver' que consiste en aprender resolviendo ejercicios, para
-            entender la teoría con ejemplos.
-          </p>
-          <div class="div-leer-mas-card color-blanco">Contáctanos por Whatsapp</div>
-        </div>
-        <div class="div-card col-sm">
-          <div>
-            <img class="img-card" src="../../static/landing_page/images/mujer-asistiendo-clases-online.jpg" alt="" />
+          <div class="div-card col-sm">
+            <div>
+              <img class="img-card" src="../../static/landing_page/images/mujer-asistiendo-clases-online.jpg" alt="" />
+            </div>
+            <div class="heading-3-centrado">Clases Online</div>
+            <p class="px-2 letra-parrafos">
+              Con nuestras clases Online, desde la comodidad de tu hogar, puedes
+              recibir las clases junto a otros estudiantes con un profesor
+              altamente calificado y con un método de enseñanza enfocado en la
+              práctica.
+            </p>
+            <div class="div-leer-mas-card color-blanco">Contáctanos por Whatsapp</div>
           </div>
-          <div class="heading-3-centrado">Clases Online</div>
-          <p class="px-2 letra-parrafos">
-            Con nuestras clases Online, desde la comodidad de tu hogar, puedes
-            recibir las clases junto a otros estudiantes con un profesor
-            altamente calificado y con un método de enseñanza enfocado en la
-            práctica.
-          </p>
-          <div class="div-leer-mas-card color-blanco">Contáctanos por Whatsapp</div>
-        </div>
-        <div class="div-card col-sm">
-          <div>
-            <img class="img-card" src="../../static/landing_page/images/concepto-preparacion-examen-publico.jpg"
-              alt="" />
+          <div class="div-card col-sm">
+            <div>
+              <img class="img-card" src="../../static/landing_page/images/concepto-preparacion-examen-publico.jpg"
+                alt="" />
+            </div>
+            <div class="heading-3-centrado">Tutoría SAT</div>
+            <p class="px-2 letra-parrafos">
+              Te acompañamos en tu entrenamiento para la presentación del SAT,
+              tenemos varios años de experiencia con jóvenes que han logrado
+              obtener los puntajes requeridos para el ingreso a universidades
+              americanas.
+            </p>
+            <div class="div-leer-mas-card color-blanco">Contáctanos por Whatsapp</div>
           </div>
-          <div class="heading-3-centrado">Tutoría SAT</div>
-          <p class="px-2 letra-parrafos">
-            Te acompañamos en tu entrenamiento para la presentación del SAT,
-            tenemos varios años de experiencia con jóvenes que han logrado
-            obtener los puntajes requeridos para el ingreso a universidades
-            americanas.
-          </p>
-          <div class="div-leer-mas-card color-blanco">Contáctanos por Whatsapp</div>
-        </div>
-        <div class="div-card col-sm">
-          <div>
-            <img class="img-card"
-              src="../../static/landing_page/images/vista-trasera-joven-estudiante-universitaria-prestando-atencion-escuchando-su-profesor-linea-computadora-portatil-casa.jpg"
-              alt="" />
+          <div class="div-card col-sm">
+            <div>
+              <img class="img-card"
+                src="../../static/landing_page/images/vista-trasera-joven-estudiante-universitaria-prestando-atencion-escuchando-su-profesor-linea-computadora-portatil-casa.jpg"
+                alt="" />
+            </div>
+            <div class="heading-3-centrado">Cursos Grabados</div>
+            <p class="px-2 letra-parrafos">
+              Con nuestros cursos grabados, puedes avanzar a tu ritmo, contando
+              siempre con el acompañamiento de nuestros profesores para corregir
+              tus actividades y aclarar tus dudas.
+            </p>
+            <div class="div-leer-mas-card color-blanco">Contáctanos por Whatsapp</div>
           </div>
-          <div class="heading-3-centrado">Cursos Grabados</div>
-          <p class="px-2 letra-parrafos">
-            Con nuestros cursos grabados, puedes avanzar a tu ritmo, contando
-            siempre con el acompañamiento de nuestros profesores para corregir
-            tus actividades y aclarar tus dudas.
-          </p>
-          <div class="div-leer-mas-card color-blanco">Contáctanos por Whatsapp</div>
         </div>
       </div>
-    </div>
-
+    </section>
     <!-- Fin del contenido-2 de la página -->
   </div>
   <!-- Inicio Visita nuestro canal de YouTube -->
@@ -753,17 +760,18 @@ list-style-type: none;
 
   <!-- Inicio Testimonio de nuestros clientes -->
 
-  <div class="container mt-4 pt-4">
-    <div class="row">
-      <div class="col-sm div-contenido-2">
-        <div style="display: flex; align-items: center; flex-direction: column">
-          <h1 class="heading-2">Testimonios de</h1>
-          <h1 class="heading-2">Nuestros Alumnos</h1>
+  <section id="section_testimonio">
+    <div class="container mt-4 pt-4">
+      <div class="row">
+        <div class="col-sm div-contenido-2">
+          <div style="display: flex; align-items: center; flex-direction: column">
+            <h1 class="heading-2">Testimonios de</h1>
+            <h1 class="heading-2">Nuestros Alumnos</h1>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-
+  </section>
   <!-- Carrusel -->
   <div class="container-flex fondo-naranja">
     <div class="d-flex justify-content-center w-100">
@@ -776,10 +784,9 @@ list-style-type: none;
                 <div class="tarjeta-ranking">
                   <p><i class="fa-solid fa-quote-right fa-2x"></i></p>
                   <p class="comentario-alumno">
-                    La clase es muy interesante. Mi profesor es muy didáctico,
-                    tiene mucha paciencia y es muy educado.
+                    La clase es muy interesante. Mi profesora es muy didáctica, logré subir mis calificaciones.
                   </p>
-                  <p class="firma-alumno">Sofía</p>
+                  <p class="firma-alumno">María Castellanos</p>
                   <div class="d-flex justify-content-center">
                     <i class="fa-solid fa-star"></i>
                     <i class="fa-solid fa-star"></i>
@@ -795,7 +802,7 @@ list-style-type: none;
                 <div class="tarjeta-ranking">
                   <p><i class="fa-solid fa-quote-right fa-2x"></i></p>
                   <p class="comentario-alumno">
-                    Aprendí cómo programar en python con ejercicios sencillos
+                    Aprendí cómo programar en python, con ejercicios sencillos
                     al principio y de mayor dificultad después.
                   </p>
                   <p class="firma-alumno">Jesús Azuaje</p>
@@ -847,32 +854,10 @@ list-style-type: none;
   </div>
   <!-- Fin Carrusel -->
 
-  <!-- Inicio otro carrusel -->
-  <div id="carouselExample" class="carousel slide" style="z-index: 0">
-    <div class="carousel-inner">
-      <div class="carousel-item active">
-        <img src="..." class="d-block w-100" alt="..." />
-      </div>
-      <div class="carousel-item">
-        <img src="..." class="d-block w-100" alt="..." />
-      </div>
-      <div class="carousel-item">
-        <img src="..." class="d-block w-100" alt="..." />
-      </div>
-    </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-    </button>
-  </div>
-  <!-- Fin otro carrusel -->
+
 
   <!-- Sección llamado a la acción -->
-  <section class="d-flex flex-column align-items-center my-5">
+  <!-- <section class="d-flex flex-column align-items-center my-5">
     <img src="../../static/landing_page/images/comunicacion-linea.jpg" alt="" class="img-llamada-a-la-accion" />
     <div class="caja-llamada-a-la-accion">
       <h2 class="text-center pt-3">
@@ -893,7 +878,7 @@ list-style-type: none;
       </div>
       <p class="fs-4 text-center mx-5">Satisfacción Garantizada</p>
     </div>
-  </section>
+  </section> -->
 
   <!-- Sección fotos de instagram -->
   <section class="mb-2 pb-2">
@@ -903,9 +888,8 @@ list-style-type: none;
       <div class="col">
         <div class="card h-100">
           <div class="card-body">
-            <a href="https://www.instagram.com/p/CzBf99BAPpM/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="
-            ><img src="../../static/landing_page/images/Instagram_1.png" class="card-img-top"
-              alt="..."></a>  
+            <a href="https://www.instagram.com/p/CzBf99BAPpM/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="><img
+                src="../../static/landing_page/images/Instagram_1.png" class="card-img-top" alt="..."></a>
           </div>
         </div>
       </div>
@@ -913,9 +897,8 @@ list-style-type: none;
         <div class="card h-100">
           <div class="card-body">
 
-            <a href="https://www.instagram.com/p/CzBf99BAPpM/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="
-              ><img src="../../static/landing_page/images/Instagram_2.png" class="card-img-top"
-                alt="..."></a>
+            <a href="https://www.instagram.com/p/CzBf99BAPpM/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="><img
+                src="../../static/landing_page/images/Instagram_2.png" class="card-img-top" alt="..."></a>
           </div>
         </div>
       </div>
@@ -923,9 +906,8 @@ list-style-type: none;
         <div class="card h-100">
           <div class="card-body">
 
-            <a href="https://www.instagram.com/p/CzBf99BAPpM/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="
-              ><img src="../../static/landing_page/images/Instagram_3.png" class="card-img-top"
-                alt="..."></a>
+            <a href="https://www.instagram.com/p/CzBf99BAPpM/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA=="><img
+                src="../../static/landing_page/images/Instagram_3.png" class="card-img-top" alt="..."></a>
           </div>
         </div>
       </div>
@@ -938,23 +920,16 @@ list-style-type: none;
   <!-- Footer -->
   <footer class="fondo-naranja pt-5 px-2">
     <div class="card-group">
-      <div class="card pt-4">
-        <img src="../../static/landing_page/logos/logoLargoTransparente.png" class="card-img-top w-50" alt="..." />
-        <div class="card-body">
-          <p class="card-text">
-            Academia dedicada a la enseñanza de la matemática, la programación
-            y el uso de herramientas profesionales como Excel, donde
-            aprenderás haciendo y con el apoyo que necesitas.
-          </p>
+      <div class="card">
 
+        <div class="card-body">
+          <h5 class="card-title mb-2 ps-4">Contactos</h5>
           <div><i class="fa-solid fa-mobile-screen fa-2x"></i><span class="ms-4 fs-5">+58 414 7672952</span></div>
-          <div>
-            <i class="fa-regular fa-envelope fa-2x"></i><span class="ms-3 fs-5">aresolveronline@gmail.com</span>
-          </div>
+          <div><i class="fa-regular fa-envelope fa-2x"></i><span class="ms-3 fs-5">aresolveronline@gmail.com</span></div>
+          <div><img src="../../static/landing_page/logos/logoLargoTransparente.png" width="120px"></div>
         </div>
       </div>
       <div class="card">
-
         <div class="card-body">
           <h5 class="card-title mb-2 ps-4">Enlaces</h5>
           <p class="card-text">
@@ -977,15 +952,26 @@ list-style-type: none;
                 style="color: #3b5998;"></i></a>
             <!-- Twitter -->
             <a href="https://twitter.com/aresolver"><i class="fab fa-square-x-twitter fa-2x"
-                style="color: #082032;"></i></a>
+                style="color: #082032;"></i>
+            </a>
             <!-- Instagram -->
             <a href="https://www.instagram.com/aresolver/"><i class="fab fa-instagram fa-2x"
-                style="color: orange;"></i></a>
+                style="color: orange;"></i>
+            </a>
             <!-- Youtube -->
-            <a href="https://www.youtube.com/c/aresolveronline"></a><i class="fab fa-youtube fa-2x"
+            <a href="https://www.youtube.com/c/aresolveronline"><i class="fab fa-youtube fa-2x"
               style="color: #ed302f;"></i>
-            <!-- Whatsapp -->
-            <a href="https://wa.me/+584147672952"><i class="fab fa-whatsapp fa-2x" style="color: #25d366;"></i></a>
+            </a>
+            <!-- Whatsapp
+            <a href="https://wa.me/+584147672952" target="_blank"><i class="fab fa-whatsapp fa-2x"
+                style="color: #25d366;"></i>
+            </a> -->
+            <!-- Wordpress -->
+            <a href="https://aresolver.wordpress.com/" target="_blank"><i class="fa-brands fa-wordpress fa-2x"></i>
+            </a>
+
+           
+
           </div>
         </div>
       </div>
@@ -1048,10 +1034,10 @@ list-style-type: none;
     integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
     crossorigin="anonymous"></script>
   <script>
-    let div_con_link_a_google_map = document.querySelector(
-      "#div-con-link-a-google-map"
+    let link_a_google_map = document.querySelector(
+      ".link_a_google_map"
     );
-    div_con_link_a_google_map.addEventListener("click", () => {
+    link_a_google_map.addEventListener("click", () => {
       if (window.open) {
         window.open(
           "https://www.google.com/maps?daddr=QRH3+VM8,+Maturín+6201,+Monagas",
